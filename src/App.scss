@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+}
+
+#root {
+    height: 100svh;
+    width: 100svw;
+
+    .App {
+        height: 100%;
+        width: 100%;
+
+        #canvasContainer {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
