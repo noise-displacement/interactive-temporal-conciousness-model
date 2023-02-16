@@ -1,5 +1,7 @@
 * {
   margin: 0;
+  font-family: sans-serif;
+  font-size: 14px;
 }
 
 #root {
@@ -13,4 +15,31 @@
 #root .App #canvasContainer {
   height: 100%;
   width: 100%;
+}
+
+#globalControls {
+  position: absolute;
+  z-index: 1000000;
+  background: #fff;
+  border-radius: 7px;
+  margin: 16px;
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+}
+#globalControls .topLabel {
+  display: flex;
+  background: #000;
+  color: #fff;
+  padding: 0 16px;
+  height: 42px;
+  align-items: center;
+}
+#globalControls .controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
 }/*# sourceMappingURL=App.css.map */

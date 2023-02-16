@@ -5,6 +5,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "@react-three/drei";
 import { DoubleSide } from "three";
 import { Controls, useControl } from 'react-three-gui';
+import vertexFaceNumbersHelper from "../../components/deprecated/vertexLabel";
 
   const models = {
     cone: {
@@ -53,6 +54,16 @@ function ThreeJS() {
     {
       id: 4,
       model: useLoader(GLTFLoader, "/models/pyramid.glb"),
+    },
+
+    {
+      id: 5,
+      model: useLoader(GLTFLoader, "/models/triangle.glb"),
+    },
+
+    {
+      id: 6,
+      model: useLoader(GLTFLoader, "/models/cube.glb"),
     },
   ];
 
@@ -119,10 +130,49 @@ function ThreeJS() {
 
 
   let sphereMatrix = models[2].model.nodes.Sphere;
-
   
 
-  console.log(sphereMatrix)
+  //console.log(sphereMatrix)
+
+  let triverts = models[5].model.nodes.Plane.geometry.attributes.position.array;
+  let triindexes = models[5].model.nodes.Plane.geometry.index.array;
+
+  let pyrverts = models[4].model.nodes.Cone.geometry.attributes.position.array;
+  let pyrnorms = models[4].model.nodes.Cone.geometry.attributes.normal.array;
+  let pyrindexes = models[4].model.nodes.Cone.geometry.index.array;
+
+  //console.log(models[4].model.nodes.Cone.geometry)
+  //console.log(pyrverts);
+  //console.log(pyrindexes);
+  //console.log(pyrnorms);
+
+  // for(let i = 0; i <= 11; i++) {
+  //   console.log(models[4].model.nodes.Cone.geometry.attributes.position.getY(i));
+  //   models[4].model.nodes.Cone.geometry.attributes.position.setY(i, models[4].model.nodes.Cone.geometry.attributes.position.getY(i) - 1);
+  // }
+
+  function getIndexedVertices(geometryIndexArray, geometryVerticeArray) {
+    //Gets indexes and vertices of geometry and cross references them. Creates an array within an array that contains vertices for each index
+    let faces = [];
+  
+    for(let index = 0; index < geometryIndexArray.length; index++) {
+      faces.push([]);
+  
+      for(let vert = index * 3; vert < index * 3 + 3; vert++) {
+        faces[index].push(geometryVerticeArray[vert]);
+      }
+  
+    }
+  
+    return faces;
+  }
+
+let planeFaces = getIndexedVertices(models[5].model.nodes.Plane.geometry.index.array, models[5].model.nodes.Plane.geometry.attributes.position.array);
+
+  //console.log(getIndexedVertices(pyrindexes, pyrverts));
+
+
+  console.log(models[5]);
 
    /*
   // Sets the X position of cone model based if on the previous scale of the model is more or less. 
@@ -177,36 +227,44 @@ function ThreeJS() {
         onChange={() => setToggleWireframe(!toggleWireframe)}
       ></input>
 
-      <Canvas gl={{ localClippingEnabled: true }}>
+      <Canvas gl={{ localClippingEnabled: true }} >
         <OrbitControls />
         <ambientLight />
         <spotLight intensity={0.5} position={[5, 10, 25]} />
-        <Suspense>
+        <axesHelper args={[100]}/>
+        {/* <Suspense>
           <primitive
             scale={[coneDepthFraction, coneDepthFraction, coneDepthFraction]}
             object={models[0].model.scene}
           />
-        </Suspense>
+        </Suspense> */}
 
-        <Suspense>
+        {/* <Suspense>
           <primitive scale={[10, 10, 10]} object={models[1].model.scene} />
-        </Suspense>
+        </Suspense> */}
 
-        <Suspense>
+        {/* <Suspense>
           <primitive
             scale={[50, 50, 50]}
             rotation={[0, -1.570796, 0]}
             object={models[2].model.scene}
             matrix={[2, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0]}
           />
-        </Suspense>
+        </Suspense> */}
 
-        <Suspense>
+        {/* Axis model <Suspense>
           <primitive object={models[3].model.scene} />
-        </Suspense>
+        </Suspense> */}
 
-        <Suspense>
+        {/* <Suspense>
           <primitive object={models[4].model.scene} scale={[40, 20, 40]} />
+        </Suspense> */}
+
+        {/* Triangle model <Suspense>
+          <primitive object={models[5].model.scene} scale={[40, 20, 40]} />
+        </Suspense> */}
+        <Suspense>
+          <primitive object={models[5].model.scene} ></primitive>
         </Suspense>
       </Canvas>
     </>
