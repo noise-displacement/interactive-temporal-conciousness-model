@@ -25,7 +25,7 @@
   margin: 16px;
   display: flex;
   justify-content: space-between;
-  width: 150px;
+  width: 200px;
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
@@ -42,4 +42,14 @@
   display: flex;
   justify-content: space-between;
   padding: 16px;
+}
+#globalControls .controlText {
+  padding: 0 16px 16px 16px;
+  color: #888;
+}
+#globalControls .controlText span {
+  display: block;
+}
+#globalControls .controlText span:first-child {
+  margin-bottom: 10px;
 }/*# sourceMappingURL=App.css.map */

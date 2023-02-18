@@ -153,8 +153,8 @@ const Hedron = (props) => {
   //Scaling Z axis
   const sP = useControl("Sosiokulturell", {
     type: "number",
-    value: 1,
-    min: 1,
+    value: 2,
+    min: 2,
     max: maxScale,
     distance: 10,
     group: "Model",
@@ -162,8 +162,8 @@ const Hedron = (props) => {
 
   const sM = useControl("Statlig", {
     type: "number",
-    value: 1,
-    min: 1,
+    value: 2,
+    min: 2,
     max: maxScale,
     distance: 10,
     group: "Model",
@@ -223,7 +223,6 @@ const Hedron = (props) => {
 const Pyramid = (props) => {
   let obj = useRef();
   let loadedObject = useLoader(GLTFLoader, props.object);
-  console.log(props);
 
   let maxScale = 14;
 
@@ -270,10 +269,20 @@ const Pyramid = (props) => {
     group: "Structure",
   });
 
+  const rotation = useControl("Rotasjon", {
+    type: "number",
+    value: 0,
+    min: 0,
+    max: Math.PI * 2,
+    distance: 10,
+    group: "Structure",
+  });
+
   let normAxisScaling = (-sM * sP) / maxScale;
   let placeAxisPosition = (-sM + sP) / 2;
   let scaleTime = sTime;
   let placeAxisScaling = place;
+  let rotationX = rotation;
 
   useEffect(() => {
     loadedObject.nodes.Cone.material = new THREE.MeshPhongMaterial({
@@ -295,7 +304,7 @@ const Pyramid = (props) => {
         ref={obj}
         scale={[scaleTime, placeAxisScaling, normAxisScaling]}
         position={[0, 0, placeAxisPosition]}
-        rotation={props.rotation}
+        rotation={[rotationX, 0, 0]}
         object={loadedObject.scene}
       ></primitive>
     </Suspense>
@@ -353,7 +362,11 @@ function ModelLoader() {
             onChange={() => {
               setClipmode(!clipMode);
             }}
-          />
+          />        
+        </div>
+        <div class="controlText">
+          <span>Lmb + Pan = Rotate camera</span>
+          <span>Scroll = Zoom</span>
         </div>
       </div>
       <Controls.Provider>

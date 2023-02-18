@@ -1,5 +1,6 @@
 $white: #fff;
 $black: #000;
+$grey: #888;
 
 $padding: 16px;
 $br: 7px;
@@ -33,7 +34,7 @@ $br: 7px;
     margin: $padding;
     display: flex;
     justify-content: space-between;
-    width: 150px;
+    width: 200px;
     flex-direction: column;
     overflow: hidden;
     box-shadow: 0px 0px 14px rgba(0,0,0,.15);
@@ -51,5 +52,18 @@ $br: 7px;
         display: flex;
         justify-content: space-between;
         padding: $padding;
+    }
+
+    .controlText {
+        padding: 0 $padding $padding $padding;
+        color: $grey;
+        
+        span {
+            display: block;
+        }
+
+        span:first-child {
+            margin-bottom: 10px;
+        }
     }
 }
