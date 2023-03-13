@@ -26,15 +26,6 @@ const ModelLoader = function (props) {
   let ref = useRef();
   let object = useLoader(GLTFLoader, props.object);
 
-  console.log(props);
-
-  // Fiks hovered outlines
-  // if(props.hoveredObject !== ref) {
-  //   console.log("not same");
-  // } else {
-  //   console.log("same");
-  // }
-
   const options = props.options;
 
   const scaleTime = {
@@ -73,55 +64,41 @@ const ModelLoader = function (props) {
       : { component: Null }
   );
 
-  //console.log(wireframeMode);
+  const fromYearOpt = useControl(
+    "Start year",
+    props.relation
+      ? {
+          type: "string",
+          value: props.years.start.toString(),
+          group: props.name,
+        }
+      : { component: Null }
+  );
 
-  // const fromYearOpt = useControl(
-  //   "Start year",
-  //   props.relation
-  //     ? {
-  //         type: "string",
-  //         value: props.years.start.toString(),
-  //         group: props.name,
-  //       }
-  //     : { component: Null }
-  // );
+  const toYearOpt = useControl(
+    "End year",
+    props.relation
+      ? {
+          type: "string",
+          value: props.years.end.toString(),
+          group: props.name,
+        }
+      : { component: Null }
+  );
 
-  const fromYearOpt = useControl("Start year", {
-    type: "string",
-    value: props.years.start.toString(),
-    group: props.name,
-  });
-
-  // const toYearOpt = useControl(
-  //   "End year",
-  //   props.relation
-  //     ? {
-  //         type: "string",
-  //         value: props.years.end.toString(),
-  //         group: props.name,
-  //       }
-  //     : { component: Null }
-  // );
-
-  const toYearOpt = useControl("End year", {
-    type: "string",
-    value: props.years.end.toString(),
-    group: props.name,
-  });
-
-  // const scaleTimeOpt = useControl(
-  //   "Time scale",
-  //   options.timeScale
-  //     ? {
-  //         type: "number",
-  //         value: scaleTime.default,
-  //         min: scaleTime.min,
-  //         max: scaleTime.max,
-  //         distance: 10,
-  //         group: props.name,
-  //       }
-  //     : { component: Null }
-  // );
+  const scaleTimeOpt = useControl(
+    "Time scale",
+    options.timeScale
+      ? {
+          type: "number",
+          value: scaleTime.default,
+          min: scaleTime.min,
+          max: scaleTime.max,
+          distance: 10,
+          group: props.name,
+        }
+      : { component: Null }
+  );
 
   const scaleNormCulturalOpt = useControl(
     "Cultural norms",
@@ -165,21 +142,27 @@ const ModelLoader = function (props) {
       : { component: Null }
   );
 
-  //let valuePerYear = (100 / (props.yearScale.max - props.yearScale.min)) * 2;
-
-  let timeScale = options.timeScale ? ((toYearOpt - fromYearOpt) / 2) : scaleTime.default;
-  //console.log(timeScale, props.name);
-
+  let timeScale = options.timeScale ? scaleTimeOpt : scaleTime.default;
   let normScale = options.normScale
-    ? (((-scaleNormStructuralOpt * scaleNormCulturalOpt) / scaleNorm.max) * timeScale / 100) 
+    ? (-scaleNormStructuralOpt * scaleNormCulturalOpt) / scaleNorm.max
     : scaleNorm.default; // Aligns normScale correctly on the norm scale.
+  let placeScale = options.placeScale ? scalePlaceOpt : scalePlace.default;
 
-  let placeScale = options.placeScale ? scalePlaceOpt * timeScale / 100 : scalePlace.default;
+  if (props.relation) {
+    // Weird solution. Don't fully understand why we have to multiply by 2 and subtract sphereRadius.
+    // Fix if enough time at end.
+    let valuePerYear = (100 / (props.yearScale.max - props.yearScale.min)) * 2;
 
-  timePos = Number(fromYearOpt) + timeScale;
-  //console.log(timePos, props.name, timeScale);
+    timePos =
+      (Number(fromYearOpt) - props.yearScale.min) * valuePerYear -
+      props.sphereRadius +
+      timeScale;
+
+    eventPos = Number(timePos) - timeScale;
+  }
+
   normPos = options.normScale
-    ? ((-scaleNormStructuralOpt + scaleNormCulturalOpt) / 2)
+    ? (-scaleNormStructuralOpt + scaleNormCulturalOpt) / 2
     : 0;
   placePos = 0;
 
@@ -203,33 +186,52 @@ const ModelLoader = function (props) {
     ],
   });
 
-  //console.log(material);
-
   //Gets the node of the model name e.g Sphere or Icosphere and sets the material and color dynamically after object is loaded
   useEffect(() => {
-    if (props.globalWireframe) {
-      material.wireframe = props.globalWireframe;
-      object.nodes[props.modelName].material = material;
-    } else {
-      object.nodes[props.modelName].material = material;
-    }
+    object.nodes[props.modelName].material = material;
   });
 
   return (
     <>
+      {props.relation ? (
+        <>
+          <group dispose={null}>
+            <Event position={[eventPos, normPos, placePos]} />
+            <mesh
+              geometry={object.nodes[props.modelName].geometry}
+              material={material}
+              scale={[normScale, timeScale, placeScale]}
+              position={[timePos, normPos, placePos]}
+              rotation={[0, 0, deg_to_rad(90)]}
+              ref={ref}
+              onPointerOver={(e) => props.onHover(ref)}
+              onPointerLeave={(e) => props.onHover(null)}
+            ></mesh>
+          </group>
+
+          {props.options.labels ? (
+            <Html center position={[eventPos, normPos - 1, placePos]}>
+              <div className="eventTag">
+                <span>Year: {fromYearOpt}</span>
+              </div>
+            </Html>
+          ) : (
+            <Null />
+          )}
+        </>
+      ) : (
         <Suspense>
-          <mesh
+          <primitive
             ref={ref}
-            geometry={object.nodes[props.modelName].geometry}
-            material={material}
             scale={[timeScale, normScale, placeScale]}
             position={[timePos, normPos, placePos]}
-            rotation={props.relation ? [0, 0, deg_to_rad(-90)] : [0, 0, 0]}
+            rotation={props.rotation}
             object={object.scene}
             onPointerOver={(e) => props.onHover(ref)}
             onPointerLeave={(e) => props.onHover(null)}
-          ></mesh>
+          ></primitive>
         </Suspense>
+      )}
     </>
   );
 };

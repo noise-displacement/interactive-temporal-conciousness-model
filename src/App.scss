@@ -1,69 +1,310 @@
 $white: #fff;
 $black: #000;
 $grey: #888;
+$blue: #2967e8;
+$lightGrey: #eee;
 
 $padding: 16px;
 $br: 7px;
 
 * {
-    margin: 0;
-    font-family: sans-serif;
-    font-size: 14px;
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+body {
+  background-color: $blue;
 }
 
 #root {
-    height: 100svh;
-    width: 100svw;
+  height: 100svh;
+  width: 100svw;
 
-    .App {
-        height: 100%;
-        width: 100%;
-
-        #canvasContainer {
-            height: 100%;
-            width: 100%;
-        }
-    }
+  .App {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
-#globalControls {
-    position: absolute;
-    z-index: 1000000;
-    background: $white;
-    border-radius: $br;
-    margin: $padding;
-    display: flex;
-    justify-content: space-between;
-    width: 200px;
-    flex-direction: column;
-    overflow: hidden;
-    box-shadow: 0px 0px 14px rgba(0,0,0,.15);
+h3 {
+  font-weight: normal;
+}
 
-    .topLabel {
+.routeContainer {
+  height: 100%;
+  overflow: scroll;
+}
+
+.modelWrapper {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 64px $padding $padding $padding;
+
+  .modelContainer {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    z-index: 1000000;
+    border-radius: $br;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+
+    #globalControls {
+      position: absolute;
+      z-index: 1000000;
+      background: $white;
+      border-radius: $br;
+      margin: $padding;
+      display: flex;
+      justify-content: space-between;
+      width: 200px;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+
+      .topLabel {
         display: flex;
         background: $black;
         color: $white;
         padding: 0 $padding;
         height: 42px;
         align-items: center;
-    }
+      }
 
-    .controls {
+      .controls {
         display: flex;
         justify-content: space-between;
         padding: $padding;
-    }
+      }
 
-    .controlText {
+      .controlText {
         padding: 0 $padding $padding $padding;
         color: $grey;
-        
+
         span {
-            display: block;
+          display: block;
         }
 
         span:first-child {
-            margin-bottom: 10px;
+          margin-bottom: 10px;
         }
+      }
+
+      .globalYears {
+        display: flex;
+        flex-direction: column;
+        padding: 0 $padding $padding $padding;
+      }
     }
+
+    .examplePickerContainer {
+      position: absolute;
+      left: 0;
+      height: 100%;
+      background: $lightGrey;
+      z-index: 1000;
+      box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+    }
+
+    .bottomControls {
+      position: absolute;
+      bottom: 0;
+      display: flex;
+      align-items: flex-end;
+      width: 100%;
+      background-color: $lightGrey;
+      z-index: 1001;
+      padding: $padding;
+      box-sizing: border-box;
+    
+      .zoomButtonsContainer {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        border-radius: $br;
+        overflow: hidden;
+      
+        .zoomButton {
+          border: 0;
+          padding: 10px;
+        }
+      
+        .zoomButton:active {
+          background: rgba(255, 255, 255, 0.9);
+        }
+      }
+
+      .globalWireframe {
+        position: relative;
+        z-index: 10;
+        display: flex;
+      }
+    
+      #timeline {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        box-sizing: border-box;
+      
+        .wrapper {
+          box-sizing: border-box;
+          display: flex;
+          justify-content: space-between;
+
+          .yearInput {
+            display: flex;
+            flex-direction: column;
+
+            input {
+              width: 100px;
+            }
+          }
+        }
+      }
+    }
+
+    .mainCanvas {
+      z-index: 0;
+
+      .eventTag {
+        background: $white;
+        padding: 5px;
+        border-radius: $br;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .fOJUnM {
+      position: absolute !important;
+    }
+  }
+}
+
+.modelWrapper.fullwidth {
+  padding: 48px 0 0 0;
+
+  .modelContainer {
+    border-radius: 0;
+  }
+}
+
+.belowContainer {
+  padding: $padding;
+
+  p {
+    margin-bottom: $padding;
+  }
+}
+
+.mainNav {
+  position: fixed;
+  z-index: 1000000000;
+  width: 100vw;
+  top: 0;
+
+  .container {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    background: $white;
+
+    .holder {
+      box-sizing: border-box;
+      display: flex;
+
+      a, span {
+        display: block;
+        padding: calc($padding / 2);
+        margin: calc($padding / 2);
+      }
+
+      span {
+        background-color: $black;
+        border-radius: $br;
+        color: $white;
+      }
+    }
+  }
+}
+
+.navSpacer {
+  h1 {
+    font-size: 1em;
+    padding: $padding;
+  }
+}
+
+.modelInfoContainer {
+  position: absolute;
+  right: 0;
+  z-index: 1000;
+
+  .containerWrapper {
+    padding: $padding;
+
+    #modelInfoList {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 200px;
+
+      li {
+        box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+        border-radius: $br;
+        color: $white;
+
+        .header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: 0;
+          border: 0;
+          color: $white;
+          width: 100%;
+          padding: calc($padding / 2) $padding;
+          margin: 0;
+          cursor: pointer;
+        }
+
+        .moreInfo {
+          background-color: $white;
+          //margin: ($padding / 2) 0 0 0;
+          height: auto;
+          overflow: hidden;
+
+          a {
+            color: $white;
+          }
+
+          p {
+            color: $black;
+            padding: calc($padding / 2);
+          }
+
+          button {
+
+          }
+        }
+
+        .moreInfo.expanded {
+          height: auto;
+        }
+      }
+    }
+  }
+}
+
+.homeContainer {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.belowContainer {
+  height: 100vh;
 }

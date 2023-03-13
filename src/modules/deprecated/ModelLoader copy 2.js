@@ -26,7 +26,7 @@ const ModelLoader = function (props) {
   let ref = useRef();
   let object = useLoader(GLTFLoader, props.object);
 
-  console.log(props);
+  //console.log(props);
 
   // Fiks hovered outlines
   // if(props.hoveredObject !== ref) {
@@ -165,21 +165,29 @@ const ModelLoader = function (props) {
       : { component: Null }
   );
 
-  //let valuePerYear = (100 / (props.yearScale.max - props.yearScale.min)) * 2;
-
-  let timeScale = options.timeScale ? ((toYearOpt - fromYearOpt) / 2) : scaleTime.default;
-  //console.log(timeScale, props.name);
-
+  let valuePerYear = (100 / (props.yearScale.max - props.yearScale.min)) * 2;
+  //let timeScale = options.timeScale ? scaleTimeOpt : scaleTime.default;
+  let timeScale = options.timeScale ? (toYearOpt - fromYearOpt) : scaleTime.default;
+  console.log(timeScale, props.name);
   let normScale = options.normScale
-    ? (((-scaleNormStructuralOpt * scaleNormCulturalOpt) / scaleNorm.max) * timeScale / 100) 
+    ? (-scaleNormStructuralOpt * scaleNormCulturalOpt) / scaleNorm.max
     : scaleNorm.default; // Aligns normScale correctly on the norm scale.
+    console.log(props.yearScale);
+  let placeScale = options.placeScale ? scalePlaceOpt * props.yearScale.max : scalePlace.default;
 
-  let placeScale = options.placeScale ? scalePlaceOpt * timeScale / 100 : scalePlace.default;
+  if (props.relation) {
+    // Weird solution. Don't fully understand why we have to multiply by 2 and subtract sphereRadius.
+    // Fix if enough time at end.
 
-  timePos = Number(fromYearOpt) + timeScale;
-  //console.log(timePos, props.name, timeScale);
+    timePos =
+      (Number(fromYearOpt) - props.yearScale.min) * valuePerYear -
+      props.sphereRadius;
+
+    eventPos = Number(timePos) - timeScale;
+  }
+
   normPos = options.normScale
-    ? ((-scaleNormStructuralOpt + scaleNormCulturalOpt) / 2)
+    ? (-scaleNormStructuralOpt + scaleNormCulturalOpt) / 2
     : 0;
   placePos = 0;
 
@@ -217,6 +225,33 @@ const ModelLoader = function (props) {
 
   return (
     <>
+      {props.relation ? (
+        <>
+          <group dispose={null}>
+            <Event position={[eventPos, normPos, placePos]} />
+            <mesh
+              geometry={object.nodes[props.modelName].geometry}
+              material={material}
+              scale={[normScale, timeScale, placeScale]}
+              position={[timePos, normPos, placePos]}
+              rotation={[0, 0, deg_to_rad(90)]}
+              ref={ref}
+              onPointerOver={(e) => props.onHover(ref)}
+              onPointerLeave={(e) => props.onHover(null)}
+            ></mesh>
+          </group>
+
+          {props.options.labels ? (
+            <Html center position={[eventPos, normPos - 1, placePos]}>
+              <div className="eventTag">
+                <span>Year: {fromYearOpt}</span>
+              </div>
+            </Html>
+          ) : (
+            <Null />
+          )}
+        </>
+      ) : (
         <Suspense>
           <mesh
             ref={ref}
@@ -224,12 +259,13 @@ const ModelLoader = function (props) {
             material={material}
             scale={[timeScale, normScale, placeScale]}
             position={[timePos, normPos, placePos]}
-            rotation={props.relation ? [0, 0, deg_to_rad(-90)] : [0, 0, 0]}
+            rotation={props.rotation}
             object={object.scene}
             onPointerOver={(e) => props.onHover(ref)}
             onPointerLeave={(e) => props.onHover(null)}
           ></mesh>
         </Suspense>
+      )}
     </>
   );
 };

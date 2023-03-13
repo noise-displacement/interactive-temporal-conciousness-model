@@ -4,6 +4,10 @@
   font-size: 14px;
 }
 
+body {
+  background-color: #2967e8;
+}
+
 #root {
   height: 100svh;
   width: 100svw;
@@ -11,13 +15,34 @@
 #root .App {
   height: 100%;
   width: 100%;
-}
-#root .App #canvasContainer {
-  height: 100%;
-  width: 100%;
+  box-sizing: border-box;
 }
 
-#globalControls {
+h3 {
+  font-weight: normal;
+}
+
+.routeContainer {
+  height: 100%;
+  overflow: scroll;
+}
+
+.modelWrapper {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 64px 16px 16px 16px;
+}
+.modelWrapper .modelContainer {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 1000000;
+  border-radius: 7px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+}
+.modelWrapper .modelContainer #globalControls {
   position: absolute;
   z-index: 1000000;
   background: #fff;
@@ -30,7 +55,7 @@
   overflow: hidden;
   box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
 }
-#globalControls .topLabel {
+.modelWrapper .modelContainer #globalControls .topLabel {
   display: flex;
   background: #000;
   color: #fff;
@@ -38,18 +63,196 @@
   height: 42px;
   align-items: center;
 }
-#globalControls .controls {
+.modelWrapper .modelContainer #globalControls .controls {
   display: flex;
   justify-content: space-between;
   padding: 16px;
 }
-#globalControls .controlText {
+.modelWrapper .modelContainer #globalControls .controlText {
   padding: 0 16px 16px 16px;
   color: #888;
 }
-#globalControls .controlText span {
+.modelWrapper .modelContainer #globalControls .controlText span {
   display: block;
 }
-#globalControls .controlText span:first-child {
+.modelWrapper .modelContainer #globalControls .controlText span:first-child {
   margin-bottom: 10px;
+}
+.modelWrapper .modelContainer #globalControls .globalYears {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 16px 16px;
+}
+.modelWrapper .modelContainer .examplePickerContainer {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  background: #eee;
+  z-index: 1000;
+  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+}
+.modelWrapper .modelContainer .bottomControls {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  background-color: #eee;
+  z-index: 1001;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.modelWrapper .modelContainer .bottomControls .zoomButtonsContainer {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  border-radius: 7px;
+  overflow: hidden;
+}
+.modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton {
+  border: 0;
+  padding: 10px;
+}
+.modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton:active {
+  background: rgba(255, 255, 255, 0.9);
+}
+.modelWrapper .modelContainer .bottomControls .globalWireframe {
+  position: relative;
+  z-index: 10;
+  display: flex;
+}
+.modelWrapper .modelContainer .bottomControls #timeline {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  box-sizing: border-box;
+}
+.modelWrapper .modelContainer .bottomControls #timeline .wrapper {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+.modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput {
+  display: flex;
+  flex-direction: column;
+}
+.modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput input {
+  width: 100px;
+}
+.modelWrapper .modelContainer .mainCanvas {
+  z-index: 0;
+}
+.modelWrapper .modelContainer .mainCanvas .eventTag {
+  background: #fff;
+  padding: 5px;
+  border-radius: 7px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+}
+.modelWrapper .modelContainer .fOJUnM {
+  position: absolute !important;
+}
+
+.modelWrapper.fullwidth {
+  padding: 48px 0 0 0;
+}
+.modelWrapper.fullwidth .modelContainer {
+  border-radius: 0;
+}
+
+.belowContainer {
+  padding: 16px;
+}
+.belowContainer p {
+  margin-bottom: 16px;
+}
+
+.mainNav {
+  position: fixed;
+  z-index: 1000000000;
+  width: 100vw;
+  top: 0;
+}
+.mainNav .container {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+}
+.mainNav .container .holder {
+  box-sizing: border-box;
+  display: flex;
+}
+.mainNav .container .holder a, .mainNav .container .holder span {
+  display: block;
+  padding: 8px;
+  margin: 8px;
+}
+.mainNav .container .holder span {
+  background-color: #000;
+  border-radius: 7px;
+  color: #fff;
+}
+
+.navSpacer h1 {
+  font-size: 1em;
+  padding: 16px;
+}
+
+.modelInfoContainer {
+  position: absolute;
+  right: 0;
+  z-index: 1000;
+}
+.modelInfoContainer .containerWrapper {
+  padding: 16px;
+}
+.modelInfoContainer .containerWrapper #modelInfoList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 200px;
+}
+.modelInfoContainer .containerWrapper #modelInfoList li {
+  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+  border-radius: 7px;
+  color: #fff;
+}
+.modelInfoContainer .containerWrapper #modelInfoList li .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: 0;
+  border: 0;
+  color: #fff;
+  width: 100%;
+  padding: 8px 16px;
+  margin: 0;
+  cursor: pointer;
+}
+.modelInfoContainer .containerWrapper #modelInfoList li .moreInfo {
+  background-color: #fff;
+  height: auto;
+  overflow: hidden;
+}
+.modelInfoContainer .containerWrapper #modelInfoList li .moreInfo a {
+  color: #fff;
+}
+.modelInfoContainer .containerWrapper #modelInfoList li .moreInfo p {
+  color: #000;
+  padding: 8px;
+}
+.modelInfoContainer .containerWrapper #modelInfoList li .moreInfo.expanded {
+  height: auto;
+}
+
+.homeContainer {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.belowContainer {
+  height: 100vh;
 }/*# sourceMappingURL=App.css.map */
