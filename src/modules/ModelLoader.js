@@ -5,6 +5,7 @@ import { useControl } from "react-three-gui";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import { useRef } from "react";
+import { StructureController, StructureSlider, useStructureSlider } from "../components/structureController";
 
 function deg_to_rad(deg) {
   return deg * (Math.PI / 180);
@@ -26,7 +27,11 @@ const ModelLoader = function (props) {
   let ref = useRef();
   let object = useLoader(GLTFLoader, props.object);
 
-  console.log(props);
+  //console.log(props);
+
+  let defaultScale = 100;
+  let defaultSize = props.type.name === "Event" ? 10 : defaultScale;
+  let minScale = 1;
 
   // Fiks hovered outlines
   // if(props.hoveredObject !== ref) {
@@ -38,21 +43,21 @@ const ModelLoader = function (props) {
   const options = props.options;
 
   const scaleTime = {
-    min: props.scaleTime.min,
-    max: props.scaleTime.max,
-    default: props.scaleTime.default,
+    min: minScale,
+    max: defaultScale,
+    default: defaultSize,
   };
 
   const scaleNorm = {
-    min: props.scaleNorm.min,
-    max: props.scaleNorm.max,
-    default: props.scaleNorm.default,
+    min: minScale,
+    max: defaultScale,
+    default: defaultSize,
   };
 
   const scalePlace = {
-    min: props.scalePlace.min,
-    max: props.scalePlace.max,
-    default: props.scalePlace.default,
+    min: minScale,
+    max: defaultScale,
+    default: defaultSize,
   };
 
   let timePos = 0;
@@ -218,6 +223,11 @@ const ModelLoader = function (props) {
   return (
     <>
         <Suspense>
+          <Html className={`structureOptions ${props.optionsOpen}`} position={[timePos - timeScale / 2, timeScale / 2, 0]}>
+            {/* <StructureSlider options={props.options}/> */}
+            {/* <span>Yessir</span> */}
+          </Html>
+
           <mesh
             ref={ref}
             geometry={object.nodes[props.modelName].geometry}

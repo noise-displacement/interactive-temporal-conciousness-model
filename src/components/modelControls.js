@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 import { Null } from "../modules/ModelLoader";
-import { models } from "./ModelCanvas";
+import { models } from "../routes/example";
 
 export function UiTimeline(props) {
   return (
@@ -75,14 +75,14 @@ function InfoCollapsible(props) {
 function ExampleCollapsible(props) {
   const [open, setOpen] = useState(false);
 
-  return(
+  return (
     <div className="example">
       <button className="header collapsible" onClick={(e) => setOpen(!open)}>
         <h3>{props.name}</h3>
         <span className="material-symbols-outlined">add</span>
       </button>
     </div>
-  )
+  );
 }
 
 export function ModelZoomButtons(props) {
@@ -209,19 +209,26 @@ export function GlobalControls(props) {
   );
 }
 
-
 export function ExamplePicker(props) {
-  return(
+  return (
     <div className="examplePickerContainer">
       <ul>
         {props.examples.map((example) => {
-          return(
+          return (
             <li key={example.id}>
-              <button onClick={() => props.setCurrentExample(example)}>{example.name}</button>
+              <button
+                onClick={() => {
+                  props.setCurrentExample(example)
+                  props.setModelRefresh(true)
+                  props.setModelRefresh(false)
+                }}
+              >
+                {example.name}
+              </button>
             </li>
-          )
+          );
         })}
       </ul>
     </div>
-  )
+  );
 }

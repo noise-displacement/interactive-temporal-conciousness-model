@@ -9,8 +9,8 @@ $br: 7px;
 
 * {
   margin: 0;
-  font-family: sans-serif;
-  font-size: 14px;
+  font-family: "PT Serif", serif;
+  font-size: 16px;
 }
 
 body {
@@ -37,167 +37,199 @@ h3 {
   overflow: scroll;
 }
 
-.modelWrapper {
+.exampleContainer {
   height: 100%;
   width: 100%;
-  box-sizing: border-box;
-  padding: 64px $padding $padding $padding;
+  display: flex;
 
-  .modelContainer {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    z-index: 1000000;
-    border-radius: $br;
-    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
-
-    #globalControls {
-      position: absolute;
-      z-index: 1000000;
-      background: $white;
-      border-radius: $br;
-      margin: $padding;
-      display: flex;
-      justify-content: space-between;
-      width: 200px;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
-
-      .topLabel {
-        display: flex;
-        background: $black;
-        color: $white;
-        padding: 0 $padding;
-        height: 42px;
-        align-items: center;
-      }
-
-      .controls {
-        display: flex;
-        justify-content: space-between;
-        padding: $padding;
-      }
-
-      .controlText {
-        padding: 0 $padding $padding $padding;
-        color: $grey;
-
-        span {
-          display: block;
-        }
-
-        span:first-child {
-          margin-bottom: 10px;
-        }
-      }
-
-      .globalYears {
-        display: flex;
-        flex-direction: column;
-        padding: 0 $padding $padding $padding;
-      }
-    }
+  .examplePicker {
+    position: absolute;
+    z-index: 10000000;
+    top: 50%;
+    left: $padding * 3;
 
     .examplePickerContainer {
-      position: absolute;
-      left: 0;
-      height: 100%;
-      background: $lightGrey;
-      z-index: 1000;
-      box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+      ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+          color: $white;
+
+          button {
+            border: 0;
+            padding: .7em 1.7em .7em .7em;
+            background: none;
+            color: $white;
+            cursor: pointer;
+          }
+        }
+
+        li:hover {
+          transform: scale(1.1);
+        }
+      }
+
+      li:not(:last-child) {
+        margin-bottom: $padding;
+      }
     }
+  }
 
-    .bottomControls {
-      position: absolute;
-      bottom: 0;
-      display: flex;
-      align-items: flex-end;
-      width: 100%;
-      background-color: $lightGrey;
-      z-index: 1001;
-      padding: $padding;
+  .modelWrapper {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 64px $padding $padding $padding;
+  
+    .modelContainer {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
       box-sizing: border-box;
-    
-      .zoomButtonsContainer {
-        position: relative;
-        z-index: 10;
-        display: flex;
+      z-index: 1000000;
+      border-radius: $br;
+      box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+  
+      #globalControls {
+        position: absolute;
+        z-index: 1000000;
+        background: $white;
         border-radius: $br;
-        overflow: hidden;
-      
-        .zoomButton {
-          border: 0;
-          padding: 10px;
-        }
-      
-        .zoomButton:active {
-          background: rgba(255, 255, 255, 0.9);
-        }
-      }
-
-      .globalWireframe {
-        position: relative;
-        z-index: 10;
+        margin: $padding;
         display: flex;
-      }
-    
-      #timeline {
-        position: relative;
-        z-index: 10;
-        width: 100%;
-        box-sizing: border-box;
-      
-        .wrapper {
-          box-sizing: border-box;
+        justify-content: space-between;
+        width: 200px;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+  
+        .topLabel {
+          display: flex;
+          background: $black;
+          color: $white;
+          padding: 0 $padding;
+          height: 42px;
+          align-items: center;
+        }
+  
+        .controls {
           display: flex;
           justify-content: space-between;
-
-          .yearInput {
+          padding: $padding;
+        }
+  
+        .controlText {
+          padding: 0 $padding $padding $padding;
+          color: $grey;
+  
+          span {
+            display: block;
+          }
+  
+          span:first-child {
+            margin-bottom: 10px;
+          }
+        }
+  
+        .globalYears {
+          display: flex;
+          flex-direction: column;
+          padding: 0 $padding $padding $padding;
+        }
+      }
+  
+      .bottomControls {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        align-items: flex-end;
+        width: 100%;
+        background-color: $lightGrey;
+        z-index: 1001;
+        padding: $padding;
+        box-sizing: border-box;
+      
+        .zoomButtonsContainer {
+          position: relative;
+          z-index: 10;
+          display: flex;
+          border-radius: $br;
+          overflow: hidden;
+        
+          .zoomButton {
+            border: 0;
+            padding: 10px;
+          }
+        
+          .zoomButton:active {
+            background: rgba(255, 255, 255, 0.9);
+          }
+        }
+  
+        .globalWireframe {
+          position: relative;
+          z-index: 10;
+          display: flex;
+        }
+      
+        #timeline {
+          position: relative;
+          z-index: 10;
+          width: 100%;
+          box-sizing: border-box;
+        
+          .wrapper {
+            box-sizing: border-box;
             display: flex;
-            flex-direction: column;
-
-            input {
-              width: 100px;
+            justify-content: space-between;
+  
+            .yearInput {
+              display: flex;
+              flex-direction: column;
+  
+              input {
+                width: 100px;
+              }
             }
           }
         }
       }
-    }
-
-    .mainCanvas {
-      z-index: 0;
-
-      .eventTag {
-        background: $white;
-        padding: 5px;
-        border-radius: $br;
-        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+  
+      .mainCanvas {
+        z-index: 0;
+  
+        .eventTag {
+          background: $white;
+          padding: 5px;
+          border-radius: $br;
+          box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+      }
+  
+      .fOJUnM {
+        position: absolute !important;
       }
     }
-
-    .fOJUnM {
-      position: absolute !important;
+  }
+  
+  .modelWrapper.fullwidth {
+    padding: 48px 0 0 0;
+  
+    .modelContainer {
+      border-radius: 0;
+    }
+  }
+  
+  .belowContainer {
+    padding: $padding;
+  
+    p {
+      margin-bottom: $padding;
     }
   }
 }
 
-.modelWrapper.fullwidth {
-  padding: 48px 0 0 0;
-
-  .modelContainer {
-    border-radius: 0;
-  }
-}
-
-.belowContainer {
-  padding: $padding;
-
-  p {
-    margin-bottom: $padding;
-  }
-}
 
 .mainNav {
   position: fixed;
@@ -307,4 +339,9 @@ h3 {
 
 .belowContainer {
   height: 100vh;
+}
+
+.structureOptions {
+  position: absolute; 
+  top: 0;
 }

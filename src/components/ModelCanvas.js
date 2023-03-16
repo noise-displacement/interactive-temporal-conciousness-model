@@ -17,167 +17,15 @@ import {
 } from "./modelControls";
 import * as THREE from "three";
 import { degToRad } from "three/src/math/MathUtils";
-
-export const models = {
-  cone: {
-    relation: true,
-    object: "Cone",
-    path: "/models/cone.gltf",
-    color: "blue",
-    info: true,
-    name: "Relation",
-    infoText: "Establishing a relationship (expectations - rules)",
-  },
-
-  cube: {
-    object: "Cube",
-    path: "/models/cube.glb",
-    color: "grey",
-    info: true,
-    name: "Model",
-    infoText: "Wedding: specific types of ceremony, proposal, ring etc.",
-  },
-
-  hedron: {
-    object: "Icosphere",
-    path: "/models/hedron.glb",
-    color: "red",
-    info: true,
-    name: "Structure",
-    infoText: "Family, with related life type, values and rules",
-  },
-
-  sphere: {
-    object: "Sphere",
-    path: "/models/sphere.glb",
-    color: "green",
-    info: true,
-    name: "Ultrastructure",
-    infoText: "Monogamy-polygamy, endogamy-exogamy etc.",
-  },
-
-  axis: {
-    object: "Model",
-    path: "/models/axis.glb",
-    info: false,
-  },
-
-  pyramid: {
-    object: "Cone",
-    path: "/models/pyramid.glb",
-    color: "grey",
-    info: false,
-  },
-};
-
-const structureTypes = {
-  ultraStructure: {name: "Ultrastructure", object: models.sphere, color: 0x39bd76},
-  structure: {name: "Structure", object: models.hedron, color: 0xcc4141},
-  model: {name: "Model", object: models.cube, color: 0xffffff},
-  relation: {name: "Relation", object: models.cone, color: 0x3a6fe0}
-}
-
-const examples = [
-  {
-    id: 1,
-    name: "Example1",
-    timeline: {
-      startYear: 1300,
-      endYear: 2020,
-    },
-
-    structures: [
-      {
-        type: structureTypes.ultraStructure,
-        startYear: 1500,
-        endYear: 2100,
-      },
-
-      {
-        type: structureTypes.structure,
-        startYear: 1600,
-        endYear: 2100,
-      },
-
-      {
-        type: structureTypes.model,
-        startYear: 1900,
-        endYear: 1990,
-      },
-    ],
-
-    relations: [
-      {
-        id: 1,
-        relationName: "Relation 1",
-        startYear: 1970,
-        endYear: 2010,
-      },
-    ],
-  },
-
-  {
-    id: 2,
-    name: "Example2",
-    timeline: {
-      startYear: 1950,
-      endYear: 2020,
-    },
-
-    structures: [
-      {
-        name: "Relation 1",
-        type: structureTypes.relation,
-        startYear: 1990,
-        endYear: 2000,
-      },
-
-      {
-        name: "Relation 2",
-        type: structureTypes.relation,
-        startYear: 1970,
-        endYear: 2010,
-      },
-
-      {
-        name: structureTypes.model.name,
-        type: structureTypes.model,
-        startYear: 1900,
-        endYear: 1990,
-      },
-
-      {
-        name: structureTypes.structure.name,
-        type: structureTypes.structure,
-        startYear: 1600,
-        endYear: 2100,
-      },
-
-      {
-        name: structureTypes.ultraStructure.name,
-        type: structureTypes.ultraStructure,
-        startYear: 1500,
-        endYear: 2100,
-      },
-    ],
-  },
-];
-
-const modelNames = [];
-
-const modelList = Object.keys(models).forEach((model) => {
-  modelNames.push(models[model].name);
-});
-
-modelNames.push("Relation 1", "Relation 2");
-
-console.log(modelNames);
+import StructureControls, { StructureController } from "./structureController";
+import { structureTypes } from "../routes/example";
 
 function timelineLabel(
   yearScale,
   timelineLabels,
   timelineYears,
-  labelScaleFactor
+  labelScaleFactor,
+  currentUltrastructureSize
 ) {
   timelineLabels.length = 0;
   let yearIncrement;
@@ -191,7 +39,7 @@ function timelineLabel(
   } else if (timelineYears >= 500 && timelineYears <= 1000) {
     yearIncrement = 50;
   } else if (timelineYears >= 1000 && timelineYears <= 10000) {
-    yearIncrement = 500;
+    yearIncrement = 100;
   }
 
   let currentIncrement = yearIncrement;
@@ -209,9 +57,10 @@ function timelineLabel(
           position={[
             yearIncrement +
               i -
-              yearScale.min -
+              yearScale.max -
               yearScale.modelScale -
-              yearIncrement,
+              yearIncrement +
+              currentUltrastructureSize / 2,
             0.75,
             0,
           ]}
@@ -226,16 +75,18 @@ function timelineLabel(
 }
 
 function ModelCanvas(props) {
-  const [currentExample, setCurrentExample] = useState(examples[1]);
+  let currentExample = props.currentExample;
   const [clipMode, setClipmode] = useState(1);
   const [fromYear, setFromYear] = useState(currentExample.timeline.startYear);
   const [toYear, setToYear] = useState(currentExample.timeline.endYear);
   const [hovered, onHover] = useState(null);
   const [zoomLevel, adjustZoomLevel] = useState(10);
   const [globalWireframe, setGlobalWireframe] = useState(false);
-  const [labelScaleFactor, setLabelScaleFactor] = useState(
-    (toYear - fromYear) * 2
-  );
+  const [labelScaleFactor, setLabelScaleFactor] = useState(toYear - fromYear);
+
+  const modelNames = currentExample.structures.map((structure) => {
+    return structure.name;
+  });
 
   const selected = hovered ? [hovered] : undefined;
   const canvasCam = useRef();
@@ -264,109 +115,75 @@ function ModelCanvas(props) {
   //console.log(axesHelper);
 
   const yearScale = { min: fromYear, max: toYear, modelScale: 100 };
-  const zoomRange = { min: 1, max: 2000 };
+  const zoomRange = { min: 1, max: 20000 };
 
   const relations = [];
   const currentStructures = [];
+  const currentControls = [];
 
-  for(let i = 0; i < currentExample.structures.length; i++) {
+  for (let i = 0; i < currentExample.structures.length; i++) {
+    let structure = currentExample.structures[i];
+    //console.log(structure);
     currentStructures.push({
-      type: currentExample.structures[i].type,
-      name: currentExample.structures[i].name,
-      object: currentExample.structures[i].type.object.path,
-      modelName: currentExample.structures[i].type.object.object,
-      color: currentExample.structures[i].type.color,
-      scaleTime: { min: 1, max: 100, default: 100 },
-      scaleNorm: { min: 1, max: 100, default: 100 },
-      scalePlace: { min: 1, max: 100, default: 100 },
+      type: structure.type,
+      name: structure.name,
+      object: structure.type.object.path,
+      modelName: structure.type.object.object,
+      color: structure.type.color,
       years: {
-        start: currentExample.structures[i].startYear,
-        end: currentExample.structures[i].endYear,
+        start: structure.startYear,
+        end: structure.endYear,
       },
       options: {
         wireframe: options.wireframeMode,
-        rotation: false,
-        timeScale: true,
-        normScale: true,
-        placeScale: true,
-        originFix: false,
-      }
-    })
+        rotation: structure.type.options.rotation,
+        timeScale: structure.type.options.timeScale,
+        normScale: structure.type.options.normScale,
+        placeScale: structure.type.options.placeScale,
+      },
+    });
+
+    currentControls.push({
+      type: structure.type,
+      name: structure.name,
+      years: {
+        start: structure.startYear,
+        end: structure.endYear,
+      },
+      options: {
+        wireframe: options.wireframeMode,
+        rotation: structure.type.options.rotation,
+        timeScale: structure.type.options.timeScale,
+        normScale: structure.type.options.normScale,
+        placeScale: structure.type.options.placeScale,
+      },
+    });
   }
-
-  // for (let i = 0; i < currentExample.relations.length; i++) {
-  //   relations.push({
-  //     name: currentExample.relations[i].relationName,
-  //     object: models.cone.path,
-  //     modelName: models.cone.object,
-  //     color: 0x3a6fe0,
-  //     scaleTime: { min: 1, max: 10, default: 3 },
-  //     scaleNorm: { min: 1, max: 10, default: 3 },
-  //     scalePlace: { min: 1, max: 10, default: 3 },
-  //     years: {
-  //       start: currentExample.relations[i].startYear,
-  //       end: currentExample.relations[i].endYear,
-  //     },
-  //     options: {
-  //       wireframe: options.wireframeMode,
-  //       rotation: false,
-  //       timeScale: true,
-  //       normScale: true,
-  //       placeScale: true,
-  //       originFix: true,
-  //       labels: options.labels,
-  //     },
-  //   });
-  // }
-
-  // relations.push(
-  //   {
-  //     name: "Relation 1",
-  //     object: models.cone.path,
-  //     modelName: models.cone.object,
-  //     color: 0x3a6fe0,
-  //     scaleTime: { min: 1, max: 10, default: 3 },
-  //     scaleNorm: { min: 1, max: 10, default: 3 },
-  //     scalePlace: { min: 1, max: 10, default: 3 },
-  //     years: { start: 2000, end: 2010 },
-  //     options: {
-  //       wireframe: options.wireframeMode,
-  //       rotation: false,
-  //       timeScale: true,
-  //       normScale: true,
-  //       placeScale: true,
-  //       originFix: true,
-  //       labels: options.labels,
-  //     },
-  //   },
-
-  //   {
-  //     name: "Relation 2",
-  //     object: models.cone.path,
-  //     modelName: models.cone.object,
-  //     color: 0x3a6fe0,
-  //     scaleTime: { min: 1, max: 10, default: 3 },
-  //     scaleNorm: { min: 1, max: 10, default: 3 },
-  //     scalePlace: { min: 1, max: 10, default: 3 },
-  //     years: { start: 1997, end: 2010 },
-  //     options: {
-  //       wireframe: options.wireframeMode,
-  //       rotation: false,
-  //       timeScale: true,
-  //       normScale: true,
-  //       placeScale: true,
-  //       originFix: true,
-  //       labels: options.labels,
-  //     },
-  //   }
-  // );
 
   let timelineLabels = [];
   let axesScale = labelScaleFactor / 1000;
   let timelineYears = Number(yearScale.max) - Number(yearScale.min);
+  let axisColors = {
+    x: "white",
+    y: "white",
+    z: "white",
+  };
+
+  let modelGroup = useRef();
+  //console.log(modelGroup);
+  let currentUltrastructureSize =
+    currentExample.structures[currentExample.structures.length - 1].endYear -
+    currentExample.structures[currentExample.structures.length - 1].startYear;
 
   useEffect(() => {
-    timelineLabel(yearScale, timelineLabels, timelineYears, labelScaleFactor);
+    currentStructures.length = 0;
+    timelineLabel(
+      yearScale,
+      timelineLabels,
+      timelineYears,
+      labelScaleFactor,
+      currentUltrastructureSize
+    );
     if (canvasCam.current) {
       //canvasCam.current.object.position.z = (timelineYears * 2);
     }
@@ -379,17 +196,28 @@ function ModelCanvas(props) {
       <div className="modelContainer">
         {options.modelInfo ? <ModelInfoContainer /> : <Null />}
 
+        {/* <StructureControls structures={currentExample.structures} /> */}
+
+        {/* {currentControls.map((structureOptions) => {
+          //console.log(structureOptions);
+          return(
+            <StructureController options={structureOptions} />
+          )
+        })} */}
+
         <div className="bottomControls">
-          {options.timeline ? (
-            <UiTimeline
-              globalYearControl={options.globalYearControl}
-              fromYear={fromYear}
-              toYear={toYear}
-              clipMode={clipMode}
-              setToYear={setToYear}
-              setFromYear={setFromYear}
-              setClipmode={setClipmode}
-            />
+          {options.timeline || props.modelRefresh !== true ? (
+            <Suspense>
+              <UiTimeline
+                globalYearControl={options.globalYearControl}
+                fromYear={fromYear}
+                setFromYear={setFromYear}
+                toYear={toYear}
+                setToYear={setToYear}
+                clipMode={clipMode}
+                setClipmode={setClipmode}
+              />
+            </Suspense>
           ) : (
             <Null />
           )}
@@ -415,7 +243,7 @@ function ModelCanvas(props) {
           )}
         </div>
 
-        {options.examplePicker ? (
+        {/* {options.examplePicker ? (
           <ExamplePicker
             currentExample={currentExample}
             setCurrentExample={setCurrentExample}
@@ -423,13 +251,16 @@ function ModelCanvas(props) {
           />
         ) : (
           <Null />
-        )}
+        )} */}
 
         <Controls.Provider>
           <Controls.Canvas
             gl={{ localClippingEnabled: true }}
             className="mainCanvas"
-            style={{ background: "#ddd" }}
+            style={{
+              background:
+                "linear-gradient(315deg, rgba(39,75,109,1) 0%, rgba(27,52,76,1) 100%)",
+            }}
             camera={{ position: [0, 5, timelineYears * 2], far: 20000 }}
           >
             <OrbitControls
@@ -440,8 +271,8 @@ function ModelCanvas(props) {
             />
 
             <ambientLight />
-            <pointLight position={[10, 0, 10]} intensity={1} />
-            <pointLight position={[-10, 0, -10]} intensity={1} />
+            <pointLight position={[100, 0, 100]} intensity={0.1} />
+            <pointLight position={[-100, 0, -100]} intensity={0.1} />
 
             <Suspense id="axis">
               {/*<primitive object={useLoader(GLTFLoader, models.axis.path).scene}></primitive>*/}
@@ -451,64 +282,42 @@ function ModelCanvas(props) {
                   ref={axesHelper}
                   args={[timelineYears * 10, axesScale, axesScale]}
                 />
-                <meshPhongMaterial color={"red"} />
+                <meshPhongMaterial color={axisColors.x} />
               </mesh>
 
               <mesh rotation={[0, degToRad(90), 0]}>
                 <boxGeometry
                   args={[timelineYears * 10, axesScale, axesScale]}
                 />
-                <meshPhongMaterial color={"green"} />
+                <meshPhongMaterial color={axisColors.z} />
               </mesh>
 
               <mesh rotation={[0, 0, degToRad(90)]}>
                 <boxGeometry
                   args={[timelineYears * 10, axesScale, axesScale]}
                 />
-                <meshPhongMaterial color={"blue"} />
+                <meshPhongMaterial color={axisColors.y} />
               </mesh>
-
-              {/* <Html transform={true} distanceFactor={labelScaleFactor}>
-                <div
-                  style={{
-                    color: "red",
-                    fontSize: zoomLevel / 10,
-                    background: "red",
-                    padding: `0 ${zoomLevel * 10}vw`,
-                  }}
-                >:</div>
-              </Html>
-
-              <Html transform={true} rotation={[0, degToRad(90), 0]} distanceFactor={labelScaleFactor}>
-                <div
-                  style={{
-                    color: "green",
-                    fontSize: zoomLevel / 10,
-                    background: "green",
-                    padding: `0 ${zoomLevel * 10}vw`,
-                  }}
-                >:</div>
-              </Html> */}
 
               <Html
                 distanceFactor={labelScaleFactor}
                 position={[0, axisTagDistance, 0]}
               >
-                <span style={{ color: "blue" }}>Norms&nbsp;(y)</span>
+                <span style={{ color: axisColors.y }}>Norms&nbsp;(y)</span>
               </Html>
 
               <Html
                 distanceFactor={labelScaleFactor}
                 position={[0, 0, axisTagDistance]}
               >
-                <span style={{ color: "green" }}>Space&nbsp;(y)</span>
+                <span style={{ color: axisColors.z }}>Space&nbsp;(z)</span>
               </Html>
 
               <Html
                 distanceFactor={labelScaleFactor}
-                position={[axisTagDistance, 0, 0]}
+                position={[axisTagDistance, 30, 0]}
               >
-                <span style={{ color: "red" }}>Time&nbsp;(y)</span>
+                <span style={{ color: axisColors.x }}>Time&nbsp;(x)</span>
               </Html>
             </Suspense>
 
@@ -517,7 +326,8 @@ function ModelCanvas(props) {
                 yearScale,
                 timelineLabels,
                 timelineYears,
-                labelScaleFactor
+                labelScaleFactor,
+                currentUltrastructureSize
               ),
               timelineLabels.map((label) => {
                 return label;
@@ -526,133 +336,51 @@ function ModelCanvas(props) {
               <Null />
             )}
 
-            <group position={[-yearScale.min - 100, 0, 0]}>
-              {relations.map((relation) => {
-                return (
-                  <ModelLoader
-                    key={relation.name}
-                    name={relation.name}
-                    yearScale={yearScale}
-                    clipMode={clipMode}
-                    sphereRadius={sphereRadius}
-                    relation={true}
-                    object={relation.object}
-                    modelName={relation.modelName}
-                    color={relation.color}
-                    scaleTime={relation.scaleTime}
-                    scaleNorm={relation.scaleNorm}
-                    scalePlace={relation.scalePlace}
-                    years={relation.years}
-                    options={relation.options}
-                    onHover={onHover}
-                    globalWireframe={globalWireframe}
-                  ></ModelLoader>
-                );
-              })}
-
+            <group
+              ref={modelGroup}
+              position={[
+                -yearScale.max + currentUltrastructureSize / 2 - 100,
+                0,
+                0,
+              ]}
+            >
               {currentStructures.map((structure) => {
-                return(
-                  <ModelLoader
-                    key={structure.name}
-                    type={structure.type}
-                    name={structure.name}
-                    yearScale={yearScale}
-                    clipMode={clipMode}
-                    sphereRadius={sphereRadius}
-                    relation={structure.type === structureTypes.relation ? true : false}
-                    object={structure.object}
-                    modelName={structure.modelName}
-                    color={structure.color}
-                    scaleTime={structure.scaleTime}
-                    scaleNorm={structure.scaleNorm}
-                    scalePlace={structure.scalePlace}
-                    years={structure.years}
-                    options={structure.options}
-                    onHover={onHover}
-                    globalWireframe={globalWireframe}
-                  ></ModelLoader>
-                )
+                if (!props.modelRefresh) {
+                  return (
+                    <Suspense>
+                      <ModelLoader
+                        key={structure.name}
+                        type={structure.type}
+                        name={structure.name}
+                        yearScale={yearScale}
+                        clipMode={
+                          structure.type === structureTypes.event ? 0 : clipMode
+                        }
+                        sphereRadius={sphereRadius}
+                        relation={
+                          structure.type === structureTypes.relation
+                            ? true
+                            : false
+                        }
+                        object={structure.object}
+                        modelName={structure.modelName}
+                        color={structure.color}
+                        scaleTime={structure.scaleTime}
+                        scaleNorm={structure.scaleNorm}
+                        scalePlace={structure.scalePlace}
+                        years={structure.years}
+                        options={structure.options}
+                        onHover={onHover}
+                        globalWireframe={globalWireframe}
+                        currentControls={currentControls}
+                        optionsOpen={false}
+                      ></ModelLoader>
+                    </Suspense>
+                  );
+                } else {
+                  return <Null />;
+                }
               })}
-
-              {/* <ModelLoader
-                name="Model"
-                object={models.cube.path}
-                modelName={models.cube.object}
-                color={0xffffff}
-                clipMode={clipMode}
-                yearScale={yearScale}
-                scaleTime={{ min: 5, max: 15, default: 15 }}
-                scaleNorm={{ min: 5, max: 15, default: 15 }}
-                scalePlace={{ min: 5, max: 15, default: 15 }}
-                globalWireframe={globalWireframe}
-                years={{
-                  start: currentExample.model.startYear,
-                  end: currentExample.model.endYear,
-                }}
-                onHover={onHover}
-                options={{
-                  wireframe: options.wireframeMode,
-                  rotation: false,
-                  timeScale: true,
-                  normScale: true,
-                  placeScale: true,
-                  originFix: false,
-                }}
-              ></ModelLoader>
-
-              <ModelLoader
-                name="Structure"
-                object={models.hedron.path}
-                modelName={models.hedron.object}
-                color={0xcc4141}
-                clipMode={clipMode}
-                yearScale={yearScale}
-                scaleTime={{ min: 10, max: 30, default: 30 }}
-                scaleNorm={{ min: 10, max: 30, default: 30 }}
-                scalePlace={{ min: 10, max: 30, default: 30 }}
-                onHover={onHover}
-                hoveredObject={hovered}
-                globalWireframe={globalWireframe}
-                years={{
-                  start: currentExample.structure.startYear,
-                  end: currentExample.structure.endYear,
-                }}
-                options={{
-                  wireframe: options.wireframeMode,
-                  rotation: false,
-                  timeScale: true,
-                  normScale: true,
-                  placeScale: true,
-                  originFix: false,
-                }}
-              ></ModelLoader>
-
-              <ModelLoader
-                name="Ultrastructure"
-                object={models.sphere.path}
-                modelName={models.sphere.object}
-                color={0x39bd76}
-                clipMode={1}
-                scaleTime={{ min: 25, max: 100, default: 100 }}
-                scaleNorm={{ min: 25, max: 100, default: 100 }}
-                scalePlace={{ min: 25, max: 100, default: 100 }}
-                yearScale={yearScale}
-                years={{
-                  start: currentExample.ultraStructure.startYear,
-                  end: currentExample.ultraStructure.endYear,
-                }}
-                onHover={onHover}
-                hoveredObject={hovered}
-                globalWireframe={globalWireframe}
-                options={{
-                  wireframe: options.wireframeMode,
-                  rotation: false,
-                  timeScale: true,
-                  normScale: true,
-                  placeScale: true,
-                  originFix: false,
-                }}
-              ></ModelLoader> */}
 
               {options.outlines ? (
                 <EffectComposer multisampling={8} autoClear={false}>

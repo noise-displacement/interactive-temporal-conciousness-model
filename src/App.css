@@ -1,7 +1,7 @@
 * {
   margin: 0;
-  font-family: sans-serif;
-  font-size: 14px;
+  font-family: "PT Serif", serif;
+  font-size: 16px;
 }
 
 body {
@@ -27,13 +27,44 @@ h3 {
   overflow: scroll;
 }
 
-.modelWrapper {
+.exampleContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+.exampleContainer .examplePicker {
+  position: absolute;
+  z-index: 10000000;
+  top: 50%;
+  left: 48px;
+}
+.exampleContainer .examplePicker .examplePickerContainer ul {
+  margin: 0;
+  padding: 0;
+}
+.exampleContainer .examplePicker .examplePickerContainer ul li {
+  color: #fff;
+}
+.exampleContainer .examplePicker .examplePickerContainer ul li button {
+  border: 0;
+  padding: 0.7em 1.7em 0.7em 0.7em;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+}
+.exampleContainer .examplePicker .examplePickerContainer ul li:hover {
+  transform: scale(1.1);
+}
+.exampleContainer .examplePicker .examplePickerContainer li:not(:last-child) {
+  margin-bottom: 16px;
+}
+.exampleContainer .modelWrapper {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
   padding: 64px 16px 16px 16px;
 }
-.modelWrapper .modelContainer {
+.exampleContainer .modelWrapper .modelContainer {
   position: relative;
   height: 100%;
   overflow: hidden;
@@ -42,7 +73,7 @@ h3 {
   border-radius: 7px;
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
 }
-.modelWrapper .modelContainer #globalControls {
+.exampleContainer .modelWrapper .modelContainer #globalControls {
   position: absolute;
   z-index: 1000000;
   background: #fff;
@@ -55,7 +86,7 @@ h3 {
   overflow: hidden;
   box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
 }
-.modelWrapper .modelContainer #globalControls .topLabel {
+.exampleContainer .modelWrapper .modelContainer #globalControls .topLabel {
   display: flex;
   background: #000;
   color: #fff;
@@ -63,35 +94,27 @@ h3 {
   height: 42px;
   align-items: center;
 }
-.modelWrapper .modelContainer #globalControls .controls {
+.exampleContainer .modelWrapper .modelContainer #globalControls .controls {
   display: flex;
   justify-content: space-between;
   padding: 16px;
 }
-.modelWrapper .modelContainer #globalControls .controlText {
+.exampleContainer .modelWrapper .modelContainer #globalControls .controlText {
   padding: 0 16px 16px 16px;
   color: #888;
 }
-.modelWrapper .modelContainer #globalControls .controlText span {
+.exampleContainer .modelWrapper .modelContainer #globalControls .controlText span {
   display: block;
 }
-.modelWrapper .modelContainer #globalControls .controlText span:first-child {
+.exampleContainer .modelWrapper .modelContainer #globalControls .controlText span:first-child {
   margin-bottom: 10px;
 }
-.modelWrapper .modelContainer #globalControls .globalYears {
+.exampleContainer .modelWrapper .modelContainer #globalControls .globalYears {
   display: flex;
   flex-direction: column;
   padding: 0 16px 16px 16px;
 }
-.modelWrapper .modelContainer .examplePickerContainer {
-  position: absolute;
-  left: 0;
-  height: 100%;
-  background: #eee;
-  z-index: 1000;
-  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
-}
-.modelWrapper .modelContainer .bottomControls {
+.exampleContainer .modelWrapper .modelContainer .bottomControls {
   position: absolute;
   bottom: 0;
   display: flex;
@@ -102,67 +125,65 @@ h3 {
   padding: 16px;
   box-sizing: border-box;
 }
-.modelWrapper .modelContainer .bottomControls .zoomButtonsContainer {
+.exampleContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer {
   position: relative;
   z-index: 10;
   display: flex;
   border-radius: 7px;
   overflow: hidden;
 }
-.modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton {
+.exampleContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton {
   border: 0;
   padding: 10px;
 }
-.modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton:active {
+.exampleContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton:active {
   background: rgba(255, 255, 255, 0.9);
 }
-.modelWrapper .modelContainer .bottomControls .globalWireframe {
+.exampleContainer .modelWrapper .modelContainer .bottomControls .globalWireframe {
   position: relative;
   z-index: 10;
   display: flex;
 }
-.modelWrapper .modelContainer .bottomControls #timeline {
+.exampleContainer .modelWrapper .modelContainer .bottomControls #timeline {
   position: relative;
   z-index: 10;
   width: 100%;
   box-sizing: border-box;
 }
-.modelWrapper .modelContainer .bottomControls #timeline .wrapper {
+.exampleContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper {
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
 }
-.modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput {
+.exampleContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput {
   display: flex;
   flex-direction: column;
 }
-.modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput input {
+.exampleContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput input {
   width: 100px;
 }
-.modelWrapper .modelContainer .mainCanvas {
+.exampleContainer .modelWrapper .modelContainer .mainCanvas {
   z-index: 0;
 }
-.modelWrapper .modelContainer .mainCanvas .eventTag {
+.exampleContainer .modelWrapper .modelContainer .mainCanvas .eventTag {
   background: #fff;
   padding: 5px;
   border-radius: 7px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
 }
-.modelWrapper .modelContainer .fOJUnM {
+.exampleContainer .modelWrapper .modelContainer .fOJUnM {
   position: absolute !important;
 }
-
-.modelWrapper.fullwidth {
+.exampleContainer .modelWrapper.fullwidth {
   padding: 48px 0 0 0;
 }
-.modelWrapper.fullwidth .modelContainer {
+.exampleContainer .modelWrapper.fullwidth .modelContainer {
   border-radius: 0;
 }
-
-.belowContainer {
+.exampleContainer .belowContainer {
   padding: 16px;
 }
-.belowContainer p {
+.exampleContainer .belowContainer p {
   margin-bottom: 16px;
 }
 
@@ -255,4 +276,9 @@ h3 {
 
 .belowContainer {
   height: 100vh;
+}
+
+.structureOptions {
+  position: absolute;
+  top: 0;
 }/*# sourceMappingURL=App.css.map */
