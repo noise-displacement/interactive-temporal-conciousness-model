@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 import { Null } from "../modules/ModelLoader";
-import { models } from "../routes/example";
+import { models } from "./structureInfo";
 
 export function UiTimeline(props) {
   return (
@@ -218,9 +218,9 @@ export function ExamplePicker(props) {
             <li key={example.id}>
               <button
                 onClick={() => {
-                  props.setCurrentExample(example)
-                  props.setModelRefresh(true)
-                  props.setModelRefresh(false)
+                  props.setCurrentExample(example);
+                  props.setModelRefresh(true);
+                  props.setModelRefresh(false);
                 }}
               >
                 {example.name}
@@ -229,6 +229,18 @@ export function ExamplePicker(props) {
           );
         })}
       </ul>
+    </div>
+  );
+}
+
+export function ExampleInfo(props) {
+  let currentExample = props.currentExample;
+  console.log(currentExample);
+  return (
+    <div className="exampleInfo">
+      <h1>{currentExample.name}</h1>
+      <p>{currentExample.info}</p>
+      <span>- {currentExample.author}</span>
     </div>
   );
 }

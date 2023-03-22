@@ -3,9 +3,13 @@ $black: #000;
 $grey: #888;
 $blue: #2967e8;
 $lightGrey: #eee;
+$accent: #C7B99C;
 
 $padding: 16px;
 $br: 7px;
+$topNavSpace: 68px;
+$bottomNavSpace: 95px;
+$ctaPadding: .7em 1.4em;
 
 * {
   margin: 0;
@@ -37,16 +41,37 @@ h3 {
   overflow: scroll;
 }
 
-.exampleContainer {
+.ctaBtn {
+  padding: $ctaPadding;
+  background: $accent;
+  border-radius: $br;
+  color: $black;
+  transition: transform .2s;
+}
+
+.ctaBtn:hover {
+  transform: scale(1.05);
+}
+
+.canvasContainer {
   height: 100%;
   width: 100%;
   display: flex;
 
-  .examplePicker {
+  .exampleInfoContainer {
     position: absolute;
-    z-index: 10000000;
-    top: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: $topNavSpace 0 $bottomNavSpace 0;
+    box-sizing: border-box;
+    height: 100%;
     left: $padding * 3;
+    z-index: 10000000;
+
+    .exampleInfo {
+      color: $white;
+    }
 
     .examplePickerContainer {
       ul {
@@ -55,6 +80,7 @@ h3 {
 
         li {
           color: $white;
+          transition: transform .2s;
 
           button {
             border: 0;
@@ -66,7 +92,7 @@ h3 {
         }
 
         li:hover {
-          transform: scale(1.1);
+          transform: scale(1.05);
         }
       }
 

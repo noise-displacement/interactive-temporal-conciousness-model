@@ -18,7 +18,7 @@ import {
 import * as THREE from "three";
 import { degToRad } from "three/src/math/MathUtils";
 import StructureControls, { StructureController } from "./structureController";
-import { structureTypes } from "../routes/example";
+import { structureTypes } from "./structureInfo";
 
 function timelineLabel(
   yearScale,
@@ -88,6 +88,8 @@ function ModelCanvas(props) {
     return structure.name;
   });
 
+  console.log(currentExample);
+
   const selected = hovered ? [hovered] : undefined;
   const canvasCam = useRef();
   //console.log(canvasCam);
@@ -130,22 +132,11 @@ function ModelCanvas(props) {
       object: structure.type.object.path,
       modelName: structure.type.object.object,
       color: structure.type.color,
-      years: {
-        start: structure.startYear,
-        end: structure.endYear,
+      sizes: {
+        social: structure.normSocial,
+        structural: structure.normStructural,
+        space: structure.space,
       },
-      options: {
-        wireframe: options.wireframeMode,
-        rotation: structure.type.options.rotation,
-        timeScale: structure.type.options.timeScale,
-        normScale: structure.type.options.normScale,
-        placeScale: structure.type.options.placeScale,
-      },
-    });
-
-    currentControls.push({
-      type: structure.type,
-      name: structure.name,
       years: {
         start: structure.startYear,
         end: structure.endYear,
@@ -198,12 +189,12 @@ function ModelCanvas(props) {
 
         {/* <StructureControls structures={currentExample.structures} /> */}
 
-        {/* {currentControls.map((structureOptions) => {
-          //console.log(structureOptions);
+        {currentExample.structures.map((structure) => {
+          //console.log(structure);
           return(
-            <StructureController options={structureOptions} />
+            <StructureController structure={structure} />
           )
-        })} */}
+        })}
 
         <div className="bottomControls">
           {options.timeline || props.modelRefresh !== true ? (
@@ -242,16 +233,6 @@ function ModelCanvas(props) {
             <Null />
           )}
         </div>
-
-        {/* {options.examplePicker ? (
-          <ExamplePicker
-            currentExample={currentExample}
-            setCurrentExample={setCurrentExample}
-            examples={examples}
-          />
-        ) : (
-          <Null />
-        )} */}
 
         <Controls.Provider>
           <Controls.Canvas
@@ -374,6 +355,7 @@ function ModelCanvas(props) {
                         globalWireframe={globalWireframe}
                         currentControls={currentControls}
                         optionsOpen={false}
+                        sizes={structure.sizes}
                       ></ModelLoader>
                     </Suspense>
                   );

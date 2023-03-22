@@ -23,18 +23,19 @@ function StructureControls(props) {
 
 export function StructureController(props) {
     const [open, setOpen] = useState(false);
-    console.log(props.options);
-    let structure = props.options;
+    //console.log(props.structure);
+    let options = props.structure.type.options;
+    let example = props.structure;
 
     return (
       <>
         <button className="header collapsible" onClick={(e) => setOpen(!open)}>
-          <h3>{structure.name}</h3>
+          <h3>{example.name}</h3>
           <span className="material-symbols-outlined">add</span>
         </button>
         {open && (
-          <div className="moreInfo">
-              {/* <StructureSlider type={inputTypes.normScale} options={structure} /> */}
+          <div className="controls">
+              <StructureSlider value={example.normSocial} type={inputTypes.normScale} options={options} />
           </div>
         )}
       </>
@@ -44,12 +45,14 @@ export function StructureController(props) {
 export function StructureSlider(props) {
   let options = props.options;
   let type = props.type;
+  let [value, setValue] = useState(props.value);
+  console.log(value);
   console.log(options);
 
   return(
     <div className="sliderContainer">
       <label htmlFor={type.name}>{type.name}</label>
-      <input className={`${type.inputType}`} type={type.inputType} name={type.name} min={type.scale.min} max={type.scale.max} defaultValue={0} />
+      <input className={`${type.inputType}`} value={value} onChange={(e) => setValue(e.value)} type={type.inputType} name={type.name} min={type.scale.min} max={type.scale.max} defaultValue={0} />
     </div>
   )
 }

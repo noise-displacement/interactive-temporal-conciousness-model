@@ -27,44 +27,65 @@ h3 {
   overflow: scroll;
 }
 
-.exampleContainer {
+.ctaBtn {
+  padding: 0.7em 1.4em;
+  background: #C7B99C;
+  border-radius: 7px;
+  color: #000;
+  transition: transform 0.2s;
+}
+
+.ctaBtn:hover {
+  transform: scale(1.05);
+}
+
+.canvasContainer {
   height: 100%;
   width: 100%;
   display: flex;
 }
-.exampleContainer .examplePicker {
+.canvasContainer .exampleInfoContainer {
   position: absolute;
-  z-index: 10000000;
-  top: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 68px 0 95px 0;
+  box-sizing: border-box;
+  height: 100%;
   left: 48px;
+  z-index: 10000000;
 }
-.exampleContainer .examplePicker .examplePickerContainer ul {
+.canvasContainer .exampleInfoContainer .exampleInfo {
+  color: #fff;
+}
+.canvasContainer .exampleInfoContainer .examplePickerContainer ul {
   margin: 0;
   padding: 0;
 }
-.exampleContainer .examplePicker .examplePickerContainer ul li {
+.canvasContainer .exampleInfoContainer .examplePickerContainer ul li {
   color: #fff;
+  transition: transform 0.2s;
 }
-.exampleContainer .examplePicker .examplePickerContainer ul li button {
+.canvasContainer .exampleInfoContainer .examplePickerContainer ul li button {
   border: 0;
   padding: 0.7em 1.7em 0.7em 0.7em;
   background: none;
   color: #fff;
   cursor: pointer;
 }
-.exampleContainer .examplePicker .examplePickerContainer ul li:hover {
-  transform: scale(1.1);
+.canvasContainer .exampleInfoContainer .examplePickerContainer ul li:hover {
+  transform: scale(1.05);
 }
-.exampleContainer .examplePicker .examplePickerContainer li:not(:last-child) {
+.canvasContainer .exampleInfoContainer .examplePickerContainer li:not(:last-child) {
   margin-bottom: 16px;
 }
-.exampleContainer .modelWrapper {
+.canvasContainer .modelWrapper {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
   padding: 64px 16px 16px 16px;
 }
-.exampleContainer .modelWrapper .modelContainer {
+.canvasContainer .modelWrapper .modelContainer {
   position: relative;
   height: 100%;
   overflow: hidden;
@@ -73,7 +94,7 @@ h3 {
   border-radius: 7px;
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
 }
-.exampleContainer .modelWrapper .modelContainer #globalControls {
+.canvasContainer .modelWrapper .modelContainer #globalControls {
   position: absolute;
   z-index: 1000000;
   background: #fff;
@@ -86,7 +107,7 @@ h3 {
   overflow: hidden;
   box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
 }
-.exampleContainer .modelWrapper .modelContainer #globalControls .topLabel {
+.canvasContainer .modelWrapper .modelContainer #globalControls .topLabel {
   display: flex;
   background: #000;
   color: #fff;
@@ -94,27 +115,27 @@ h3 {
   height: 42px;
   align-items: center;
 }
-.exampleContainer .modelWrapper .modelContainer #globalControls .controls {
+.canvasContainer .modelWrapper .modelContainer #globalControls .controls {
   display: flex;
   justify-content: space-between;
   padding: 16px;
 }
-.exampleContainer .modelWrapper .modelContainer #globalControls .controlText {
+.canvasContainer .modelWrapper .modelContainer #globalControls .controlText {
   padding: 0 16px 16px 16px;
   color: #888;
 }
-.exampleContainer .modelWrapper .modelContainer #globalControls .controlText span {
+.canvasContainer .modelWrapper .modelContainer #globalControls .controlText span {
   display: block;
 }
-.exampleContainer .modelWrapper .modelContainer #globalControls .controlText span:first-child {
+.canvasContainer .modelWrapper .modelContainer #globalControls .controlText span:first-child {
   margin-bottom: 10px;
 }
-.exampleContainer .modelWrapper .modelContainer #globalControls .globalYears {
+.canvasContainer .modelWrapper .modelContainer #globalControls .globalYears {
   display: flex;
   flex-direction: column;
   padding: 0 16px 16px 16px;
 }
-.exampleContainer .modelWrapper .modelContainer .bottomControls {
+.canvasContainer .modelWrapper .modelContainer .bottomControls {
   position: absolute;
   bottom: 0;
   display: flex;
@@ -125,65 +146,65 @@ h3 {
   padding: 16px;
   box-sizing: border-box;
 }
-.exampleContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer {
+.canvasContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer {
   position: relative;
   z-index: 10;
   display: flex;
   border-radius: 7px;
   overflow: hidden;
 }
-.exampleContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton {
+.canvasContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton {
   border: 0;
   padding: 10px;
 }
-.exampleContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton:active {
+.canvasContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton:active {
   background: rgba(255, 255, 255, 0.9);
 }
-.exampleContainer .modelWrapper .modelContainer .bottomControls .globalWireframe {
+.canvasContainer .modelWrapper .modelContainer .bottomControls .globalWireframe {
   position: relative;
   z-index: 10;
   display: flex;
 }
-.exampleContainer .modelWrapper .modelContainer .bottomControls #timeline {
+.canvasContainer .modelWrapper .modelContainer .bottomControls #timeline {
   position: relative;
   z-index: 10;
   width: 100%;
   box-sizing: border-box;
 }
-.exampleContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper {
+.canvasContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper {
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
 }
-.exampleContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput {
+.canvasContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput {
   display: flex;
   flex-direction: column;
 }
-.exampleContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput input {
+.canvasContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput input {
   width: 100px;
 }
-.exampleContainer .modelWrapper .modelContainer .mainCanvas {
+.canvasContainer .modelWrapper .modelContainer .mainCanvas {
   z-index: 0;
 }
-.exampleContainer .modelWrapper .modelContainer .mainCanvas .eventTag {
+.canvasContainer .modelWrapper .modelContainer .mainCanvas .eventTag {
   background: #fff;
   padding: 5px;
   border-radius: 7px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
 }
-.exampleContainer .modelWrapper .modelContainer .fOJUnM {
+.canvasContainer .modelWrapper .modelContainer .fOJUnM {
   position: absolute !important;
 }
-.exampleContainer .modelWrapper.fullwidth {
+.canvasContainer .modelWrapper.fullwidth {
   padding: 48px 0 0 0;
 }
-.exampleContainer .modelWrapper.fullwidth .modelContainer {
+.canvasContainer .modelWrapper.fullwidth .modelContainer {
   border-radius: 0;
 }
-.exampleContainer .belowContainer {
+.canvasContainer .belowContainer {
   padding: 16px;
 }
-.exampleContainer .belowContainer p {
+.canvasContainer .belowContainer p {
   margin-bottom: 16px;
 }
 

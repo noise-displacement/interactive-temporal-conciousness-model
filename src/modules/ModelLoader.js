@@ -27,7 +27,9 @@ const ModelLoader = function (props) {
   let ref = useRef();
   let object = useLoader(GLTFLoader, props.object);
 
-  //console.log(props);
+  console.log(props);
+  let structuralSize = props.sizes.structural;
+  let socialSize = props.sizes.social;
 
   let defaultScale = 100;
   let defaultSize = props.type.name === "Event" ? 10 : defaultScale;
@@ -184,7 +186,7 @@ const ModelLoader = function (props) {
   timePos = Number(fromYearOpt) + timeScale;
   //console.log(timePos, props.name, timeScale);
   normPos = options.normScale
-    ? ((-scaleNormStructuralOpt + scaleNormCulturalOpt) / 2)
+    ? (((-scaleNormStructuralOpt * structuralSize) + (scaleNormCulturalOpt * socialSize)) / 2)
     : 0;
   placePos = 0;
 
