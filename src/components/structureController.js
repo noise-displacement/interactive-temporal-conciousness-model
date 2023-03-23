@@ -52,7 +52,7 @@ export function StructureSlider(props) {
   return(
     <div className="sliderContainer">
       <label htmlFor={type.name}>{type.name}</label>
-      <input className={`${type.inputType}`} value={value} onChange={(e) => setValue(e.value)} type={type.inputType} name={type.name} min={type.scale.min} max={type.scale.max} defaultValue={0} />
+      <input className={`${type.inputType}`} value={value} onChange={(e) => setValue(e.target.value)} type={type.inputType} name={type.name} min={type.scale.min} max={type.scale.max} />
     </div>
   )
 }

@@ -2,7 +2,7 @@ export const models = {
   cone: {
     relation: true,
     object: "Cone",
-    path: "/models/cone.gltf",
+    path: "/models/cone.glb",
     color: "blue",
     info: true,
     name: "Relation",

@@ -16,47 +16,63 @@ export const routes = {
     name: "Home",
     index: true,
     path: "/",
-    element: <Home />
+    element: <Home />,
   },
 
   model: {
     name: "Model",
     index: false,
-    path:"/model",
-    element: <Abstract />
+    path: "/model",
+    element: <Abstract />,
   },
 
   example: {
     name: "Example",
     index: false,
     path: "/example",
-    element: <Example />
+    element: <Example />,
   },
 
   editor: {
     name: "Editor",
     index: false,
     path: "/editor",
-    element: <Editor />
-  }
-}
+    element: <Editor />,
+  },
+};
 
 function App() {
   const location = useLocation();
 
   return (
-    <div className="App">
-      <AnimatePresence mode="wait" initial={false}>
-        <Routes location={location} key={location.key}>
-          <Route path="/" element={<MainTemplate location={location} />}>
-            <Route index element={routes.home.element} routeObject={routes.home} />
-            <Route path={routes.model.path} element={routes.model.element} routeObject={routes.model} />
-            <Route path={routes.example.path} element={routes.example.element} routeObject={routes.example} />
-            <Route path={routes.editor.path} element={routes.editor.element} routeObject={routes.editor} />
-          </Route>
-        </Routes>
-      </AnimatePresence>
-    </div>
+      <div className="App">
+        <AnimatePresence mode="wait" initial={false}>
+          <Routes location={location} key={location.key}>
+            <Route path="/" element={<MainTemplate location={location} />}>
+              <Route
+                index
+                element={routes.home.element}
+                routeObject={routes.home}
+              />
+              <Route
+                path={routes.model.path}
+                element={routes.model.element}
+                routeObject={routes.model}
+              />
+              <Route
+                path={routes.example.path}
+                element={routes.example.element}
+                routeObject={routes.example}
+              />
+              <Route
+                path={routes.editor.path}
+                element={routes.editor.element}
+                routeObject={routes.editor}
+              />
+            </Route>
+          </Routes>
+        </AnimatePresence>
+      </div>
   );
 }
 

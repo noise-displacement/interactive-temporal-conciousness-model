@@ -83,12 +83,13 @@ function ModelCanvas(props) {
   const [zoomLevel, adjustZoomLevel] = useState(10);
   const [globalWireframe, setGlobalWireframe] = useState(false);
   const [labelScaleFactor, setLabelScaleFactor] = useState(toYear - fromYear);
+  const [orbitControls, setOrbitControls] = useState(true);
 
   const modelNames = currentExample.structures.map((structure) => {
     return structure.name;
   });
 
-  console.log(currentExample);
+  //console.log(currentExample);
 
   const selected = hovered ? [hovered] : undefined;
   const canvasCam = useRef();
@@ -121,6 +122,7 @@ function ModelCanvas(props) {
 
   const relations = [];
   const currentStructures = [];
+  const structureObjects = [];
   const currentControls = [];
 
   for (let i = 0; i < currentExample.structures.length; i++) {
@@ -168,6 +170,8 @@ function ModelCanvas(props) {
 
   useEffect(() => {
     currentStructures.length = 0;
+    //console.log(orbitControls);
+    console.log(currentStructures);
     timelineLabel(
       yearScale,
       timelineLabels,
@@ -185,15 +189,32 @@ function ModelCanvas(props) {
       className={options.fullwidth ? "modelWrapper fullwidth" : "modelWrapper"}
     >
       <div className="modelContainer">
+        <div className="portal"></div>
         {options.modelInfo ? <ModelInfoContainer /> : <Null />}
 
         {/* <StructureControls structures={currentExample.structures} /> */}
 
-        {currentExample.structures.map((structure) => {
+        {/* {currentExample.structures.map((structure) => {
           //console.log(structure);
           return(
             <StructureController structure={structure} />
           )
+        })} */}
+
+        {currentStructures.map((structure) => {
+          //console.log(structure);
+          return (
+            <div className="optionsNew">
+              <span>{structure.name}</span>
+              <label htmlFor="">Space</label>
+              <input
+                type="range"
+                min={1}
+                max={5}
+                onChange={(e) => (structure.sizes.space = e.target.value)}
+              ></input>
+            </div>
+          );
         })}
 
         <div className="bottomControls">
@@ -249,6 +270,7 @@ function ModelCanvas(props) {
               enableZoom={options.modelZoom}
               minDistance={zoomRange.min}
               maxDistance={zoomRange.max}
+              enableRotate={orbitControls}
             />
 
             <ambientLight />
@@ -325,12 +347,14 @@ function ModelCanvas(props) {
                 0,
               ]}
             >
-              {currentStructures.map((structure) => {
+              {currentStructures.map((structure, i) => {
+                //console.log(i);
                 if (!props.modelRefresh) {
                   return (
                     <Suspense>
                       <ModelLoader
-                        key={structure.name}
+                        key={i}
+                        structureNumber={i}
                         type={structure.type}
                         name={structure.name}
                         yearScale={yearScale}
@@ -356,6 +380,8 @@ function ModelCanvas(props) {
                         currentControls={currentControls}
                         optionsOpen={false}
                         sizes={structure.sizes}
+                        distanceFactor={labelScaleFactor}
+                        setOrbitControls={setOrbitControls}
                       ></ModelLoader>
                     </Suspense>
                   );
