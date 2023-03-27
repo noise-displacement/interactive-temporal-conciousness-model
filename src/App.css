@@ -4,6 +4,14 @@
   font-size: 16px;
 }
 
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
 body {
   background-color: #2967e8;
 }
@@ -29,7 +37,7 @@ h3 {
 
 .ctaBtn {
   padding: 0.7em 1.4em;
-  background: #C7B99C;
+  background: #fff;
   border-radius: 7px;
   color: #000;
   transition: transform 0.2s;
@@ -235,11 +243,6 @@ h3 {
   color: #fff;
 }
 
-.navSpacer h1 {
-  font-size: 1em;
-  padding: 16px;
-}
-
 .modelInfoContainer {
   position: absolute;
   right: 0;
@@ -302,4 +305,48 @@ h3 {
 .structureOptions {
   position: absolute;
   top: 0;
+  z-index: 1000000000;
+}
+
+.texture {
+  height: 100vh;
+  z-index: 10000;
+  position: relative;
+  background-blend-mode: multiply;
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjooinn.com%2Fimages%2Fpaper-texture-overlay-1.jpg&f=1&nofb=1&ipt=1155457eae590cc1e10bec3bccf30f2b9df160bb4c44d409d619dc1680cf37c3&ipo=images");
+}
+
+.abstractContainer {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: scroll;
+  position: fixed;
+  background: 0;
+}
+.abstractContainer .canvasContainer {
+  width: 50vw;
+  position: fixed;
+  background: rgba(222, 222, 222, 0.9);
+}
+.abstractContainer .textContainer {
+  width: 50vw;
+  position: absolute;
+  right: 0;
+}
+.abstractContainer .textContainer .headerContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0 64px;
+}
+.abstractContainer .textContainer .textBlock {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0 64px;
 }/*# sourceMappingURL=App.css.map */

@@ -11,7 +11,7 @@ import {
   useStructureSlider,
 } from "../components/structureController";
 
-function deg_to_rad(deg) {
+export function deg_to_rad(deg) {
   return deg * (Math.PI / 180);
 }
 
@@ -32,9 +32,7 @@ const ModelLoader = function (props) {
   let object = useLoader(GLTFLoader, props.object);
   const { viewport } = useThree();
 
-  const [spaceSize, setSpaceSize] = useState(1);
-
-  //console.log(props);
+  console.log(props);
   let structuralSize = props.sizes.structural;
   let socialSize = props.sizes.social;
 
@@ -58,7 +56,8 @@ const ModelLoader = function (props) {
   let eventPos = 0;
 
   let normScale = 100;
-  let placeScale = 100 * spaceSize;
+  console.log(props.state)
+  let placeScale = 100 * props.state;
   let timeScale;
 
   if (props.relation) {
@@ -97,7 +96,7 @@ const ModelLoader = function (props) {
   return (
     <>
       <Suspense>
-          <OrthographicCamera />
+          {/* <OrthographicCamera />
           <Html
             className={`structureOptions ${props.optionsOpen}`}
             scale={10}
@@ -122,7 +121,7 @@ const ModelLoader = function (props) {
             </div>
             {/* <StructureSlider options={props.options}/> */}
             {/* <span>Yessir</span> */}
-          </Html>
+          {/* </Html> */} 
 
         <mesh
           ref={ref}

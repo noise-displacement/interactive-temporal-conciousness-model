@@ -3,8 +3,8 @@ import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Controls } from "react-three-gui";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import ModelLoader from "../modules/ModelLoader";
-import { Null } from "../modules/ModelLoader";
+import ModelLoader from "../../modules/ModelLoader";
+import { Null } from "../../modules/ModelLoader";
 import { EffectComposer, Outline } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import {
@@ -14,12 +14,11 @@ import {
   ModelZoomButtons,
   GlobalWireframeMode,
   ExamplePicker,
-} from "./modelControls";
+} from "../modelControls";
 import * as THREE from "three";
 import { degToRad } from "three/src/math/MathUtils";
-import StructureControls, { StructureController } from "./structureController";
-import { structureTypes } from "./structureInfo";
-import ModelStructure from "../modules/ModelStructure";
+import StructureControls, { StructureController } from "../structureController";
+import { structureTypes } from "../structureInfo";
 
 function timelineLabel(
   yearScale,
@@ -128,11 +127,8 @@ function ModelCanvas(props) {
 
   for (let i = 0; i < currentExample.structures.length; i++) {
     let structure = currentExample.structures[i];
-    //const [state, setState] = useState(3); // eslint-disable-line react-hooks/rules-of-hooks
     //console.log(structure);
     currentStructures.push({
-      //state: state,
-      //setState: setState,
       type: structure.type,
       name: structure.name,
       object: structure.type.object.path,
@@ -157,8 +153,6 @@ function ModelCanvas(props) {
     });
   }
 
-  console.log(currentStructures[0].state);
-
   let timelineLabels = [];
   let axesScale = labelScaleFactor / 1000;
   let timelineYears = Number(yearScale.max) - Number(yearScale.min);
@@ -177,7 +171,7 @@ function ModelCanvas(props) {
   useEffect(() => {
     currentStructures.length = 0;
     //console.log(orbitControls);
-    //console.log(currentStructures);
+    console.log(currentStructures);
     timelineLabel(
       yearScale,
       timelineLabels,
@@ -217,7 +211,7 @@ function ModelCanvas(props) {
                 type="range"
                 min={1}
                 max={5}
-                onChange={(e) => {structure.state = e.target.value; console.log(structure.state)}}
+                onChange={(e) => (structure.sizes.space = e.target.value)}
               ></input>
             </div>
           );
@@ -361,7 +355,6 @@ function ModelCanvas(props) {
                       <ModelLoader
                         key={i}
                         structureNumber={i}
-                        state={structure.state}
                         type={structure.type}
                         name={structure.name}
                         yearScale={yearScale}

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import ModelLoader from "./ModelLoader";
+import { structureTypes } from "../components/structureInfo";
 
 function ModelStructure(props) {
     let i = props.i;
     let structure = props.structure;
     let yearScale = props.yearScale;
-    let structureTypes = props.structureTypes;
     let clipMode = props.clipMode;
     let sphereRadius = props.sphereRadius;
     let onHover = props.onHover;

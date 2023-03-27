@@ -4,14 +4,14 @@ import { easeInOut, motion } from "framer-motion";
 
 const homeVariants = {
   initial: {
-    y: "1rem",
+    x: "0rem",
     opacity: 0,
   },
   animate: {
     y: 0,
     opacity: 1,
   },
-  exit: { y: "-1rem", opacity: 0 },
+  exit: { x: "-1rem", opacity: 0 },
 };
 
 function MainTemplate(props, { children }) {

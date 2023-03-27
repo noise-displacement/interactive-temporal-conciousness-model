@@ -12,7 +12,7 @@ function Example() {
     labels: false,
     splitMode: false,
     globalYearControl: true,
-    modelControls: true,
+    modelControls: false,
     wireframeMode: true,
     outlines: false,
     modelInfo: false,

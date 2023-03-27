@@ -11,6 +11,9 @@ import Home from "./routes/home";
 import "./App.css";
 import Editor from "./routes/editor";
 
+//import { Provider } from "react-redux";
+//import store from "./store";
+
 export const routes = {
   home: {
     name: "Home",
@@ -45,6 +48,7 @@ function App() {
   const location = useLocation();
 
   return (
+    // <Provider>
       <div className="App">
         <AnimatePresence mode="wait" initial={false}>
           <Routes location={location} key={location.key}>
@@ -73,6 +77,7 @@ function App() {
           </Routes>
         </AnimatePresence>
       </div>
+    // </Provider>
   );
 }
 
