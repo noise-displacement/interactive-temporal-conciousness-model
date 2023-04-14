@@ -11,61 +11,58 @@ import {
   useStructureSlider,
 } from "../components/structureController";
 
+import useModelOptions from "../store/useModelOptions";
+import { structureTypes } from "../components/structureInfo";
+
 export function deg_to_rad(deg) {
   return deg * (Math.PI / 180);
 }
 
 export const Null = () => <></>;
 
-const Event = function (props) {
-  const ref = useRef();
-  return (
-    <mesh scale={0.2} position={props.position}>
-      <meshPhongMaterial color={0xfc8803}></meshPhongMaterial>
-      <sphereGeometry ref={ref}></sphereGeometry>
-    </mesh>
-  );
-};
-
 const ModelLoader = function (props) {
   let ref = useRef();
-  let object = useLoader(GLTFLoader, props.object);
-  const { viewport } = useThree();
+  //console.log(props);
 
-  console.log(props);
-  let structuralSize = props.sizes.structural;
-  let socialSize = props.sizes.social;
+  let object = useLoader(GLTFLoader, props.globalWireframe && props.wireframeObject ? props.wireframeObject : props.object);
 
+  let spaceSize = props.currentControls.sizes.space;
+  let structuralSize = props.currentControls.sizes.structural;
+  let socialSize = props.currentControls.sizes.social;
+  let structureType = props.type;
+  let years = props.currentControls.years;
+  //console.log(props);
+  //console.log(props.i);
+
+  let eventSize = 5;
   let defaultScale = 100;
-  let defaultSize = props.type.name === "Event" ? 10 : defaultScale;
-  let minScale = 1;
+  let defaultSize = structureType === structureTypes.event ? eventSize : defaultScale;
 
-  // Fiks hovered outlines
-  // if(props.hoveredObject !== ref) {
-  //   console.log("not same");
-  // } else {
-  //   console.log("same");
-  // }
-
-  let startYear = Number(props.years.start);
-  let endYear = Number(props.years.end);
+  let startYear = Number(years.start);
+  let endYear = Number(years.end);
 
   let timePos = 0;
   let normPos = 0;
   let placePos = 0;
-  let eventPos = 0;
 
-  let normScale = 100;
-  console.log(props.state)
-  let placeScale = 100 * props.state;
+  let normScale;
+  let placeScale;
   let timeScale;
 
-  if (props.relation) {
+  if (structureType === structureTypes.relation) {
     normScale = (endYear - startYear) / 2;
-    timeScale = 100;
+    timeScale = defaultSize * structuralSize;
+    placeScale = defaultSize * structuralSize;
     timePos = startYear + normScale;
+  } else if(structureType === structureTypes.event) {
+    normScale = eventSize;
+    timeScale = eventSize;
+    placeScale = eventSize;
+    timePos = startYear + timeScale;
   } else {
+    normScale = defaultSize * structuralSize;
     timeScale = (endYear - startYear) / 2;
+    placeScale = defaultSize * spaceSize;
     timePos = startYear + timeScale;
   }
 
@@ -77,57 +74,34 @@ const ModelLoader = function (props) {
     wireframe: false,
     clipShadows: true,
     clippingPlanes: [
-      new THREE.Plane(new THREE.Vector3(0, 0, -props.clipMode), 0),
+      new THREE.Plane(new THREE.Vector3(0, -props.clipmode, 0), 0),
     ],
   });
 
-  //console.log(material);
+  material.onBeforeCompile = function( shader ) {
+    shader.fragmentShader = shader.fragmentShader.replace(
+      `gl_FragColor = vec4( outgoingLight, diffuseColor.a );`,
+      `gl_FragColor = ( gl_FrontFacing ) ? vec4( outgoingLight, diffuseColor.a ) : vec4( diffuse, opacity );`
+    );
+};
 
-  //Gets the node of the model name e.g Sphere or Icosphere and sets the material and color dynamically after object is loaded
   useEffect(() => {
-    if (props.globalWireframe) {
-      material.wireframe = props.globalWireframe;
-      object.nodes[props.modelName].material = material;
-    } else {
-      object.nodes[props.modelName].material = material;
-    }
+    // if (props.globalWireframe) {
+    //   material.wireframe = props.globalWireframe;
+    //   object.nodes[props.modelName].material = material;
+    // } else {
+    //   object.nodes[props.modelName].material = material;
+    // }
   });
 
   return (
     <>
       <Suspense>
-          {/* <OrthographicCamera />
-          <Html
-            className={`structureOptions ${props.optionsOpen}`}
-            scale={10}
-            distanceFactor={props.labelScaleFactor}
-            portal={document.getElementById("portal")}
-          >
-            <div className="structureOptionsheader">
-              <h3>{props.name}</h3>
-              <button>+</button>
-            </div>
-            <div className="structureOptionsbody">
-              <label htmlFor={`${props.type.name}`}>Space</label>
-              <input
-                type="range"
-                name={`${props.type.name}`}
-                onMouseEnter={() => props.setOrbitControls(false)}
-                onMouseLeave={() => props.setOrbitControls(true)}
-                min={1}
-                max={5}
-                onChange={(e) => setSpaceSize(e.target.value)}
-              ></input>
-            </div>
-            {/* <StructureSlider options={props.options}/> */}
-            {/* <span>Yessir</span> */}
-          {/* </Html> */} 
-
         <mesh
           ref={ref}
           geometry={object.nodes[props.modelName].geometry}
           material={material}
-          scale={[timeScale, normScale, placeScale]}
+          scale={[timeScale, normScale, (placeScale + props.i)]}
           position={[timePos, normPos, placePos]}
           rotation={props.relation ? [0, 0, deg_to_rad(90)] : [0, 0, 0]}
           object={object.scene}

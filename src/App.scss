@@ -1,20 +1,26 @@
 $white: #fff;
 $black: #000;
 $grey: #888;
-$blue: #2967e8;
+$blue: #1E3B56;
+$lightBlue: #5C7790;
 $lightGrey: #eee;
 $accent: #C7B99C;
+$orange: #F08E5F;
 
 $padding: 16px;
 $br: 7px;
-$topNavSpace: 68px;
-$bottomNavSpace: 95px;
+$topNavSpace: calc(53px);
+$bottomNavSpace: calc(80.5px);
 $ctaPadding: .7em 1.4em;
+
+$textShadow: 0px 0px 3px rgba(0,0,0,.15);
+$boxShadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
 
 * {
   margin: 0;
   font-family: "PT Serif", serif;
   font-size: 16px;
+  color: $blue;
 }
 
 h1 {
@@ -23,6 +29,11 @@ h1 {
 
 h2 {
   font-size: 1.5em;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.5em;
 }
 
 body {
@@ -51,14 +62,87 @@ h3 {
 
 .ctaBtn {
   padding: $ctaPadding;
-  background: $white;
+  background: $blue;
   border-radius: $br;
-  color: $black;
+  color: $white;
   transition: transform .2s;
+  display: flex;
+  text-decoration: none;
+  box-shadow: $boxShadow;
+
+  span {
+    margin-right: $padding;
+  }
+}
+
+input {
+  height: 24px;
+  border: 0;
+  padding: 2px 4px;
+  border-radius: $br / 2;
+  color: $blue;
 }
 
 .ctaBtn:hover {
   transform: scale(1.05);
+}
+
+.toggleSwitch {
+  display: flex;
+  flex-direction: column;
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+  }
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .2s;
+    transition: .4s;
+    border-radius: $br / 2;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: $lightGrey;
+    -webkit-transition: .2s;
+    transition: .2s;
+    border-radius: calc($br / 2);
+  }
+  
+  input:checked + .slider {
+    background-color: $blue;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px $blue;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(24px);
+    -ms-transform: translateX(24px);
+    transform: translateX(24px);
+  }
 }
 
 .canvasContainer {
@@ -71,14 +155,14 @@ h3 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: $topNavSpace 0 $bottomNavSpace 0;
+    padding: calc($padding * 2) 0 0 0;
     box-sizing: border-box;
-    height: 100%;
     left: $padding * 3;
     z-index: 10000000;
 
     .exampleInfo {
-      color: $white;
+      color: $blue;
+      text-shadow: $textShadow;
     }
 
     .examplePickerContainer {
@@ -114,7 +198,7 @@ h3 {
     height: 100%;
     width: 100%;
     box-sizing: border-box;
-    padding: 64px $padding $padding $padding;
+    padding: $topNavSpace $padding $padding $padding;
   
     .modelContainer {
       position: relative;
@@ -123,7 +207,7 @@ h3 {
       box-sizing: border-box;
       z-index: 1000000;
       border-radius: $br;
-      box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: $boxShadow;
   
       #globalControls {
         position: absolute;
@@ -177,12 +261,36 @@ h3 {
         position: absolute;
         bottom: 0;
         display: flex;
-        align-items: flex-end;
+        justify-content: space-between;
         width: 100%;
-        background-color: $lightGrey;
+        background-color: $lightBlue;
         z-index: 1001;
         padding: $padding;
         box-sizing: border-box;
+        z-index: 1000000000;
+        color: $white;
+
+        .controlContainer {
+          display: flex;
+          box-sizing: border-box;
+          position: relative;
+
+          .toggleSwitch:not(:last-child) {
+            margin-right: $padding;
+          }
+        }
+
+        .controlContainer:first-child {
+          margin-right: $padding;
+        }
+
+        .controlContainer:nth-child(2) {
+          flex-grow: 1;
+        }
+
+        .controlContainer:last-child {
+          margin-left: $padding;
+        }
       
         .zoomButtonsContainer {
           position: relative;
@@ -192,6 +300,8 @@ h3 {
           overflow: hidden;
         
           .zoomButton {
+            display: flex;
+            align-items: center;
             border: 0;
             padding: 10px;
           }
@@ -226,6 +336,29 @@ h3 {
                 width: 100px;
               }
             }
+
+            .lineContainer {
+              position: relative;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              box-sizing: border-box;
+              padding: 0 $padding;
+
+              .line{
+                background: $blue;
+                width: 100%;
+                height: 3px;
+
+                .event {
+                  position: absolute;
+                  height: 12px;
+                  width: 12px;
+                  margin-top: -5px;
+                  background: $orange;
+                }
+              }
+            }
           }
         }
       }
@@ -239,16 +372,16 @@ h3 {
           border-radius: $br;
           box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
         }
-      }
-  
-      .fOJUnM {
-        position: absolute !important;
+
+        .timelineLabel {
+          text-shadow: $textShadow;
+        }
       }
     }
   }
   
   .modelWrapper.fullwidth {
-    padding: 48px 0 0 0;
+    padding: $topNavSpace 0 0 0;
   
     .modelContainer {
       border-radius: 0;
@@ -264,7 +397,6 @@ h3 {
   }
 }
 
-
 .mainNav {
   position: fixed;
   z-index: 1000000000;
@@ -275,11 +407,18 @@ h3 {
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    background: $white;
+    background: $blue;
 
     .holder {
       box-sizing: border-box;
       display: flex;
+
+      a {
+        color: $blue;
+        background: $lightGrey;
+        border-radius: $br;
+        text-decoration: none;
+      }
 
       a, span {
         display: block;
@@ -288,9 +427,9 @@ h3 {
       }
 
       span {
-        background-color: $black;
         border-radius: $br;
         color: $white;
+        background: darken($lightBlue, 10%);
       }
     }
   }
@@ -357,77 +496,192 @@ h3 {
 }
 
 .homeContainer {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
+  background: $white;
+  min-height: 100svh;
+  .wrapper {
+    padding-top: $topNavSpace;
+    display: flex;
+    justify-content: center;
+
+    .textContainer {
+      padding-top: calc($padding * 10);
+      width: 50%;
+    }
+  }
 }
 
 .belowContainer {
   height: 100vh;
 }
 
-.structureOptions {
-  position: absolute; 
-  top: 0;
-  z-index: 1000000000;
-}
-
-// .abstractContainer::before {
-//   content: '';
-//   position: absolute;
-//   height: 100vh;
-//   width: 100vw;
-//   z-index: 10000000;
-//   background-blend-mode: multiply;
-//   opacity: .075;
-//   background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjooinn.com%2Fimages%2Fpaper-texture-overlay-1.jpg&f=1&nofb=1&ipt=1155457eae590cc1e10bec3bccf30f2b9df160bb4c44d409d619dc1680cf37c3&ipo=images");
-// }
-
-.texture {
-  height: 100vh;
-  z-index: 10000;
-  position: relative;
-  background-blend-mode: multiply;
-  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjooinn.com%2Fimages%2Fpaper-texture-overlay-1.jpg&f=1&nofb=1&ipt=1155457eae590cc1e10bec3bccf30f2b9df160bb4c44d409d619dc1680cf37c3&ipo=images");
-}
-
 .abstractContainer {
   display: flex;
+  flex-direction: row;
+  background: $white;
+  position: relative;
+  box-sizing: border-box;
   height: 100vh;
-  width: 100vw;
   overflow: scroll;
-  position: fixed;
-  background: 0;
 
   .canvasContainer {
-    width: 50vw;
-    position: fixed;
-    background: rgba(222, 222, 222, 0.9);
+    width: 40vw;
+    height: 100%;
   }
 
   .textContainer {
-    width: 50vw;
-    position: absolute;
-    right: 0;
+    width: 60vw;
+    padding: 0 calc($padding * 6);
+    box-sizing: border-box;
+    height: 100vh;
+    overflow-y: scroll;
 
     .headerContainer {
-      height: 100vh;
+      padding: calc($padding * 2) 0;
+      height: 100svh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      background: rgba(255,255,255,.9);
-      padding: 0 calc($padding * 4);
+
+      h1 {
+        font-size: 2em;
+        margin: 0;
+        padding: 0;
+        position: relative;
+      }
+
+      h1:before {
+        content: '';
+        position: absolute;
+        height: 100px;
+        margin-left: -$padding;
+        width: 3px;
+        background: $accent;
+      }
     }
-  
+
     .textBlock {
-      height: 70vh;
+      height: 100svh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      background: rgba(255,255,255,.9);
-      padding: 0 calc($padding * 4);
+    }
+  }
+}
+
+.structureOptions {
+  position: absolute;
+  right: 0;
+  z-index: 100000;
+  margin: $padding;
+
+  .structure {
+    display: flex;
+    flex-direction: column;
+    background: $lightGrey;
+    width: 200px;
+    margin: $padding $padding 0 0;
+    border-radius: $br;
+    overflow: hidden;
+    box-shadow: 0px 3px 6px -3px rgba(0,0,0,.15);
+
+    .header {
+      display: flex;
+      border: 0;
+      padding: .7em $padding;
+      //background: none;
+      width: 100%;
+      margin: 0;
+      justify-content: space-between;
+      cursor: pointer;
+      color: $black;
+
+      h2 {
+        margin: 0;
+        padding: 0;
+        font-size: 1em;
+        font-weight: 400;
+        color: $black;
+      }
+
+      span {
+        color: $black;
+      }
+    }
+
+    .openOptions {
+      display: flex;
+      flex-direction: column;
+      padding: calc($padding / 2) $padding $padding $padding;
+      box-sizing: border-box;
+
+      .yearOptions {
+        display: flex;
+        flex-direction: row;
+
+        div {
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          box-sizing: border-box;
+
+          input {
+            width: 75px;
+          }
+        }
+
+        div:first-child {
+          margin-right: 5px;
+        }
+      }
+
+      .slider {
+
+        input {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.footerContainer {
+  margin-bottom: calc($padding * 6);
+  background: $blue;
+
+  .wrapper {
+    padding: calc($padding * 2);
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+
+    .item {
+      flex-grow: 1;
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      h3 {
+        margin: 0;
+        padding: 0;
+        font-size: 1.5em;
+        font-weight: 600;
+        color: $white;
+      }
+
+      h4 {
+        color: $white;
+      }
+
+      span {
+        color: $white;
+      }
+
+      a {
+        color: $white;
+      }
     }
   }
 }

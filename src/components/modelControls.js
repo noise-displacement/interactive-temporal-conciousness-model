@@ -21,6 +21,12 @@ export function UiTimeline(props) {
           <Null />
         )}
 
+        {/* <div className="lineContainer">
+          <div className="line">
+            <div className="event"></div>
+          </div>
+        </div> */}
+
         {props.globalYearControl ? (
           <div className="yearInput">
             <label htmlFor="toYear">To year</label>
@@ -41,14 +47,34 @@ export function UiTimeline(props) {
 
 export function GlobalWireframeMode(props) {
   return (
-    <div className="globalWireframe">
-      <label htmlFor="globalWireframeMode">Wireframe</label>
-      <input
-        type="checkbox"
-        name="globalWireframeMode"
-        id="globalWireframeMode"
-        onChange={() => props.setGlobalWireframe(!props.globalWireframe)}
-      />
+    <div className="globalWireframe toggleSwitch">
+      <span>Wireframe</span>
+      <label className="switch" htmlFor="globalWireframeMode">
+        <input
+          type="checkbox"
+          name="globalWireframeMode"
+          id="globalWireframeMode"
+          onChange={() => props.setGlobalWireframe(!props.globalWireframe)}
+        />
+        <span className="slider"></span>
+      </label>
+    </div>
+  );
+}
+
+export function ClipMode(props) {
+  return (
+    <div className="clipMode toggleSwitch">
+      <span>Split</span>
+      <label className="switch" htmlFor="clipMode">
+        <input
+          type="checkbox"
+          name="clipMode"
+          id="clipMode"
+          onChange={() => props.setClipmode(!props.clipmode)}
+        />
+        <span className="slider"></span>
+      </label>
     </div>
   );
 }
@@ -235,7 +261,7 @@ export function ExamplePicker(props) {
 
 export function ExampleInfo(props) {
   let currentExample = props.currentExample;
-  console.log(currentExample);
+  //console.log(currentExample);
   return (
     <div className="exampleInfo">
       <h1>{currentExample.name}</h1>

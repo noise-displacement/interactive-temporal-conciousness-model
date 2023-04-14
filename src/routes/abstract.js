@@ -1,12 +1,19 @@
-import { OrbitControls } from "@react-three/drei";
+import {
+  ArcballControls,
+  OrbitControls,
+  PresentationControls,
+  TrackballControls,
+} from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { degToRad } from "three/src/math/MathUtils";
 import ModelCanvas from "../components/ModelCanvas";
 import { examples, models } from "../components/structureInfo";
 import { structureTypes } from "../components/structureInfo";
 import * as THREE from "three";
+import { gsap } from "gsap";
+import Footer from "../components/footer";
 
 const modelTexts = {
   events: {
@@ -32,27 +39,65 @@ const modelTexts = {
   },
 };
 
-function Abstract() {
-  const [currentExample, setCurrentExample] = useState(examples[0]);
-  const [modelRefresh, setModelRefresh] = useState(false);
+const setPos = (model, scrollY) => {
+  let pos = model + scrollY / 100;
 
+  if(scrollY < 100) {
+    pos = -scrollY / 15;
+  } else if(pos < 0) {
+    pos = model + scrollY / 100;
+  } else {
+    pos = 0;
+  }
+    
+  return pos;
+};
+
+function Abstract() {
   const sphere = useLoader(GLTFLoader, models.sphere.path);
   const hedron = useLoader(GLTFLoader, models.hedron.path);
   const cube = useLoader(GLTFLoader, models.cube.path);
   const cone = useLoader(GLTFLoader, models.cone.path);
-  console.log(cone);
 
-  // let handleScroll = (event) => {
-  //   const { scrollHeight, scrollTop, clientHeight } = event.target;
-  //   const scroll = scrollHeight - scrollTop - clientHeight;
+  // let pos = {
+  //   sphere: -29,
+  //   hedron: -23,
+  //   cube: -17,
+  //   cone: -11.3,
+  //   event: -5.6,
+  // };
 
-  //   if (scroll > 0) {
-  //     // We are not at the bottom of the scroll content
-  //   }
-  //   else if (scroll === 0){
-  //     // We are at the bottom
-  //   }
-  // }
+  let pos = {
+    sphere: -42.5,
+    hedron: -34,
+    cube: -25.5,
+    cone: -17.3,
+    event: -9
+  }
+  //console.log(cone);
+
+  let spherePos = 300;
+
+  const scrollRef = useRef(null);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    // console.log(scrollY);
+  });
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const scrollTop = scrollRef.current.scrollTop;
+  //     setScrollY(scrollTop);
+  //     console.log(scrollY);
+  //   };
+
+  //   const evListn = scrollRef.current.addEventListener("scroll", handleScroll);
+
+  //   return () => {
+  //     // evListn.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   const options = {
     labels: false,
@@ -67,6 +112,7 @@ function Abstract() {
     timeline: false,
     fullwidth: false,
   };
+
   return (
     // <>
     //   <div className="abstractContainer canvasContainer">
@@ -83,106 +129,135 @@ function Abstract() {
     //   </div>
     // </>
 
-    <div className="texture">
+    <>
       <div className="abstractContainer">
         <div className="canvasContainer">
-          <Canvas gl={{ localClippingEnabled: true }}>
+          <Canvas gl={{ localClippingEnabled: true, far: 20000, near: 0 }}>
             <ambientLight />
-            <pointLight position={[10, 10, 10]} />
+            <pointLight position={[10, 10, 10]} intensity={2} />
 
-            <Suspense>
-              <mesh geometry={sphere.nodes.Sphere.geometry} scale={1.5}>
-                <meshStandardMaterial
-                  color={structureTypes.ultraStructure.color}
-                  clippingPlanes={[
-                    new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
-                  ]}
-                  side={THREE.DoubleSide}
-                ></meshStandardMaterial>
-              </mesh>
-            </Suspense>
+            {/* <PresentationControls enabled={true} snap={true}> */}
+            <group>
+              <Suspense>
+                <mesh
+                  geometry={sphere.nodes.Sphere.geometry}
+                  position={[0, setPos(pos.sphere, scrollY), 0]}
+                  scale={1.5}
+                >
+                  <meshStandardMaterial
+                    color={structureTypes.ultraStructure.color}
+                    clippingPlanes={[
+                      new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
+                    ]}
+                    side={THREE.DoubleSide}
+                  ></meshStandardMaterial>
+                </mesh>
+              </Suspense>
 
-            <Suspense>
-              <mesh
-                geometry={hedron.nodes.Icosphere.geometry}
-                scale={[1.5, 1.5, 1]}
-              >
-                <meshStandardMaterial
-                  color={structureTypes.structure.color}
-                  clippingPlanes={[
-                    new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
-                  ]}
-                  side={THREE.DoubleSide}
-                ></meshStandardMaterial>
-              </mesh>
-            </Suspense>
+              <Suspense>
+                <mesh
+                  geometry={hedron.nodes.Icosphere.geometry}
+                  scale={[1.3, 1.3, 1]}
+                  position={[0, setPos(pos.hedron, scrollY), 0]}
+                >
+                  <meshStandardMaterial
+                    color={structureTypes.structure.color}
+                    clippingPlanes={[
+                      new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
+                    ]}
+                    side={THREE.DoubleSide}
+                  ></meshStandardMaterial>
+                </mesh>
+              </Suspense>
 
-            <Suspense>
-              <mesh geometry={cube.nodes.Cube.geometry} scale={[0.8, 0.8, 0.2]}>
-                <meshStandardMaterial
-                  color={structureTypes.model.color}
-                  clippingPlanes={[
-                    new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
-                  ]}
-                  side={THREE.DoubleSide}
-                ></meshStandardMaterial>
-              </mesh>
-            </Suspense>
+              <Suspense>
+                <mesh
+                  geometry={cube.nodes.Cube.geometry}
+                  scale={[0.8, 0.8, 0.2]}
+                  position={[0, setPos(pos.cube, scrollY), 0]}
+                >
+                  <meshStandardMaterial
+                    color={structureTypes.model.color}
+                    clippingPlanes={[
+                      new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
+                    ]}
+                    side={THREE.DoubleSide}
+                  ></meshStandardMaterial>
+                </mesh>
+              </Suspense>
 
-            <Suspense>
-              <mesh
-                geometry={cone.nodes.Cone.geometry}
-                scale={[0.4, 0.4, 0.2]}
-                rotation={[0, 0, degToRad(90)]}
-              >
-                <meshStandardMaterial
-                  color={structureTypes.relation.color}
-                  //clippingPlanes={[new THREE.Plane(new THREE.Vector3(0, 0, -1), 0)]}
-                  side={THREE.DoubleSide}
-                ></meshStandardMaterial>
-              </mesh>
-            </Suspense>
+              <Suspense>
+                <mesh
+                  geometry={cone.nodes.Cone.geometry}
+                  scale={[0.4, 0.4, 0.2]}
+                  rotation={[0, 0, degToRad(90)]}
+                  position={[0, setPos(pos.cone, scrollY), 0]}
+                >
+                  <meshStandardMaterial
+                    color={structureTypes.relation.color}
+                    //clippingPlanes={[new THREE.Plane(new THREE.Vector3(0, 0, -1), 0)]}
+                    side={THREE.DoubleSide}
+                  ></meshStandardMaterial>
+                </mesh>
+              </Suspense>
 
-            <Suspense>
-              <mesh
-                geometry={sphere.nodes.Sphere.geometry}
-                scale={0.1}
-                position={[-0.35, 0, 0]}
-                rotation={[0, 0, degToRad(90)]}
-              >
-                <meshStandardMaterial
-                  color={structureTypes.event.color}
-                  side={THREE.DoubleSide}
-                ></meshStandardMaterial>
-              </mesh>
-            </Suspense>
+              <Suspense>
+                <mesh
+                  geometry={sphere.nodes.Sphere.geometry}
+                  scale={0.1}
+                  position={[-0.35, setPos(pos.event, scrollY), 0]}
+                  rotation={[0, 0, degToRad(90)]}
+                >
+                  <meshStandardMaterial
+                    color={structureTypes.event.color}
+                    side={THREE.DoubleSide}
+                  ></meshStandardMaterial>
+                </mesh>
+              </Suspense>
+            </group>
+            {/* </PresentationControls> */}
           </Canvas>
         </div>
-        <div className="textContainer">
+        <div
+          className="textContainer"
+          onScroll={(e) => {
+            setScrollY(e.target.scrollTop);
+          }}
+        >
           <div className="headerContainer">
             <h1>Model Theory</h1>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              The model is based on a theory of historical dimensions of time
+              and space, which Apostolos Spanos calls “historical timespaces”.
+              The theory claims that history unfolds in five timespaces, namely
+              the timespaces of events, relations, models, structures, and
+              ultrastructures. All these timespaces coexist in any moment, or
+              period, we identify as present. They include ideas, practices, and
+              knowledge related to the past of the relevant individuals and
+              groups, but they are also related to the future, as they are taken
+              into consideration when we form our expectations, hopes and fears
+              the future.
             </p>
           </div>
 
           {Object.keys(modelTexts).map((text) => {
             return (
-              <div className="textBlock">
+              <div key={text} className="textBlock">
                 <h2>{modelTexts[text].title}</h2>
                 <p>{modelTexts[text].text}</p>
               </div>
             );
           })}
+
+          <div className="endText textBlock">
+            <h2>Ending title</h2>
+            <p>Some fancy text to end it all of</p>
+          </div>
         </div>
       </div>
-    </div>
+
+      <Footer />
+    </>
   );
 }
 

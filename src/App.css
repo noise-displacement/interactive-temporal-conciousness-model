@@ -2,6 +2,7 @@
   margin: 0;
   font-family: "PT Serif", serif;
   font-size: 16px;
+  color: #1E3B56;
 }
 
 h1 {
@@ -12,8 +13,13 @@ h2 {
   font-size: 1.5em;
 }
 
+p {
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
 body {
-  background-color: #2967e8;
+  background-color: #1E3B56;
 }
 
 #root {
@@ -37,14 +43,75 @@ h3 {
 
 .ctaBtn {
   padding: 0.7em 1.4em;
-  background: #fff;
+  background: #1E3B56;
   border-radius: 7px;
-  color: #000;
+  color: #fff;
   transition: transform 0.2s;
+  display: flex;
+  text-decoration: none;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+}
+.ctaBtn span {
+  margin-right: 16px;
+}
+
+input {
+  height: 24px;
+  border: 0;
+  padding: 2px 4px;
+  border-radius: 3.5px;
+  color: #1E3B56;
 }
 
 .ctaBtn:hover {
   transform: scale(1.05);
+}
+
+.toggleSwitch {
+  display: flex;
+  flex-direction: column;
+}
+.toggleSwitch .switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggleSwitch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 3.5px;
+}
+.toggleSwitch .slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #eee;
+  transition: 0.2s;
+  border-radius: 3.5px;
+}
+.toggleSwitch input:checked + .slider {
+  background-color: #1E3B56;
+}
+.toggleSwitch input:focus + .slider {
+  box-shadow: 0 0 1px #1E3B56;
+}
+.toggleSwitch input:checked + .slider:before {
+  transform: translateX(24px);
 }
 
 .canvasContainer {
@@ -57,14 +124,14 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 68px 0 95px 0;
+  padding: 32px 0 0 0;
   box-sizing: border-box;
-  height: 100%;
   left: 48px;
   z-index: 10000000;
 }
 .canvasContainer .exampleInfoContainer .exampleInfo {
-  color: #fff;
+  color: #1E3B56;
+  text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
 }
 .canvasContainer .exampleInfoContainer .examplePickerContainer ul {
   margin: 0;
@@ -91,7 +158,7 @@ h3 {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  padding: 64px 16px 16px 16px;
+  padding: 53px 16px 16px 16px;
 }
 .canvasContainer .modelWrapper .modelContainer {
   position: relative;
@@ -147,12 +214,31 @@ h3 {
   position: absolute;
   bottom: 0;
   display: flex;
-  align-items: flex-end;
+  justify-content: space-between;
   width: 100%;
-  background-color: #eee;
+  background-color: #5C7790;
   z-index: 1001;
   padding: 16px;
   box-sizing: border-box;
+  z-index: 1000000000;
+  color: #fff;
+}
+.canvasContainer .modelWrapper .modelContainer .bottomControls .controlContainer {
+  display: flex;
+  box-sizing: border-box;
+  position: relative;
+}
+.canvasContainer .modelWrapper .modelContainer .bottomControls .controlContainer .toggleSwitch:not(:last-child) {
+  margin-right: 16px;
+}
+.canvasContainer .modelWrapper .modelContainer .bottomControls .controlContainer:first-child {
+  margin-right: 16px;
+}
+.canvasContainer .modelWrapper .modelContainer .bottomControls .controlContainer:nth-child(2) {
+  flex-grow: 1;
+}
+.canvasContainer .modelWrapper .modelContainer .bottomControls .controlContainer:last-child {
+  margin-left: 16px;
 }
 .canvasContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer {
   position: relative;
@@ -162,6 +248,8 @@ h3 {
   overflow: hidden;
 }
 .canvasContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton {
+  display: flex;
+  align-items: center;
   border: 0;
   padding: 10px;
 }
@@ -191,6 +279,26 @@ h3 {
 .canvasContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .yearInput input {
   width: 100px;
 }
+.canvasContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .lineContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+}
+.canvasContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .lineContainer .line {
+  background: #1E3B56;
+  width: 100%;
+  height: 3px;
+}
+.canvasContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .lineContainer .line .event {
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  margin-top: -5px;
+  background: #F08E5F;
+}
 .canvasContainer .modelWrapper .modelContainer .mainCanvas {
   z-index: 0;
 }
@@ -200,11 +308,11 @@ h3 {
   border-radius: 7px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
 }
-.canvasContainer .modelWrapper .modelContainer .fOJUnM {
-  position: absolute !important;
+.canvasContainer .modelWrapper .modelContainer .mainCanvas .timelineLabel {
+  text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
 }
 .canvasContainer .modelWrapper.fullwidth {
-  padding: 48px 0 0 0;
+  padding: 53px 0 0 0;
 }
 .canvasContainer .modelWrapper.fullwidth .modelContainer {
   border-radius: 0;
@@ -226,11 +334,17 @@ h3 {
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  background: #fff;
+  background: #1E3B56;
 }
 .mainNav .container .holder {
   box-sizing: border-box;
   display: flex;
+}
+.mainNav .container .holder a {
+  color: #1E3B56;
+  background: #eee;
+  border-radius: 7px;
+  text-decoration: none;
 }
 .mainNav .container .holder a, .mainNav .container .holder span {
   display: block;
@@ -238,9 +352,9 @@ h3 {
   margin: 8px;
 }
 .mainNav .container .holder span {
-  background-color: #000;
   border-radius: 7px;
   color: #fff;
+  background: #485d71;
 }
 
 .modelInfoContainer {
@@ -291,62 +405,164 @@ h3 {
 }
 
 .homeContainer {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
+  background: #fff;
+  min-height: 100svh;
+}
+.homeContainer .wrapper {
+  padding-top: 53px;
+  display: flex;
+  justify-content: center;
+}
+.homeContainer .wrapper .textContainer {
+  padding-top: 160px;
+  width: 50%;
 }
 
 .belowContainer {
   height: 100vh;
 }
 
-.structureOptions {
-  position: absolute;
-  top: 0;
-  z-index: 1000000000;
-}
-
-.texture {
-  height: 100vh;
-  z-index: 10000;
-  position: relative;
-  background-blend-mode: multiply;
-  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjooinn.com%2Fimages%2Fpaper-texture-overlay-1.jpg&f=1&nofb=1&ipt=1155457eae590cc1e10bec3bccf30f2b9df160bb4c44d409d619dc1680cf37c3&ipo=images");
-}
-
 .abstractContainer {
   display: flex;
+  flex-direction: row;
+  background: #fff;
+  position: relative;
+  box-sizing: border-box;
   height: 100vh;
-  width: 100vw;
   overflow: scroll;
-  position: fixed;
-  background: 0;
 }
 .abstractContainer .canvasContainer {
-  width: 50vw;
-  position: fixed;
-  background: rgba(222, 222, 222, 0.9);
+  width: 40vw;
+  height: 100%;
 }
 .abstractContainer .textContainer {
-  width: 50vw;
-  position: absolute;
-  right: 0;
+  width: 60vw;
+  padding: 0 96px;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow-y: scroll;
 }
 .abstractContainer .textContainer .headerContainer {
-  height: 100vh;
+  padding: 32px 0;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 0 64px;
+}
+.abstractContainer .textContainer .headerContainer h1 {
+  font-size: 2em;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.abstractContainer .textContainer .headerContainer h1:before {
+  content: "";
+  position: absolute;
+  height: 100px;
+  margin-left: -16px;
+  width: 3px;
+  background: #C7B99C;
 }
 .abstractContainer .textContainer .textBlock {
-  height: 70vh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 0 64px;
+}
+
+.structureOptions {
+  position: absolute;
+  right: 0;
+  z-index: 100000;
+  margin: 16px;
+}
+.structureOptions .structure {
+  display: flex;
+  flex-direction: column;
+  background: #eee;
+  width: 200px;
+  margin: 16px 16px 0 0;
+  border-radius: 7px;
+  overflow: hidden;
+  box-shadow: 0px 3px 6px -3px rgba(0, 0, 0, 0.15);
+}
+.structureOptions .structure .header {
+  display: flex;
+  border: 0;
+  padding: 0.7em 16px;
+  width: 100%;
+  margin: 0;
+  justify-content: space-between;
+  cursor: pointer;
+  color: #000;
+}
+.structureOptions .structure .header h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  font-weight: 400;
+  color: #000;
+}
+.structureOptions .structure .header span {
+  color: #000;
+}
+.structureOptions .structure .openOptions {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px 16px 16px;
+  box-sizing: border-box;
+}
+.structureOptions .structure .openOptions .yearOptions {
+  display: flex;
+  flex-direction: row;
+}
+.structureOptions .structure .openOptions .yearOptions div {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.structureOptions .structure .openOptions .yearOptions div input {
+  width: 75px;
+}
+.structureOptions .structure .openOptions .yearOptions div:first-child {
+  margin-right: 5px;
+}
+.structureOptions .structure .openOptions .slider input {
+  width: 100%;
+}
+
+.footerContainer {
+  margin-bottom: 96px;
+  background: #1E3B56;
+}
+.footerContainer .wrapper {
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.footerContainer .wrapper .item {
+  flex-grow: 1;
+}
+.footerContainer .wrapper .item ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.footerContainer .wrapper .item h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #fff;
+}
+.footerContainer .wrapper .item h4 {
+  color: #fff;
+}
+.footerContainer .wrapper .item span {
+  color: #fff;
+}
+.footerContainer .wrapper .item a {
+  color: #fff;
 }/*# sourceMappingURL=App.css.map */

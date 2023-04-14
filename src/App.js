@@ -48,7 +48,7 @@ function App() {
   const location = useLocation();
 
   return (
-    // <Provider>
+    //<Provider store={store}>
       <div className="App">
         <AnimatePresence mode="wait" initial={false}>
           <Routes location={location} key={location.key}>
@@ -77,7 +77,7 @@ function App() {
           </Routes>
         </AnimatePresence>
       </div>
-    // </Provider>
+    //</Provider>
   );
 }
 

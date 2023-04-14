@@ -1,6 +1,13 @@
 import { Html, OrbitControls, Environment } from "@react-three/drei";
-import { useFrame, useLoader, useThree } from "@react-three/fiber";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Controls } from "react-three-gui";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import ModelLoader from "../modules/ModelLoader";
@@ -14,12 +21,53 @@ import {
   ModelZoomButtons,
   GlobalWireframeMode,
   ExamplePicker,
+  ClipMode,
+  ExampleInfo,
 } from "./modelControls";
 import * as THREE from "three";
 import { degToRad } from "three/src/math/MathUtils";
-import StructureControls, { StructureController } from "./structureController";
+import StructureControls, {
+  ModelOptions,
+  StructureController,
+} from "./structureController";
 import { structureTypes } from "./structureInfo";
 import ModelStructure from "../modules/ModelStructure";
+import { Link } from "react-router-dom";
+
+function pushStructures(currentExample, options) {
+  let currentStructures = [];
+
+  for (let i = 0; i < currentExample.structures.length; i++) {
+    let structure = currentExample.structures[i];
+
+    currentStructures.push({
+      type: structure.type,
+      name: structure.name,
+      object: structure.type.object.path,
+      wireframeObject: structure.type.object.wireframePath,
+      modelName: structure.type.object.object,
+      color: structure.type.color,
+      sizes: {
+        social: structure.normSocial,
+        structural: structure.normStructural,
+        space: structure.space,
+      },
+      years: {
+        start: structure.startYear,
+        end: structure.endYear,
+      },
+      options: {
+        wireframe: options.wireframeMode,
+        rotation: structure.type.options.rotation,
+        timeScale: structure.type.options.timeScale,
+        normScale: structure.type.options.normScale,
+        placeScale: structure.type.options.placeScale,
+      },
+    });
+  }
+
+  return currentStructures;
+}
 
 function timelineLabel(
   yearScale,
@@ -54,6 +102,7 @@ function timelineLabel(
       //console.log(currentIncrement);
       timelineLabels.push(
         <Html
+          className="timelineLabel"
           distanceFactor={labelScaleFactor}
           position={[
             yearIncrement +
@@ -76,8 +125,28 @@ function timelineLabel(
 }
 
 function ModelCanvas(props) {
+  const options = useMemo(
+    () => ({
+      labels: props.options.labels,
+      clipmode: props.options.clipmode,
+      globalYearControl: props.options.globalYearControl,
+      modelControls: props.options.modelControls,
+      wireframeMode: props.options.wireframeMode,
+      outlines: props.options.outlines,
+      modelInfo: props.options.modelInfo,
+      modelZoom: props.options.modelZoom,
+      zoomButtons: props.options.zoomButtons,
+      timeline: props.options.timeline,
+      fullwidth: props.options.fullwidth,
+      timelineLabels: props.options.timelineLabels,
+      examplePicker: props.options.examplePicker,
+    }),
+    [props.options]
+  );
+
   let currentExample = props.currentExample;
-  const [clipMode, setClipmode] = useState(1);
+  //console.log(currentExample);
+  const [clipmode, setClipmode] = useState(false);
   const [fromYear, setFromYear] = useState(currentExample.timeline.startYear);
   const [toYear, setToYear] = useState(currentExample.timeline.endYear);
   const [hovered, onHover] = useState(null);
@@ -85,79 +154,69 @@ function ModelCanvas(props) {
   const [globalWireframe, setGlobalWireframe] = useState(false);
   const [labelScaleFactor, setLabelScaleFactor] = useState(toYear - fromYear);
   const [orbitControls, setOrbitControls] = useState(true);
+  const [currentStructures, setCurrentStructures] = useState(
+    pushStructures(currentExample, options)
+  );
 
-  const modelNames = currentExample.structures.map((structure) => {
-    return structure.name;
-  });
-
-  //console.log(currentExample);
+  const updateStructures = useCallback(() => {
+    setCurrentStructures(pushStructures(currentExample, options));
+  }, [currentExample, options]);
+  //console.log("CurrentStructures", currentStructures);
+  //console.log("Orbitcontrols", orbitControls);
 
   const selected = hovered ? [hovered] : undefined;
   const canvasCam = useRef();
-  //console.log(canvasCam);
-
-  const options = {
-    labels: props.options.labels,
-    splitMode: props.options.splitMode,
-    globalYearControl: props.options.globalYearControl,
-    modelControls: props.options.modelControls,
-    wireframeMode: props.options.wireframeMode,
-    outlines: props.options.outlines,
-    modelInfo: props.options.modelInfo,
-    modelZoom: props.options.modelZoom,
-    zoomButtons: props.options.zoomButtons,
-    timeline: props.options.timeline,
-    fullwidth: props.options.fullwidth,
-    timelineLabels: props.options.timelineLabels,
-    examplePicker: props.options.examplePicker,
-  };
-
   const sphereRadius = 100;
 
   let axisTagDistance = 100;
   let axesHelper = useRef();
-  //console.log(axesHelper);
 
-  const yearScale = { min: fromYear, max: toYear, modelScale: 100 };
-  const zoomRange = { min: 1, max: 20000 };
+  const yearScale = useMemo(
+    () => ({ min: fromYear, max: toYear, modelScale: 100 }),
+    [fromYear, toYear]
+  );
+  const zoomRange = { min: 1, max: 2000 };
 
-  const relations = [];
-  const currentStructures = [];
-  const structureObjects = [];
-  const currentControls = [];
+  // for (let i = 0; i < currentExample.structures.length; i++) {
+  //   let structure = currentExample.structures[i];
+  //   //const [state, setState] = useState(3) // eslint-disable-line react-hooks/rules-of-hooks
+  //   //console.log(structure);
+  //   currentStructures.push({
+  //     //state: state,
+  //     //setState: setState,
+  //     type: structure.type,
+  //     name: structure.name,
+  //     object: structure.type.object.path,
+  //     modelName: structure.type.object.object,
+  //     color: structure.type.color,
+  //     sizes: {
+  //       social: structure.normSocial,
+  //       structural: structure.normStructural,
+  //       space: structure.space,
+  //     },
+  //     years: {
+  //       start: structure.startYear,
+  //       end: structure.endYear,
+  //     },
+  //     options: {
+  //       wireframe: options.wireframeMode,
+  //       rotation: structure.type.options.rotation,
+  //       timeScale: structure.type.options.timeScale,
+  //       normScale: structure.type.options.normScale,
+  //       placeScale: structure.type.options.placeScale,
+  //     },
+  //   });
+  // }
 
-  for (let i = 0; i < currentExample.structures.length; i++) {
-    let structure = currentExample.structures[i];
-    //const [state, setState] = useState(3); // eslint-disable-line react-hooks/rules-of-hooks
-    //console.log(structure);
-    currentStructures.push({
-      //state: state,
-      //setState: setState,
-      type: structure.type,
+  const controlsArray = currentStructures.map((structure) => {
+    return {
       name: structure.name,
-      object: structure.type.object.path,
-      modelName: structure.type.object.object,
-      color: structure.type.color,
-      sizes: {
-        social: structure.normSocial,
-        structural: structure.normStructural,
-        space: structure.space,
-      },
-      years: {
-        start: structure.startYear,
-        end: structure.endYear,
-      },
-      options: {
-        wireframe: options.wireframeMode,
-        rotation: structure.type.options.rotation,
-        timeScale: structure.type.options.timeScale,
-        normScale: structure.type.options.normScale,
-        placeScale: structure.type.options.placeScale,
-      },
-    });
-  }
+      sizes: structure.sizes,
+      years: structure.years,
+    };
+  });
 
-  console.log(currentStructures[0].state);
+  const [currentControls, setCurrentControls] = useState(controlsArray);
 
   let timelineLabels = [];
   let axesScale = labelScaleFactor / 1000;
@@ -173,11 +232,15 @@ function ModelCanvas(props) {
   let currentUltrastructureSize =
     currentExample.structures[currentExample.structures.length - 1].endYear -
     currentExample.structures[currentExample.structures.length - 1].startYear;
+    //console.log(currentUltrastructureSize);
 
   useEffect(() => {
-    currentStructures.length = 0;
+    //setCurrentStructures(pushStructures(currentExample, options));
+    updateStructures();
+    //console.log(currentStructures);
     //console.log(orbitControls);
     //console.log(currentStructures);
+    //setCurrentControls([...currentControls, 0])
     timelineLabel(
       yearScale,
       timelineLabels,
@@ -188,241 +251,253 @@ function ModelCanvas(props) {
     if (canvasCam.current) {
       //canvasCam.current.object.position.z = (timelineYears * 2);
     }
-  });
+  }, [
+    currentExample,
+    options,
+    yearScale,
+    timelineLabels,
+    timelineYears,
+    labelScaleFactor,
+    currentUltrastructureSize,
+    updateStructures,
+  ]);
 
   return (
     <div
       className={options.fullwidth ? "modelWrapper fullwidth" : "modelWrapper"}
     >
       <div className="modelContainer">
-        <div className="portal"></div>
         {options.modelInfo ? <ModelInfoContainer /> : <Null />}
 
-        {/* <StructureControls structures={currentExample.structures} /> */}
+        <div className="exampleInfoContainer">
+          <ExampleInfo currentExample={currentExample} />
+          {/* <ExamplePicker
+          examples={examples}
+          currentExample={currentExample}
+          setCurrentExample={setCurrentExample}
+          setModelRefresh={setModelRefresh}
+        /> */}
+        </div>
 
-        {/* {currentExample.structures.map((structure) => {
-          //console.log(structure);
-          return(
-            <StructureController structure={structure} />
-          )
-        })} */}
-
-        {currentStructures.map((structure) => {
-          //console.log(structure);
-          return (
-            <div className="optionsNew">
-              <span>{structure.name}</span>
-              <label htmlFor="">Space</label>
-              <input
-                type="range"
-                min={1}
-                max={5}
-                onChange={(e) => {structure.state = e.target.value; console.log(structure.state)}}
-              ></input>
-            </div>
-          );
-        })}
-
-        <div className="bottomControls">
-          {options.timeline || props.modelRefresh !== true ? (
-            <Suspense>
-              <UiTimeline
-                globalYearControl={options.globalYearControl}
-                fromYear={fromYear}
-                setFromYear={setFromYear}
-                toYear={toYear}
-                setToYear={setToYear}
-                clipMode={clipMode}
-                setClipmode={setClipmode}
-              />
-            </Suspense>
-          ) : (
-            <Null />
-          )}
-
-          {options.wireframeMode ? (
-            <GlobalWireframeMode
-              globalWireframe={globalWireframe}
-              setGlobalWireframe={setGlobalWireframe}
-            />
-          ) : (
-            <Null />
-          )}
-
-          {options.zoomButtons ? (
-            <ModelZoomButtons
-              zoomRange={zoomRange}
-              zoomLevel={zoomLevel}
-              adjustZoomLevel={adjustZoomLevel}
-              canvasCam={canvasCam}
-            />
+        <div className="structureOptions">
+          {!props.modelRefresh ? (
+            currentStructures.map((structure, i) => {
+              //console.log(structure);
+              return (
+                <ModelOptions
+                  key={i}
+                  i={i}
+                  structure={structure}
+                  currentControls={currentControls}
+                  setCurrentControls={setCurrentControls}
+                />
+              );
+            })
           ) : (
             <Null />
           )}
         </div>
 
-        <Controls.Provider>
-          <Controls.Canvas
-            gl={{ localClippingEnabled: true }}
-            className="mainCanvas"
-            style={{
-              background:
-                "linear-gradient(315deg, rgba(39,75,109,1) 0%, rgba(27,52,76,1) 100%)",
-            }}
-            camera={{ position: [0, 5, timelineYears * 2], far: 20000 }}
-          >
-            <OrbitControls
-              ref={canvasCam}
-              enableZoom={options.modelZoom}
-              minDistance={zoomRange.min}
-              maxDistance={zoomRange.max}
-              enableRotate={orbitControls}
-            />
-
-            <ambientLight />
-            <pointLight position={[100, 0, 100]} intensity={0.1} />
-            <pointLight position={[-100, 0, -100]} intensity={0.1} />
-
-            <Suspense id="axis">
-              {/*<primitive object={useLoader(GLTFLoader, models.axis.path).scene}></primitive>*/}
-              {/* <primitive ref={axesHelper} object={new THREE.AxesHelper(1000)}></primitive>*/}
-              <mesh>
-                <boxGeometry
-                  ref={axesHelper}
-                  args={[timelineYears * 10, axesScale, axesScale]}
-                />
-                <meshPhongMaterial color={axisColors.x} />
-              </mesh>
-
-              <mesh rotation={[0, degToRad(90), 0]}>
-                <boxGeometry
-                  args={[timelineYears * 10, axesScale, axesScale]}
-                />
-                <meshPhongMaterial color={axisColors.z} />
-              </mesh>
-
-              <mesh rotation={[0, 0, degToRad(90)]}>
-                <boxGeometry
-                  args={[timelineYears * 10, axesScale, axesScale]}
-                />
-                <meshPhongMaterial color={axisColors.y} />
-              </mesh>
-
-              <Html
-                distanceFactor={labelScaleFactor}
-                position={[0, axisTagDistance, 0]}
-              >
-                <span style={{ color: axisColors.y }}>Norms&nbsp;(y)</span>
-              </Html>
-
-              <Html
-                distanceFactor={labelScaleFactor}
-                position={[0, 0, axisTagDistance]}
-              >
-                <span style={{ color: axisColors.z }}>Space&nbsp;(z)</span>
-              </Html>
-
-              <Html
-                distanceFactor={labelScaleFactor}
-                position={[axisTagDistance, 30, 0]}
-              >
-                <span style={{ color: axisColors.x }}>Time&nbsp;(x)</span>
-              </Html>
-            </Suspense>
-
-            {options.timelineLabels ? (
-              (timelineLabel(
-                yearScale,
-                timelineLabels,
-                timelineYears,
-                labelScaleFactor,
-                currentUltrastructureSize
-              ),
-              timelineLabels.map((label) => {
-                return label;
-              }))
+        <div className="bottomControls">
+          <div className="controlContainer">
+            {options.clipmode ? (
+              <ClipMode clipmode={clipmode} setClipmode={setClipmode} />
             ) : (
               <Null />
             )}
 
-            <group
-              ref={modelGroup}
-              position={[
-                -yearScale.max + currentUltrastructureSize / 2 - 100,
-                0,
-                0,
-              ]}
+            {options.wireframeMode ? (
+              <GlobalWireframeMode
+                globalWireframe={globalWireframe}
+                setGlobalWireframe={setGlobalWireframe}
+              />
+            ) : (
+              <Null />
+            )}
+          </div>
+
+          <div className="controlContainer">
+            {options.timeline || props.modelRefresh !== true ? (
+              <Suspense>
+                <UiTimeline
+                  globalYearControl={options.globalYearControl}
+                  fromYear={fromYear}
+                  setFromYear={setFromYear}
+                  toYear={toYear}
+                  setToYear={setToYear}
+                />
+              </Suspense>
+            ) : (
+              <Null />
+            )}
+          </div>
+
+          <div className="controlContainer">
+            {options.zoomButtons ? (
+              <ModelZoomButtons
+                zoomRange={zoomRange}
+                zoomLevel={zoomLevel}
+                adjustZoomLevel={adjustZoomLevel}
+                canvasCam={canvasCam}
+              />
+            ) : (
+              <Null />
+            )}
+          </div>
+        </div>
+
+        <Canvas
+          gl={{ localClippingEnabled: true }}
+          className="mainCanvas"
+          style={{
+            background: "#f5f5f5",
+            // background: "linear-gradient(315deg, rgba(39,75,109,1) 0%, rgba(27,52,76,1) 100%)"
+          }}
+          camera={{ position: [0, 5, timelineYears * 2], far: 20000 }}
+        >
+          <OrbitControls
+            ref={canvasCam}
+            enableZoom={options.modelZoom}
+            minDistance={zoomRange.min}
+            maxDistance={zoomRange.max}
+            enableRotate={orbitControls}
+            zoomSpeed={0.5}
+          />
+
+          <ambientLight />
+          {/* <pointLight position={[100, 0, 100]} intensity={1} /> */}
+          <pointLight position={[-100, 0, -100]} intensity={0.5} />
+
+          <Suspense id="axis">
+            {/*<primitive object={useLoader(GLTFLoader, models.axis.path).scene}></primitive>*/}
+            {/* <primitive ref={axesHelper} object={new THREE.AxesHelper(1000)}></primitive>*/}
+            <mesh>
+              <boxGeometry
+                ref={axesHelper}
+                args={[timelineYears * 10, axesScale, axesScale]}
+              />
+              <meshPhongMaterial color={axisColors.x} />
+            </mesh>
+
+            <mesh rotation={[0, degToRad(90), 0]}>
+              <boxGeometry args={[timelineYears * 10, axesScale, axesScale]} />
+              <meshPhongMaterial color={axisColors.z} />
+            </mesh>
+
+            <mesh rotation={[0, 0, degToRad(90)]}>
+              <boxGeometry args={[timelineYears * 10, axesScale, axesScale]} />
+              <meshPhongMaterial color={axisColors.y} />
+            </mesh>
+
+            <Html
+              className="timelineLabel"
+              distanceFactor={labelScaleFactor}
+              position={[0, axisTagDistance, 0]}
             >
-              {currentStructures.map((structure, i) => {
-                //console.log(i);
-                if (!props.modelRefresh) {
-                  return (
-                    <Suspense>
-                      <ModelLoader
-                        key={i}
-                        structureNumber={i}
-                        state={structure.state}
-                        type={structure.type}
-                        name={structure.name}
-                        yearScale={yearScale}
-                        clipMode={
-                          structure.type === structureTypes.event ? 0 : clipMode
-                        }
-                        sphereRadius={sphereRadius}
-                        relation={
-                          structure.type === structureTypes.relation
-                            ? true
-                            : false
-                        }
-                        object={structure.object}
-                        modelName={structure.modelName}
-                        color={structure.color}
-                        scaleTime={structure.scaleTime}
-                        scaleNorm={structure.scaleNorm}
-                        scalePlace={structure.scalePlace}
-                        years={structure.years}
-                        options={structure.options}
-                        onHover={onHover}
-                        globalWireframe={globalWireframe}
-                        currentControls={currentControls}
-                        optionsOpen={false}
-                        sizes={structure.sizes}
-                        distanceFactor={labelScaleFactor}
-                        setOrbitControls={setOrbitControls}
-                      ></ModelLoader>
-                    </Suspense>
-                  );
-                } else {
-                  return <Null />;
-                }
-              })}
+              <span style={{ color: axisColors.y }}>Norms&nbsp;(y)</span>
+            </Html>
 
-              {options.outlines ? (
-                <EffectComposer multisampling={8} autoClear={false}>
-                  <Outline
-                    selection={selected}
-                    selectionLayer={30}
-                    visibleEdgeColor={0xffffff}
-                    edgeStrength={3}
-                    blendFunction={BlendFunction.ALPHA}
-                  ></Outline>
-                </EffectComposer>
-              ) : (
-                <Null />
-              )}
-            </group>
-          </Controls.Canvas>
+            <Html
+              className="timelineLabel"
+              distanceFactor={labelScaleFactor}
+              position={[0, 0, axisTagDistance]}
+            >
+              <span style={{ color: axisColors.z }}>Space&nbsp;(z)</span>
+            </Html>
 
-          {options.modelControls ? (
-            <Controls
-              defaultClosedGroups={modelNames}
-              title="Model controls"
-              id="modelControls"
-            />
+            <Html
+              className="timelineLabel"
+              distanceFactor={labelScaleFactor}
+              position={[axisTagDistance, 30, 0]}
+            >
+              <span style={{ color: axisColors.x }}>Time&nbsp;(x)</span>
+            </Html>
+          </Suspense>
+
+          {options.timelineLabels ? (
+            (timelineLabel(
+              yearScale,
+              timelineLabels,
+              timelineYears,
+              labelScaleFactor,
+              currentUltrastructureSize
+            ),
+            timelineLabels.map((label) => {
+              return label;
+            }))
           ) : (
             <Null />
           )}
-        </Controls.Provider>
+
+          <group
+            ref={modelGroup}
+            position={[
+              -yearScale.max + currentUltrastructureSize / 2 - 100,
+              0,
+              0,
+            ]}
+          >
+            {!props.modelRefresh ? (
+              currentStructures.map((structure, i) => {
+                //console.log(structure);
+                return (
+                  <Suspense key={i}>
+                    <ModelLoader
+                      currentControls={currentControls[i]}
+                      setCurrentControls={setCurrentControls}
+                      i={i}
+                      structureNumber={i}
+                      state={structure.state}
+                      type={structure.type}
+                      name={structure.name}
+                      yearScale={yearScale}
+                      clipmode={
+                        structure.type === structureTypes.event ? 0 : clipmode
+                      }
+                      sphereRadius={sphereRadius}
+                      relation={
+                        structure.type === structureTypes.relation
+                          ? true
+                          : false
+                      }
+                      object={structure.object}
+                      wireframeObject={structure.wireframeObject}
+                      modelName={structure.modelName}
+                      color={structure.color}
+                      scaleTime={structure.scaleTime}
+                      scaleNorm={structure.scaleNorm}
+                      scalePlace={structure.scalePlace}
+                      years={structure.years}
+                      options={structure.options}
+                      onHover={onHover}
+                      globalWireframe={globalWireframe}
+                      optionsOpen={false}
+                      sizes={structure.sizes}
+                      distanceFactor={labelScaleFactor}
+                      setOrbitControls={setOrbitControls}
+                    ></ModelLoader>
+                  </Suspense>
+                );
+              })
+            ) : (
+              <Null />
+            )}
+
+            {options.outlines ? (
+              <EffectComposer multisampling={8} autoClear={false}>
+                <Outline
+                  selection={selected}
+                  selectionLayer={30}
+                  visibleEdgeColor={0xffffff}
+                  edgeStrength={3}
+                  blendFunction={BlendFunction.ALPHA}
+                ></Outline>
+              </EffectComposer>
+            ) : (
+              <Null />
+            )}
+          </group>
+        </Canvas>
       </div>
     </div>
   );

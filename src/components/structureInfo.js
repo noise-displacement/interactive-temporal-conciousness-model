@@ -12,6 +12,7 @@ export const models = {
   cube: {
     object: "Cube",
     path: "/models/cube.glb",
+    wireframePath: "/models/cubeWireframe.glb",
     color: "grey",
     info: true,
     name: "Model",
@@ -21,6 +22,7 @@ export const models = {
   hedron: {
     object: "Icosphere",
     path: "/models/hedron.glb",
+    wireframePath: "/models/hedronWireframe.glb",
     color: "red",
     info: true,
     name: "Structure",
@@ -55,6 +57,7 @@ export const structureTypes = {
     name: "Ultrastructure",
     object: models.sphere,
     color: 0x607b94,
+    colorHex: "#607b94",
     options: {
       rotation: false,
       timeScale: true,
@@ -66,6 +69,7 @@ export const structureTypes = {
     name: "Structure",
     object: models.hedron,
     color: 0xc7b99c,
+    colorHex: "#c7b99c",
     options: {
       rotation: false,
       timeScale: true,
@@ -77,6 +81,7 @@ export const structureTypes = {
     name: "Model",
     object: models.cube,
     color: 0xffffff,
+    colorHex: "#ffffff",
     options: {
       rotation: false,
       timeScale: true,
@@ -88,6 +93,7 @@ export const structureTypes = {
     name: "Relation",
     object: models.cone,
     color: 0x274b6d,
+    colorHex: "#274b6d",
     options: {
       rotation: false,
       timeScale: true,
@@ -99,6 +105,7 @@ export const structureTypes = {
     name: "Event",
     object: models.sphere,
     color: 0xfc8803,
+    colorHex: "#fc8803",
     options: {
       rotation: false,
       timeScale: true,
@@ -223,7 +230,7 @@ export const examples = [
         endYear: 2100,
         normSocial: norms.social.values["group"].value,
         normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        space: norms.space.values["universal"].value,
       },
     ],
   },
@@ -287,6 +294,69 @@ export const examples = [
         normSocial: norms.social.values["group"].value,
         normStructural: norms.structural.values["religion"].value,
         space: norms.space.values["national"].value,
+      },
+    ],
+  },
+
+  {
+    id: 2,
+    name: "Example 3",
+    author: "Test",
+    info: "Short info text about example",
+    timeline: {
+      startYear: 1000,
+      endYear: 2000,
+    },
+
+    structures: [
+      {
+        name: "Event 1",
+        type: structureTypes.event,
+        startYear: 1520,
+        endYear: 1953,
+        normSocial: norms.social.values["group"].value,
+        normStructural: norms.structural.values["religion"].value,
+        space: norms.space.values["national"].value,
+      },
+
+      {
+        name: "Relation 1",
+        type: structureTypes.relation,
+        startYear: 1750,
+        endYear: 1850,
+        normSocial: norms.social.values["group"].value,
+        normStructural: norms.structural.values["religion"].value,
+        space: norms.space.values["regional"].value,
+      },
+
+      {
+        name: structureTypes.model.name,
+        type: structureTypes.model,
+        startYear: 1300,
+        endYear: 2000,
+        normSocial: norms.social.values["regional"].value,
+        normStructural: norms.structural.values["regional"].value,
+        space: norms.space.values["regional"].value,
+      },
+
+      {
+        name: structureTypes.structure.name,
+        type: structureTypes.structure,
+        startYear: 1000,
+        endYear: 2100,
+        normSocial: norms.social.values["group"].value,
+        normStructural: norms.structural.values["religion"].value,
+        space: norms.space.values["international"].value,
+      },
+
+      {
+        name: structureTypes.ultraStructure.name,
+        type: structureTypes.ultraStructure,
+        startYear: 750,
+        endYear: 2250,
+        normSocial: norms.social.values["group"].value,
+        normStructural: norms.structural.values["religion"].value,
+        space: norms.space.values["universal"].value,
       },
     ],
   },
