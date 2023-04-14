@@ -325,7 +325,7 @@ export const examples = [
         startYear: 1750,
         endYear: 1850,
         normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
+        normStructural: norms.structural.values["group"].value,
         space: norms.space.values["regional"].value,
       },
 

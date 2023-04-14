@@ -353,7 +353,7 @@ function ModelCanvas(props) {
             background: "#f5f5f5",
             // background: "linear-gradient(315deg, rgba(39,75,109,1) 0%, rgba(27,52,76,1) 100%)"
           }}
-          camera={{ position: [0, 5, timelineYears * 2], far: 20000 }}
+          camera={{ position: [0, 20, timelineYears], far: 20000 }}
         >
           <OrbitControls
             ref={canvasCam}

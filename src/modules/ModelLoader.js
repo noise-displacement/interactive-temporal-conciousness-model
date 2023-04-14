@@ -51,8 +51,8 @@ const ModelLoader = function (props) {
 
   if (structureType === structureTypes.relation) {
     normScale = (endYear - startYear) / 2;
-    timeScale = defaultSize * structuralSize;
-    placeScale = defaultSize * structuralSize;
+    timeScale = defaultSize * structuralSize + 10;
+    placeScale = defaultSize * spaceSize + 10;
     timePos = startYear + normScale;
   } else if(structureType === structureTypes.event) {
     normScale = eventSize;
