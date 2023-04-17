@@ -23,6 +23,7 @@ import {
   ExamplePicker,
   ClipMode,
   ExampleInfo,
+  HideLabels,
 } from "./modelControls";
 import * as THREE from "three";
 import { degToRad } from "three/src/math/MathUtils";
@@ -30,7 +31,7 @@ import StructureControls, {
   ModelOptions,
   StructureController,
 } from "./structureController";
-import { structureTypes } from "./structureInfo";
+import { colors, labels, structureTypes } from "./structureInfo";
 import ModelStructure from "../modules/ModelStructure";
 import { Link } from "react-router-dom";
 
@@ -124,6 +125,59 @@ function timelineLabel(
   }
 }
 
+function createLabels(labelScaleFactor) {
+  let spaceLabels = [];
+  let socialLabels = [];
+  let structuralLabels = [];
+
+  for (const spaceLabel in labels.space.values) {
+    let label = labels.space.values[spaceLabel];
+    spaceLabels.push(
+      <Html
+        position={[0, 0, -(label.value * 100)]}
+        distanceFactor={labelScaleFactor}
+      >
+        | <br />
+        {label.name}
+      </Html>
+    );
+  }
+
+  for (const socialLabel in labels.social.values) {
+    let label = labels.social.values[socialLabel];
+    socialLabels.push(
+      <Html
+        className="normLabel"
+        position={[0, label.value * 100, 0]}
+        distanceFactor={labelScaleFactor}
+      >
+        <span>{"- " + label.name}</span>
+      </Html>
+    );
+  }
+
+  for (const structuralLabel in labels.structural.values) {
+    let label = labels.structural.values[structuralLabel];
+
+    structuralLabels.push(
+      <Html
+        className="normLabel"
+        position={[0, -(label.value * 100), 0]}
+        distanceFactor={labelScaleFactor}
+      >
+        <span>{"- " + label.name}</span>
+      </Html>
+    );
+  }
+
+  return {
+    // Slice to remove first element to fix origo overlapping.
+    spaceLabels: spaceLabels.slice(1),
+    socialLabels: socialLabels.slice(1),
+    structuralLabels: structuralLabels.slice(1),
+  };
+}
+
 function ModelCanvas(props) {
   const options = useMemo(
     () => ({
@@ -140,6 +194,7 @@ function ModelCanvas(props) {
       fullwidth: props.options.fullwidth,
       timelineLabels: props.options.timelineLabels,
       examplePicker: props.options.examplePicker,
+      hideLabels: props.options.hideLabels,
     }),
     [props.options]
   );
@@ -147,6 +202,7 @@ function ModelCanvas(props) {
   let currentExample = props.currentExample;
   //console.log(currentExample);
   const [clipmode, setClipmode] = useState(false);
+  const [hideLabels, setHideLabels] = useState(false);
   const [fromYear, setFromYear] = useState(currentExample.timeline.startYear);
   const [toYear, setToYear] = useState(currentExample.timeline.endYear);
   const [hovered, onHover] = useState(null);
@@ -157,6 +213,12 @@ function ModelCanvas(props) {
   const [currentStructures, setCurrentStructures] = useState(
     pushStructures(currentExample, options)
   );
+
+  const [structureLabels, setStructureLabels] = useState([
+    createLabels(labelScaleFactor).spaceLabels,
+    createLabels(labelScaleFactor).socialLabels,
+    createLabels(labelScaleFactor).structuralLabels,
+  ]);
 
   const updateStructures = useCallback(() => {
     setCurrentStructures(pushStructures(currentExample, options));
@@ -222,25 +284,18 @@ function ModelCanvas(props) {
   let axesScale = labelScaleFactor / 1000;
   let timelineYears = Number(yearScale.max) - Number(yearScale.min);
   let axisColors = {
-    x: "white",
-    y: "white",
-    z: "white",
+    x: colors.blue,
+    y: colors.blue,
+    z: colors.blue,
   };
 
   let modelGroup = useRef();
-  //console.log(modelGroup);
   let currentUltrastructureSize =
     currentExample.structures[currentExample.structures.length - 1].endYear -
     currentExample.structures[currentExample.structures.length - 1].startYear;
-    //console.log(currentUltrastructureSize);
 
   useEffect(() => {
-    //setCurrentStructures(pushStructures(currentExample, options));
     updateStructures();
-    //console.log(currentStructures);
-    //console.log(orbitControls);
-    //console.log(currentStructures);
-    //setCurrentControls([...currentControls, 0])
     timelineLabel(
       yearScale,
       timelineLabels,
@@ -248,9 +303,6 @@ function ModelCanvas(props) {
       labelScaleFactor,
       currentUltrastructureSize
     );
-    if (canvasCam.current) {
-      //canvasCam.current.object.position.z = (timelineYears * 2);
-    }
   }, [
     currentExample,
     options,
@@ -302,6 +354,15 @@ function ModelCanvas(props) {
           <div className="controlContainer">
             {options.clipmode ? (
               <ClipMode clipmode={clipmode} setClipmode={setClipmode} />
+            ) : (
+              <Null />
+            )}
+
+            {options.hideLabels ? (
+              <HideLabels
+                hideLabels={hideLabels}
+                setHideLabels={setHideLabels}
+              />
             ) : (
               <Null />
             )}
@@ -365,12 +426,9 @@ function ModelCanvas(props) {
           />
 
           <ambientLight />
-          {/* <pointLight position={[100, 0, 100]} intensity={1} /> */}
-          <pointLight position={[-100, 0, -100]} intensity={0.5} />
+          <pointLight position={[-100, 0, -100]} intensity={.7} />
 
           <Suspense id="axis">
-            {/*<primitive object={useLoader(GLTFLoader, models.axis.path).scene}></primitive>*/}
-            {/* <primitive ref={axesHelper} object={new THREE.AxesHelper(1000)}></primitive>*/}
             <mesh>
               <boxGeometry
                 ref={axesHelper}
@@ -389,29 +447,15 @@ function ModelCanvas(props) {
               <meshPhongMaterial color={axisColors.y} />
             </mesh>
 
-            <Html
-              className="timelineLabel"
-              distanceFactor={labelScaleFactor}
-              position={[0, axisTagDistance, 0]}
-            >
-              <span style={{ color: axisColors.y }}>Norms&nbsp;(y)</span>
-            </Html>
-
-            <Html
-              className="timelineLabel"
-              distanceFactor={labelScaleFactor}
-              position={[0, 0, axisTagDistance]}
-            >
-              <span style={{ color: axisColors.z }}>Space&nbsp;(z)</span>
-            </Html>
-
-            <Html
-              className="timelineLabel"
-              distanceFactor={labelScaleFactor}
-              position={[axisTagDistance, 30, 0]}
-            >
-              <span style={{ color: axisColors.x }}>Time&nbsp;(x)</span>
-            </Html>
+            {hideLabels ? (
+              structureLabels.map((array) => {
+                return array.map((label) => {
+                  return label;
+                });
+              })
+            ) : (
+              <Null />
+            )}
           </Suspense>
 
           {options.timelineLabels ? (

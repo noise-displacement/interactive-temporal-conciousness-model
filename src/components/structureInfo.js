@@ -115,7 +115,7 @@ export const structureTypes = {
   },
 };
 
-const norms = {
+export const labels = {
   structural: {
     name: "Structural",
     values: {
@@ -142,11 +142,9 @@ const norms = {
     name: "Space",
     values: {
       local: { name: "Local", value: 0 },
-      regional: { name: "Regional", value: 1 },
-      national: { name: "National", value: 2 },
-      transnational: { name: "Transnational", value: 3 },
-      international: { name: "International", value: 4 },
-      universal: { name: "Universal", value: 5 },
+      regional: { name: "National", value: 1 },
+      national: { name: "Regional", value: 2 },
+      universal: { name: "Universal", value: 3 },
     },
   },
 };
@@ -168,9 +166,9 @@ export const examples = [
         type: structureTypes.event,
         startYear: 1950,
         endYear: 1953,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -178,9 +176,9 @@ export const examples = [
         type: structureTypes.relation,
         startYear: 1540,
         endYear: 1560,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -188,9 +186,9 @@ export const examples = [
         type: structureTypes.relation,
         startYear: 1790,
         endYear: 1910,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -198,9 +196,9 @@ export const examples = [
         type: structureTypes.relation,
         startYear: 2010,
         endYear: 2030,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -208,9 +206,9 @@ export const examples = [
         type: structureTypes.model,
         startYear: 1420,
         endYear: 1915,
-        normSocial: norms.social.values["regional"].value,
-        normStructural: norms.structural.values["group"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["regional"].value,
+        normStructural: labels.structural.values["group"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -218,9 +216,9 @@ export const examples = [
         type: structureTypes.structure,
         startYear: 1600,
         endYear: 2100,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -228,9 +226,9 @@ export const examples = [
         type: structureTypes.ultraStructure,
         startYear: 1350,
         endYear: 2100,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["universal"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["universal"].value,
       },
     ],
   },
@@ -251,9 +249,9 @@ export const examples = [
         type: structureTypes.relation,
         startYear: 1990,
         endYear: 2000,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -261,9 +259,9 @@ export const examples = [
         type: structureTypes.relation,
         startYear: 1970,
         endYear: 2010,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -271,9 +269,9 @@ export const examples = [
         type: structureTypes.model,
         startYear: 1900,
         endYear: 1990,
-        normSocial: norms.social.values["regional"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["regional"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -281,9 +279,9 @@ export const examples = [
         type: structureTypes.structure,
         startYear: 1600,
         endYear: 2100,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -291,9 +289,9 @@ export const examples = [
         type: structureTypes.ultraStructure,
         startYear: 1500,
         endYear: 2100,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
     ],
   },
@@ -314,9 +312,9 @@ export const examples = [
         type: structureTypes.event,
         startYear: 1520,
         endYear: 1953,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["national"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["national"].value,
       },
 
       {
@@ -324,9 +322,9 @@ export const examples = [
         type: structureTypes.relation,
         startYear: 1750,
         endYear: 1850,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["group"].value,
-        space: norms.space.values["regional"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["group"].value,
+        space: labels.space.values["regional"].value,
       },
 
       {
@@ -334,9 +332,9 @@ export const examples = [
         type: structureTypes.model,
         startYear: 1300,
         endYear: 2000,
-        normSocial: norms.social.values["regional"].value,
-        normStructural: norms.structural.values["regional"].value,
-        space: norms.space.values["regional"].value,
+        normSocial: labels.social.values["regional"].value,
+        normStructural: labels.structural.values["regional"].value,
+        space: labels.space.values["regional"].value,
       },
 
       {
@@ -344,9 +342,9 @@ export const examples = [
         type: structureTypes.structure,
         startYear: 1000,
         endYear: 2100,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["international"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["universal"].value,
       },
 
       {
@@ -354,10 +352,20 @@ export const examples = [
         type: structureTypes.ultraStructure,
         startYear: 750,
         endYear: 2250,
-        normSocial: norms.social.values["group"].value,
-        normStructural: norms.structural.values["religion"].value,
-        space: norms.space.values["universal"].value,
+        normSocial: labels.social.values["group"].value,
+        normStructural: labels.structural.values["religion"].value,
+        space: labels.space.values["universal"].value,
       },
     ],
   },
 ];
+
+export const colors = {
+  white: "#FFFFFF",
+  black: "#000000",
+  grey: "#888888",
+  blue: "#1E3B56",
+  lightBlue: "#5C7790",
+  lightGrey: "#EEEEEE",
+  orange: "#F08E5F",
+}

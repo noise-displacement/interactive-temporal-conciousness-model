@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { structureTypes } from "./structureInfo";
+import { labels, structureTypes } from "./structureInfo";
 
 export const inputTypes = {
   normScale: {
@@ -101,6 +101,24 @@ function NumberInput() {
   );
 }
 
+function getLabels(labelGroup) {
+  let labelArray = labels[labelGroup].values;
+  let innerObjects = Object.values(labelArray);
+  let labelValues = [];
+  let labelNames = [];
+
+  for (let object of innerObjects) {
+    //console.log(value.value);
+    labelNames.push(object.name);
+    labelValues.push(object.value);
+  }
+
+  return {
+    labelNames,
+    labelValues,
+  };
+}
+
 export function ModelOptions(props) {
   let i = props.i;
   let structure = props.structure;
@@ -111,6 +129,19 @@ export function ModelOptions(props) {
   let setCurrentControls = props.setCurrentControls;
   let currentYears = currentControls[i].years;
   const [open, setOpen] = useState(false);
+  const labelsFormatted = {
+    social: getLabels("social"),
+    structural: getLabels("structural"),
+    space: getLabels("space"),
+  };
+
+  let [currentLabels, setCurrentLabels] = useState({
+    space: labelsFormatted.space.labelNames[structure.sizes.space],
+    social: labelsFormatted.social.labelNames[structure.sizes.social],
+    structural: labelsFormatted.structural.labelNames[structure.sizes.structural],
+  });
+
+  //console.log(labels);
 
   return (
     <div className="structure">
@@ -233,11 +264,15 @@ export function ModelOptions(props) {
           ) : (
             <>
               <div className="slider">
-                <label htmlFor="">Space</label>
+                <label htmlFor="">Space: {currentLabels.space}</label>
                 <input
                   type="range"
-                  min={0}
-                  max={5}
+                  min={labelsFormatted.space.labelValues[0]}
+                  max={
+                    labelsFormatted.space.labelValues[
+                      labelsFormatted.space.labelValues.length - 1
+                    ]
+                  }
                   value={currentControls[i].sizes.space}
                   onChange={(e) => {
                     const insertAt = i;
@@ -259,17 +294,22 @@ export function ModelOptions(props) {
                       ...currentControls.slice(insertAt + 1),
                     ];
 
+                    currentLabels.space = labelsFormatted.space.labelNames[e.target.value];
                     setCurrentControls(nextControls);
                   }}
                 ></input>
               </div>
 
               <div className="slider">
-                <label htmlFor="">Structural</label>
+                <label htmlFor="">Structural: {currentLabels.structural}</label>
                 <input
                   type="range"
-                  min={0}
-                  max={5}
+                  min={labelsFormatted.structural.labelValues[0]}
+                  max={
+                    labelsFormatted.structural.labelValues[
+                      labelsFormatted.structural.labelValues.length - 1
+                    ]
+                  }
                   value={currentControls[i].sizes.structural}
                   onChange={(e) => {
                     const insertAt = i;
@@ -291,17 +331,22 @@ export function ModelOptions(props) {
                       ...currentControls.slice(insertAt + 1),
                     ];
 
+                    currentLabels.structural = labelsFormatted.structural.labelNames[e.target.value];
                     setCurrentControls(nextControls);
                   }}
                 ></input>
               </div>
 
               <div className="slider">
-                <label htmlFor="">Social</label>
+                <label htmlFor="">Social: {currentLabels.social}</label>
                 <input
                   type="range"
-                  min={0}
-                  max={5}
+                  min={labelsFormatted.social.labelValues[0]}
+                  max={
+                    labelsFormatted.social.labelValues[
+                      labelsFormatted.social.labelValues.length - 1
+                    ]
+                  }
                   value={currentControls[i].sizes.social}
                   onChange={(e) => {
                     const insertAt = i;
@@ -323,6 +368,7 @@ export function ModelOptions(props) {
                       ...currentControls.slice(insertAt + 1),
                     ];
 
+                    currentLabels.social = labelsFormatted.social.labelNames[e.target.value];
                     setCurrentControls(nextControls);
                   }}
                 ></input>

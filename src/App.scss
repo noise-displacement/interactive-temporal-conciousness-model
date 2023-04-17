@@ -131,11 +131,11 @@ input {
   }
   
   input:checked + .slider {
-    background-color: $blue;
+    background-color: $lightBlue;
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px $blue;
+    box-shadow: 0 0 1px $lightBlue;
   }
   
   input:checked + .slider:before {
@@ -143,6 +143,10 @@ input {
     -ms-transform: translateX(24px);
     transform: translateX(24px);
   }
+}
+
+.moduleLink {
+  
 }
 
 .canvasContainer {
@@ -263,12 +267,19 @@ input {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        background-color: $lightBlue;
+        background-color: $blue;
         z-index: 1001;
         padding: $padding;
         box-sizing: border-box;
         z-index: 1000000000;
-        color: $white;
+
+        span {
+          color: $white;
+        }
+
+        label {
+          color: $white;
+        }
 
         .controlContainer {
           display: flex;
@@ -304,6 +315,10 @@ input {
             align-items: center;
             border: 0;
             padding: 10px;
+
+            span {
+              color: $blue;
+            }
           }
         
           .zoomButton:active {
@@ -375,6 +390,13 @@ input {
 
         .timelineLabel {
           text-shadow: $textShadow;
+        }
+
+        .normLabel {
+          span {
+            display: block;
+            width: 100px;
+          }
         }
       }
     }

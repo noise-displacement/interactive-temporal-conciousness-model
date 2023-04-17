@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { routes } from "../App";
+
 function Home() {
   return (
     <>
@@ -27,6 +30,18 @@ function Home() {
               projects, under the supervision of colleagues with varying fields
               of specialty.
             </p>
+
+            <div className="buttonContainer">
+              <Link className="moduleLink" to={routes.model.path}>
+                Theory
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </Link>
+
+              <Link className="moduleLink" to={routes.example.path}>
+                Model
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

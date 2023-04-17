@@ -23,16 +23,16 @@ export const routes = {
   },
 
   model: {
-    name: "Model",
+    name: "Theory",
     index: false,
-    path: "/model",
+    path: "/theory",
     element: <Abstract />,
   },
 
   example: {
-    name: "Example",
+    name: "Model",
     index: false,
-    path: "/example",
+    path: "/model",
     element: <Example />,
   },
 

@@ -23,6 +23,7 @@ function Example() {
     fullwidth: true,
     timelineLabels: true,
     examplePicker: true,
+    hideLabels: true,
   };
 
   return (

@@ -79,6 +79,23 @@ export function ClipMode(props) {
   );
 }
 
+export function HideLabels(props) {
+  return (
+    <div className="hideLabels toggleSwitch">
+      <span>Labels</span>
+      <label className="switch" htmlFor="hideLabels">
+        <input
+          type="checkbox"
+          name="hideLabels"
+          id="hideLabels"
+          onChange={() => props.setHideLabels(!props.hideLabels)}
+        />
+        <span className="slider"></span>
+      </label>
+    </div>
+  );
+}
+
 function InfoCollapsible(props) {
   const [open, setOpen] = useState(false);
 
