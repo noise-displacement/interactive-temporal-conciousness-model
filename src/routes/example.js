@@ -5,7 +5,8 @@ import { examples } from "../components/structureInfo";
 import { Link } from "react-router-dom";
 
 function Example() {
-  const [currentExample, setCurrentExample] = useState(examples[2]);
+  //console.log("Example", examples[0])
+  const [currentExample, setCurrentExample] = useState(examples[0]);
   //console.log("CurrentExample", currentExample);
   const [modelRefresh, setModelRefresh] = useState(false);
 
@@ -24,6 +25,7 @@ function Example() {
     timelineLabels: true,
     examplePicker: true,
     hideLabels: true,
+    bottomControls: true
   };
 
   return (

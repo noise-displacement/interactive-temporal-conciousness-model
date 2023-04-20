@@ -10,6 +10,7 @@ import Home from "./routes/home";
 
 import "./App.css";
 import Editor from "./routes/editor";
+import ExampleText from "./routes/exampleText";
 
 //import { Provider } from "react-redux";
 //import store from "./store";
@@ -34,6 +35,13 @@ export const routes = {
     index: false,
     path: "/model",
     element: <Example />,
+  },
+
+  exampleText: {
+    name: "Example",
+    index: false,
+    path: "/example",
+    element: <ExampleText />,
   },
 
   editor: {
@@ -67,6 +75,11 @@ function App() {
                 path={routes.example.path}
                 element={routes.example.element}
                 routeObject={routes.example}
+              />
+              <Route
+                path={routes.exampleText.path}
+                element={routes.exampleText.element}
+                routeObject={routes.exampleText}
               />
               <Route
                 path={routes.editor.path}

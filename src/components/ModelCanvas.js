@@ -134,11 +134,14 @@ function createLabels(labelScaleFactor) {
     let label = labels.space.values[spaceLabel];
     spaceLabels.push(
       <Html
-        position={[0, 0, -(label.value * 100)]}
+        className="normLabel"
+        position={[(2023 * 2) / 10 + 42, 0, -(label.value * 100)]}
         distanceFactor={labelScaleFactor}
       >
-        | <br />
-        {label.name}
+        <span>
+          | <br />
+          {label.name}
+        </span>
       </Html>
     );
   }
@@ -148,7 +151,7 @@ function createLabels(labelScaleFactor) {
     socialLabels.push(
       <Html
         className="normLabel"
-        position={[0, label.value * 100, 0]}
+        position={[(2023 * 2) / 10 + 42, label.value * 100, 0]}
         distanceFactor={labelScaleFactor}
       >
         <span>{"- " + label.name}</span>
@@ -162,7 +165,7 @@ function createLabels(labelScaleFactor) {
     structuralLabels.push(
       <Html
         className="normLabel"
-        position={[0, -(label.value * 100), 0]}
+        position={[(2023 * 2) / 10 + 42, -(label.value * 100), 0]}
         distanceFactor={labelScaleFactor}
       >
         <span>{"- " + label.name}</span>
@@ -172,9 +175,9 @@ function createLabels(labelScaleFactor) {
 
   return {
     // Slice to remove first element to fix origo overlapping.
-    spaceLabels: spaceLabels.slice(1),
-    socialLabels: socialLabels.slice(1),
-    structuralLabels: structuralLabels.slice(1),
+    spaceLabels: spaceLabels,
+    socialLabels: socialLabels,
+    structuralLabels: structuralLabels,
   };
 }
 
@@ -195,6 +198,7 @@ function ModelCanvas(props) {
       timelineLabels: props.options.timelineLabels,
       examplePicker: props.options.examplePicker,
       hideLabels: props.options.hideLabels,
+      bottomControls: props.options.bottomControls,
     }),
     [props.options]
   );
@@ -319,17 +323,19 @@ function ModelCanvas(props) {
       className={options.fullwidth ? "modelWrapper fullwidth" : "modelWrapper"}
     >
       <div className="modelContainer">
-        {options.modelInfo ? <ModelInfoContainer /> : <Null />}
-
-        <div className="exampleInfoContainer">
-          <ExampleInfo currentExample={currentExample} />
-          {/* <ExamplePicker
+        {options.modelInfo ? (
+          <div className="exampleInfoContainer">
+            <ExampleInfo currentExample={currentExample} />
+            {/* <ExamplePicker
           examples={examples}
           currentExample={currentExample}
           setCurrentExample={setCurrentExample}
           setModelRefresh={setModelRefresh}
         /> */}
-        </div>
+          </div>
+        ) : (
+          <Null />
+        )}
 
         <div className="structureOptions">
           {!props.modelRefresh ? (
@@ -350,62 +356,66 @@ function ModelCanvas(props) {
           )}
         </div>
 
-        <div className="bottomControls">
-          <div className="controlContainer">
-            {options.clipmode ? (
-              <ClipMode clipmode={clipmode} setClipmode={setClipmode} />
-            ) : (
-              <Null />
-            )}
+        {options.bottomControls ? (
+          <div className="bottomControls">
+            <div className="controlContainer">
+              {options.clipmode ? (
+                <ClipMode clipmode={clipmode} setClipmode={setClipmode} />
+              ) : (
+                <Null />
+              )}
 
-            {options.hideLabels ? (
-              <HideLabels
-                hideLabels={hideLabels}
-                setHideLabels={setHideLabels}
-              />
-            ) : (
-              <Null />
-            )}
-
-            {options.wireframeMode ? (
-              <GlobalWireframeMode
-                globalWireframe={globalWireframe}
-                setGlobalWireframe={setGlobalWireframe}
-              />
-            ) : (
-              <Null />
-            )}
-          </div>
-
-          <div className="controlContainer">
-            {options.timeline || props.modelRefresh !== true ? (
-              <Suspense>
-                <UiTimeline
-                  globalYearControl={options.globalYearControl}
-                  fromYear={fromYear}
-                  setFromYear={setFromYear}
-                  toYear={toYear}
-                  setToYear={setToYear}
+              {options.hideLabels ? (
+                <HideLabels
+                  hideLabels={hideLabels}
+                  setHideLabels={setHideLabels}
                 />
-              </Suspense>
-            ) : (
-              <Null />
-            )}
-          </div>
+              ) : (
+                <Null />
+              )}
 
-          <div className="controlContainer">
-            {options.zoomButtons ? (
-              <ModelZoomButtons
-                zoomRange={zoomRange}
-                zoomLevel={zoomLevel}
-                adjustZoomLevel={adjustZoomLevel}
-                canvasCam={canvasCam}
-              />
-            ) : (
-              <Null />
-            )}
+              {options.wireframeMode ? (
+                <GlobalWireframeMode
+                  globalWireframe={globalWireframe}
+                  setGlobalWireframe={setGlobalWireframe}
+                />
+              ) : (
+                <Null />
+              )}
+            </div>
+
+            <div className="controlContainer">
+              {options.timeline || props.modelRefresh !== true ? (
+                <Suspense>
+                  <UiTimeline
+                    globalYearControl={options.globalYearControl}
+                    fromYear={fromYear}
+                    setFromYear={setFromYear}
+                    toYear={toYear}
+                    setToYear={setToYear}
+                  />
+                </Suspense>
+              ) : (
+                <Null />
+              )}
+            </div>
+
+            <div className="controlContainer">
+              {options.zoomButtons ? (
+                <ModelZoomButtons
+                  zoomRange={zoomRange}
+                  zoomLevel={zoomLevel}
+                  adjustZoomLevel={adjustZoomLevel}
+                  canvasCam={canvasCam}
+                />
+              ) : (
+                <Null />
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <Null />
+        )}
 
         <Canvas
           gl={{ localClippingEnabled: true }}
@@ -426,37 +436,43 @@ function ModelCanvas(props) {
           />
 
           <ambientLight />
-          <pointLight position={[-100, 0, -100]} intensity={.7} />
+          <pointLight position={[-100, 0, -100]} intensity={0.7} />
 
-          <Suspense id="axis">
-            <mesh>
-              <boxGeometry
-                ref={axesHelper}
-                args={[timelineYears * 10, axesScale, axesScale]}
-              />
-              <meshPhongMaterial color={axisColors.x} />
-            </mesh>
+          <group>
+            <Suspense id="axis">
+              <mesh>
+                <boxGeometry
+                  ref={axesHelper}
+                  args={[timelineYears * 10, axesScale, axesScale]}
+                />
+                <meshPhongMaterial color={axisColors.x} />
+              </mesh>
 
-            <mesh rotation={[0, degToRad(90), 0]}>
-              <boxGeometry args={[timelineYears * 10, axesScale, axesScale]} />
-              <meshPhongMaterial color={axisColors.z} />
-            </mesh>
+              <mesh rotation={[0, degToRad(90), 0]} position={[(2023 * 2) / 10 + 42, 0, 0]}>
+                <boxGeometry
+                  args={[timelineYears * 10, axesScale, axesScale]}
+                />
+                <meshPhongMaterial color={axisColors.z} />
+              </mesh>
 
-            <mesh rotation={[0, 0, degToRad(90)]}>
-              <boxGeometry args={[timelineYears * 10, axesScale, axesScale]} />
-              <meshPhongMaterial color={axisColors.y} />
-            </mesh>
+              <mesh rotation={[0, 0, degToRad(90)]} position={[(2023 * 2) / 10 + 42, 0, 0]}>
+                <boxGeometry
+                  args={[timelineYears * 10, axesScale, axesScale]}
+                />
+                <meshPhongMaterial color={axisColors.y} />
+              </mesh>
 
-            {hideLabels ? (
-              structureLabels.map((array) => {
-                return array.map((label) => {
-                  return label;
-                });
-              })
-            ) : (
-              <Null />
-            )}
-          </Suspense>
+              {hideLabels ? (
+                structureLabels.map((array) => {
+                  return array.map((label) => {
+                    return label;
+                  });
+                })
+              ) : (
+                <Null />
+              )}
+            </Suspense>
+          </group>
 
           {options.timelineLabels ? (
             (timelineLabel(
@@ -476,7 +492,7 @@ function ModelCanvas(props) {
           <group
             ref={modelGroup}
             position={[
-              -yearScale.max + currentUltrastructureSize / 2 - 100,
+              (-yearScale.max + currentUltrastructureSize / 2 - 100),
               0,
               0,
             ]}

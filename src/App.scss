@@ -1,24 +1,26 @@
 $white: #fff;
 $black: #000;
 $grey: #888;
-$blue: #1E3B56;
-$lightBlue: #5C7790;
+$blue: #1e3b56;
+$lightBlue: #5c7790;
 $lightGrey: #eee;
-$accent: #C7B99C;
-$orange: #F08E5F;
+$accent: #c7b99c;
+$orange: #f08e5f;
+$textOutline: -0.5px -0.5px 0 $white, 0.5px -0.5px 0 $white,
+  -0.5px 0.5px 0 $white, 0.5px 0.5px 0 $white;
 
 $padding: 16px;
 $br: 7px;
 $topNavSpace: calc(53px);
 $bottomNavSpace: calc(80.5px);
-$ctaPadding: .7em 1.4em;
+$ctaPadding: 0.7em 1.4em;
 
-$textShadow: 0px 0px 3px rgba(0,0,0,.15);
+$textShadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
 $boxShadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
 
 * {
   margin: 0;
-  font-family: "PT Serif", serif;
+  font-family: "Acumin Pro", sans-serif;
   font-size: 16px;
   color: $blue;
 }
@@ -65,7 +67,7 @@ h3 {
   background: $blue;
   border-radius: $br;
   color: $white;
-  transition: transform .2s;
+  transition: transform 0.2s;
   display: flex;
   text-decoration: none;
   box-shadow: $boxShadow;
@@ -79,7 +81,7 @@ input {
   height: 24px;
   border: 0;
   padding: 2px 4px;
-  border-radius: $br / 2;
+  border-radius: calc($br / 2);
   color: $blue;
 }
 
@@ -112,9 +114,9 @@ input {
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: .2s;
-    transition: .4s;
-    border-radius: $br / 2;
+    -webkit-transition: 0.2s;
+    transition: 0.4s;
+    border-radius: calc($br / 2);
   }
 
   .slider:before {
@@ -125,19 +127,19 @@ input {
     left: 4px;
     bottom: 4px;
     background-color: $lightGrey;
-    -webkit-transition: .2s;
-    transition: .2s;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
     border-radius: calc($br / 2);
   }
-  
+
   input:checked + .slider {
     background-color: $lightBlue;
   }
-  
+
   input:focus + .slider {
     box-shadow: 0 0 1px $lightBlue;
   }
-  
+
   input:checked + .slider:before {
     -webkit-transform: translateX(24px);
     -ms-transform: translateX(24px);
@@ -146,7 +148,6 @@ input {
 }
 
 .moduleLink {
-  
 }
 
 .canvasContainer {
@@ -176,11 +177,11 @@ input {
 
         li {
           color: $white;
-          transition: transform .2s;
+          transition: transform 0.2s;
 
           button {
             border: 0;
-            padding: .7em 1.7em .7em .7em;
+            padding: 0.7em 1.7em 0.7em 0.7em;
             background: none;
             color: $white;
             cursor: pointer;
@@ -203,7 +204,7 @@ input {
     width: 100%;
     box-sizing: border-box;
     padding: $topNavSpace $padding $padding $padding;
-  
+
     .modelContainer {
       position: relative;
       height: 100%;
@@ -212,7 +213,7 @@ input {
       z-index: 1000000;
       border-radius: $br;
       box-shadow: $boxShadow;
-  
+
       #globalControls {
         position: absolute;
         z-index: 1000000;
@@ -225,7 +226,7 @@ input {
         flex-direction: column;
         overflow: hidden;
         box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
-  
+
         .topLabel {
           display: flex;
           background: $black;
@@ -234,33 +235,33 @@ input {
           height: 42px;
           align-items: center;
         }
-  
+
         .controls {
           display: flex;
           justify-content: space-between;
           padding: $padding;
         }
-  
+
         .controlText {
           padding: 0 $padding $padding $padding;
           color: $grey;
-  
+
           span {
             display: block;
           }
-  
+
           span:first-child {
             margin-bottom: 10px;
           }
         }
-  
+
         .globalYears {
           display: flex;
           flex-direction: column;
           padding: 0 $padding $padding $padding;
         }
       }
-  
+
       .bottomControls {
         position: absolute;
         bottom: 0;
@@ -302,14 +303,14 @@ input {
         .controlContainer:last-child {
           margin-left: $padding;
         }
-      
+
         .zoomButtonsContainer {
           position: relative;
           z-index: 10;
           display: flex;
           border-radius: $br;
           overflow: hidden;
-        
+
           .zoomButton {
             display: flex;
             align-items: center;
@@ -320,33 +321,33 @@ input {
               color: $blue;
             }
           }
-        
+
           .zoomButton:active {
             background: rgba(255, 255, 255, 0.9);
           }
         }
-  
+
         .globalWireframe {
           position: relative;
           z-index: 10;
           display: flex;
         }
-      
+
         #timeline {
           position: relative;
           z-index: 10;
           width: 100%;
           box-sizing: border-box;
-        
+
           .wrapper {
             box-sizing: border-box;
             display: flex;
             justify-content: space-between;
-  
+
             .yearInput {
               display: flex;
               flex-direction: column;
-  
+
               input {
                 width: 100px;
               }
@@ -360,7 +361,7 @@ input {
               box-sizing: border-box;
               padding: 0 $padding;
 
-              .line{
+              .line {
                 background: $blue;
                 width: 100%;
                 height: 3px;
@@ -377,10 +378,10 @@ input {
           }
         }
       }
-  
+
       .mainCanvas {
         z-index: 0;
-  
+
         .eventTag {
           background: $white;
           padding: 5px;
@@ -389,30 +390,32 @@ input {
         }
 
         .timelineLabel {
-          text-shadow: $textShadow;
+          //text-shadow: $textShadow;
+          text-shadow: $textOutline;
         }
 
         .normLabel {
           span {
             display: block;
-            width: 100px;
+            width: 200px;
+            text-shadow: $textOutline;
           }
         }
       }
     }
   }
-  
+
   .modelWrapper.fullwidth {
     padding: $topNavSpace 0 0 0;
-  
+
     .modelContainer {
       border-radius: 0;
     }
   }
-  
+
   .belowContainer {
     padding: $padding;
-  
+
     p {
       margin-bottom: $padding;
     }
@@ -442,7 +445,8 @@ input {
         text-decoration: none;
       }
 
-      a, span {
+      a,
+      span {
         display: block;
         padding: calc($padding / 2);
         margin: calc($padding / 2);
@@ -503,10 +507,6 @@ input {
             color: $black;
             padding: calc($padding / 2);
           }
-
-          button {
-
-          }
         }
 
         .moreInfo.expanded {
@@ -545,47 +545,107 @@ input {
   height: 100vh;
   overflow: scroll;
 
+  .buttonContainer {
+    margin-top: $padding;
+
+    .linkButton:not(:last-child) {
+      margin: 0 calc($padding / 2) calc($padding / 2) 0;
+    }
+  }
+
+  .linkButton {
+    border: 0;
+    padding: 0.7em 1.4em;
+    background: $blue;
+    color: $white;
+    cursor: pointer;
+    border-radius: $br;
+    transition: all 0.1s ease-in-out;
+
+    .material-symbols-outlined {
+      position: relative;
+      top: 25%;
+      color: $white;
+    }
+  }
+
+  .linkButton:hover {
+    background: $lightBlue;
+    transform: scale(1.05);
+  }
+
   .canvasContainer {
     width: 40vw;
     height: 100%;
   }
 
-  .textContainer {
-    width: 60vw;
-    padding: 0 calc($padding * 6);
-    box-sizing: border-box;
+  .textWrapper {
+    width: 100vw;
     height: 100vh;
+    position: absolute;
     overflow-y: scroll;
+    left: 0;
 
-    .headerContainer {
-      padding: calc($padding * 2) 0;
-      height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-
-      h1 {
-        font-size: 2em;
-        margin: 0;
-        padding: 0;
-        position: relative;
-      }
-
-      h1:before {
-        content: '';
-        position: absolute;
-        height: 100px;
-        margin-left: -$padding;
-        width: 3px;
-        background: $accent;
-      }
+    .scrollTopButton {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      margin: calc($padding * 2);
+      z-index: 10000;
     }
 
-    .textBlock {
-      height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    .textContainer {
+      position: absolute;
+      right: 0;
+      width: 60vw;
+      padding: 0 calc($padding * 6);
+      box-sizing: border-box;
+      height: 100vh;
+
+      .headerContainer {
+        padding: calc($padding * 2) 0;
+        height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .text {
+          h1 {
+            font-size: 2em;
+            margin: 0;
+            padding: 0;
+            position: relative;
+          }
+
+          h1:before {
+            content: "";
+            position: absolute;
+            height: 100px;
+            margin-left: -$padding;
+            width: 3px;
+            background: $accent;
+          }
+        }
+
+        .readMoreContainer {
+          margin-top: $padding;
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      .textBlock {
+        height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .textBlock:not(:last-child) {
+        h2 {
+          margin-bottom: $padding;
+        }
+      }
     }
   }
 }
@@ -604,12 +664,12 @@ input {
     margin: $padding $padding 0 0;
     border-radius: $br;
     overflow: hidden;
-    box-shadow: 0px 3px 6px -3px rgba(0,0,0,.15);
+    box-shadow: 0px 3px 6px -3px rgba(0, 0, 0, 0.15);
 
     .header {
       display: flex;
       border: 0;
-      padding: .7em $padding;
+      padding: 0.7em $padding;
       //background: none;
       width: 100%;
       margin: 0;
@@ -657,7 +717,6 @@ input {
       }
 
       .slider {
-
         input {
           width: 100%;
         }
@@ -703,6 +762,74 @@ input {
 
       a {
         color: $white;
+      }
+    }
+  }
+}
+
+.exampleText {
+  background-color: $blue;
+  margin-top: calc($topNavSpace);
+  min-height: 100svh;
+
+  .container {
+    .examplePicker {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: $padding;
+
+      .item:not(:last-child) {
+        margin-left: $padding;
+      }
+
+      button {
+        border: 0;
+        background: 0;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.1s ease-in-out;
+
+        span {
+          color: $white;
+        }
+
+        .dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          border: 2px solid $white;
+          margin-right: $padding;
+          display: block;
+        }
+      }
+
+      button:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    .exampleContainer {
+      display: flex;
+
+      h1 {
+        color: $white;
+      }
+
+      p {
+        color: $white;
+      }
+
+      .left {
+        box-sizing: border-box;
+        padding: $padding;
+        max-width: 50svw;
+      }
+
+      .right {
+        width: 50svw;
       }
     }
   }

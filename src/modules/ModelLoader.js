@@ -51,13 +51,19 @@ const ModelLoader = function (props) {
 
   if (structureType === structureTypes.relation) {
     normScale = (endYear - startYear) / 2;
-    timeScale = defaultSize * structuralSize + 10;
+    timeScale = defaultSize / 2 * structuralSize + 5;
     placeScale = defaultSize * spaceSize + 10;
     timePos = startYear + normScale;
   } else if(structureType === structureTypes.event) {
     normScale = eventSize;
     timeScale = eventSize;
     placeScale = eventSize;
+    timePos = startYear + timeScale;
+
+  } else if (structureType === structureTypes.ultraStructure) {
+    normScale = (defaultSize * structuralSize) + 100;
+    timeScale = (endYear - startYear) / 2;
+    placeScale = (defaultSize * spaceSize) + 100;
     timePos = startYear + timeScale;
   } else {
     normScale = defaultSize * structuralSize;
@@ -73,17 +79,10 @@ const ModelLoader = function (props) {
     shadowSide: THREE.DoubleSide,
     wireframe: false,
     clipShadows: true,
-    clippingPlanes: [
+    clippingPlanes: structureType === structureTypes.event ? [] : [
       new THREE.Plane(new THREE.Vector3(0, -props.clipmode, 0), 0),
     ],
   });
-
-  material.onBeforeCompile = function( shader ) {
-    shader.fragmentShader = shader.fragmentShader.replace(
-      `gl_FragColor = vec4( outgoingLight, diffuseColor.a );`,
-      `gl_FragColor = ( gl_FrontFacing ) ? vec4( outgoingLight, diffuseColor.a ) : vec4( diffuse, opacity );`
-    );
-};
 
   useEffect(() => {
     // if (props.globalWireframe) {

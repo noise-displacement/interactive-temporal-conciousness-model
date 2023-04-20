@@ -26,6 +26,7 @@ function MainNav(props) {
                     <div className="holder">
                         <NavComponent location={location} pathName={routes.model.path} name={routes.model.name} />
                         <NavComponent location={location} pathName={routes.example.path} name={routes.example.name} />
+                        <NavComponent location={location} pathName={routes.exampleText.path} name={routes.exampleText.name} />
                     </div>
 
                     <div className="holder">

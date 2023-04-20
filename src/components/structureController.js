@@ -136,12 +136,12 @@ export function ModelOptions(props) {
   };
 
   let [currentLabels, setCurrentLabels] = useState({
-    space: labelsFormatted.space.labelNames[structure.sizes.space],
-    social: labelsFormatted.social.labelNames[structure.sizes.social],
-    structural: labelsFormatted.structural.labelNames[structure.sizes.structural],
+    space: labelsFormatted.space.labelNames[structure.sizes.space - 1],
+    social: labelsFormatted.social.labelNames[structure.sizes.social - 1],
+    structural: labelsFormatted.structural.labelNames[structure.sizes.structural - 1],
   });
 
-  //console.log(labels);
+  //console.log(labelsFormatted);
 
   return (
     <div className="structure">
@@ -294,7 +294,7 @@ export function ModelOptions(props) {
                       ...currentControls.slice(insertAt + 1),
                     ];
 
-                    currentLabels.space = labelsFormatted.space.labelNames[e.target.value];
+                    currentLabels.space = labelsFormatted.space.labelNames[e.target.value - 1];
                     setCurrentControls(nextControls);
                   }}
                 ></input>
@@ -331,7 +331,7 @@ export function ModelOptions(props) {
                       ...currentControls.slice(insertAt + 1),
                     ];
 
-                    currentLabels.structural = labelsFormatted.structural.labelNames[e.target.value];
+                    currentLabels.structural = labelsFormatted.structural.labelNames[e.target.value - 1];
                     setCurrentControls(nextControls);
                   }}
                 ></input>
@@ -368,7 +368,7 @@ export function ModelOptions(props) {
                       ...currentControls.slice(insertAt + 1),
                     ];
 
-                    currentLabels.social = labelsFormatted.social.labelNames[e.target.value];
+                    currentLabels.social = labelsFormatted.social.labelNames[e.target.value - 1];
                     setCurrentControls(nextControls);
                   }}
                 ></input>

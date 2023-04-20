@@ -1,8 +1,8 @@
 * {
   margin: 0;
-  font-family: "PT Serif", serif;
+  font-family: "Acumin Pro", sans-serif;
   font-size: 16px;
-  color: #1E3B56;
+  color: #1e3b56;
 }
 
 h1 {
@@ -19,7 +19,7 @@ p {
 }
 
 body {
-  background-color: #1E3B56;
+  background-color: #1e3b56;
 }
 
 #root {
@@ -43,7 +43,7 @@ h3 {
 
 .ctaBtn {
   padding: 0.7em 1.4em;
-  background: #1E3B56;
+  background: #1e3b56;
   border-radius: 7px;
   color: #fff;
   transition: transform 0.2s;
@@ -60,7 +60,7 @@ input {
   border: 0;
   padding: 2px 4px;
   border-radius: 3.5px;
-  color: #1E3B56;
+  color: #1e3b56;
 }
 
 .ctaBtn:hover {
@@ -105,10 +105,10 @@ input {
   border-radius: 3.5px;
 }
 .toggleSwitch input:checked + .slider {
-  background-color: #5C7790;
+  background-color: #5c7790;
 }
 .toggleSwitch input:focus + .slider {
-  box-shadow: 0 0 1px #5C7790;
+  box-shadow: 0 0 1px #5c7790;
 }
 .toggleSwitch input:checked + .slider:before {
   transform: translateX(24px);
@@ -130,7 +130,7 @@ input {
   z-index: 10000000;
 }
 .canvasContainer .exampleInfoContainer .exampleInfo {
-  color: #1E3B56;
+  color: #1e3b56;
   text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
 }
 .canvasContainer .exampleInfoContainer .examplePickerContainer ul {
@@ -216,7 +216,7 @@ input {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  background-color: #1E3B56;
+  background-color: #1e3b56;
   z-index: 1001;
   padding: 16px;
   box-sizing: border-box;
@@ -259,7 +259,7 @@ input {
   padding: 10px;
 }
 .canvasContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton span {
-  color: #1E3B56;
+  color: #1e3b56;
 }
 .canvasContainer .modelWrapper .modelContainer .bottomControls .zoomButtonsContainer .zoomButton:active {
   background: rgba(255, 255, 255, 0.9);
@@ -296,7 +296,7 @@ input {
   padding: 0 16px;
 }
 .canvasContainer .modelWrapper .modelContainer .bottomControls #timeline .wrapper .lineContainer .line {
-  background: #1E3B56;
+  background: #1e3b56;
   width: 100%;
   height: 3px;
 }
@@ -305,7 +305,7 @@ input {
   height: 12px;
   width: 12px;
   margin-top: -5px;
-  background: #F08E5F;
+  background: #f08e5f;
 }
 .canvasContainer .modelWrapper .modelContainer .mainCanvas {
   z-index: 0;
@@ -317,11 +317,12 @@ input {
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
 }
 .canvasContainer .modelWrapper .modelContainer .mainCanvas .timelineLabel {
-  text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
+  text-shadow: -0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff, 0.5px 0.5px 0 #fff;
 }
 .canvasContainer .modelWrapper .modelContainer .mainCanvas .normLabel span {
   display: block;
-  width: 100px;
+  width: 200px;
+  text-shadow: -0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff, 0.5px 0.5px 0 #fff;
 }
 .canvasContainer .modelWrapper.fullwidth {
   padding: 53px 0 0 0;
@@ -346,19 +347,20 @@ input {
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  background: #1E3B56;
+  background: #1e3b56;
 }
 .mainNav .container .holder {
   box-sizing: border-box;
   display: flex;
 }
 .mainNav .container .holder a {
-  color: #1E3B56;
+  color: #1e3b56;
   background: #eee;
   border-radius: 7px;
   text-decoration: none;
 }
-.mainNav .container .holder a, .mainNav .container .holder span {
+.mainNav .container .holder a,
+.mainNav .container .holder span {
   display: block;
   padding: 8px;
   margin: 8px;
@@ -443,43 +445,90 @@ input {
   height: 100vh;
   overflow: scroll;
 }
+.abstractContainer .buttonContainer {
+  margin-top: 16px;
+}
+.abstractContainer .buttonContainer .linkButton:not(:last-child) {
+  margin: 0 8px 8px 0;
+}
+.abstractContainer .linkButton {
+  border: 0;
+  padding: 0.7em 1.4em;
+  background: #1e3b56;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: all 0.1s ease-in-out;
+}
+.abstractContainer .linkButton .material-symbols-outlined {
+  position: relative;
+  top: 25%;
+  color: #fff;
+}
+.abstractContainer .linkButton:hover {
+  background: #5c7790;
+  transform: scale(1.05);
+}
 .abstractContainer .canvasContainer {
   width: 40vw;
   height: 100%;
 }
-.abstractContainer .textContainer {
+.abstractContainer .textWrapper {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  overflow-y: scroll;
+  left: 0;
+}
+.abstractContainer .textWrapper .scrollTopButton {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 32px;
+  z-index: 10000;
+}
+.abstractContainer .textWrapper .textContainer {
+  position: absolute;
+  right: 0;
   width: 60vw;
   padding: 0 96px;
   box-sizing: border-box;
   height: 100vh;
-  overflow-y: scroll;
 }
-.abstractContainer .textContainer .headerContainer {
+.abstractContainer .textWrapper .textContainer .headerContainer {
   padding: 32px 0;
   height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.abstractContainer .textContainer .headerContainer h1 {
+.abstractContainer .textWrapper .textContainer .headerContainer .text h1 {
   font-size: 2em;
   margin: 0;
   padding: 0;
   position: relative;
 }
-.abstractContainer .textContainer .headerContainer h1:before {
+.abstractContainer .textWrapper .textContainer .headerContainer .text h1:before {
   content: "";
   position: absolute;
   height: 100px;
   margin-left: -16px;
   width: 3px;
-  background: #C7B99C;
+  background: #c7b99c;
 }
-.abstractContainer .textContainer .textBlock {
+.abstractContainer .textWrapper .textContainer .headerContainer .readMoreContainer {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.abstractContainer .textWrapper .textContainer .textBlock {
   height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.abstractContainer .textWrapper .textContainer .textBlock:not(:last-child) h2 {
+  margin-bottom: 16px;
 }
 
 .structureOptions {
@@ -546,7 +595,7 @@ input {
 
 .footerContainer {
   margin-bottom: 96px;
-  background: #1E3B56;
+  background: #1e3b56;
 }
 .footerContainer .wrapper {
   padding: 32px;
@@ -577,4 +626,59 @@ input {
 }
 .footerContainer .wrapper .item a {
   color: #fff;
+}
+
+.exampleText {
+  background-color: #1e3b56;
+  margin-top: 53px;
+  min-height: 100svh;
+}
+.exampleText .container .examplePicker {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+.exampleText .container .examplePicker .item:not(:last-child) {
+  margin-left: 16px;
+}
+.exampleText .container .examplePicker button {
+  border: 0;
+  background: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+}
+.exampleText .container .examplePicker button span {
+  color: #fff;
+}
+.exampleText .container .examplePicker button .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  margin-right: 16px;
+  display: block;
+}
+.exampleText .container .examplePicker button:hover {
+  transform: scale(1.05);
+}
+.exampleText .container .exampleContainer {
+  display: flex;
+}
+.exampleText .container .exampleContainer h1 {
+  color: #fff;
+}
+.exampleText .container .exampleContainer p {
+  color: #fff;
+}
+.exampleText .container .exampleContainer .left {
+  box-sizing: border-box;
+  padding: 16px;
+  max-width: 50svw;
+}
+.exampleText .container .exampleContainer .right {
+  width: 50svw;
 }/*# sourceMappingURL=App.css.map */
