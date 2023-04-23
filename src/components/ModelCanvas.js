@@ -135,7 +135,8 @@ function createLabels(labelScaleFactor) {
     spaceLabels.push(
       <Html
         className="normLabel"
-        position={[(2023 * 2) / 10 + 42, 0, -(label.value * 100)]}
+        // Midlertidig fix for å få riktig posisjon på labels.
+        position={[(2023 * 2) / 10 + 47.4, 0, -(label.value * 100)]}
         distanceFactor={labelScaleFactor}
       >
         <span>
@@ -151,7 +152,8 @@ function createLabels(labelScaleFactor) {
     socialLabels.push(
       <Html
         className="normLabel"
-        position={[(2023 * 2) / 10 + 42, label.value * 100, 0]}
+        // Midlertidig fix for å få riktig posisjon på labels.
+        position={[(2023 * 2) / 10 + 47.4, label.value * 100, 0]}
         distanceFactor={labelScaleFactor}
       >
         <span>{"- " + label.name}</span>
@@ -165,7 +167,8 @@ function createLabels(labelScaleFactor) {
     structuralLabels.push(
       <Html
         className="normLabel"
-        position={[(2023 * 2) / 10 + 42, -(label.value * 100), 0]}
+        // Midlertidig fix for å få riktig posisjon på labels.
+        position={[(2023 * 2) / 10 + 47.4, -(label.value * 100), 0]}
         distanceFactor={labelScaleFactor}
       >
         <span>{"- " + label.name}</span>
@@ -424,7 +427,7 @@ function ModelCanvas(props) {
             background: "#f5f5f5",
             // background: "linear-gradient(315deg, rgba(39,75,109,1) 0%, rgba(27,52,76,1) 100%)"
           }}
-          camera={{ position: [0, 20, timelineYears], far: 20000 }}
+          camera={{ position: [0, 100, timelineYears], far: 20000 }}
         >
           <OrbitControls
             ref={canvasCam}
@@ -438,124 +441,132 @@ function ModelCanvas(props) {
           <ambientLight />
           <pointLight position={[-100, 0, -100]} intensity={0.7} />
 
-          <group>
-            <Suspense id="axis">
-              <mesh>
-                <boxGeometry
-                  ref={axesHelper}
-                  args={[timelineYears * 10, axesScale, axesScale]}
-                />
-                <meshPhongMaterial color={axisColors.x} />
-              </mesh>
+          <group position={[-450, 0, 0]}>
+            <group>
+              <Suspense id="axis">
+                <mesh>
+                  <boxGeometry
+                    ref={axesHelper}
+                    args={[timelineYears * 10, axesScale, axesScale]}
+                  />
+                  <meshPhongMaterial color={axisColors.x} />
+                </mesh>
 
-              <mesh rotation={[0, degToRad(90), 0]} position={[(2023 * 2) / 10 + 42, 0, 0]}>
-                <boxGeometry
-                  args={[timelineYears * 10, axesScale, axesScale]}
-                />
-                <meshPhongMaterial color={axisColors.z} />
-              </mesh>
+                <mesh
+                  rotation={[0, degToRad(90), 0]}
+                  position={[(2023 * 2) / 10 + 45.4, 0, 0]}
+                >
+                  <boxGeometry
+                    args={[timelineYears * 10, axesScale, axesScale]}
+                  />
+                  <meshPhongMaterial color={axisColors.z} />
+                </mesh>
 
-              <mesh rotation={[0, 0, degToRad(90)]} position={[(2023 * 2) / 10 + 42, 0, 0]}>
-                <boxGeometry
-                  args={[timelineYears * 10, axesScale, axesScale]}
-                />
-                <meshPhongMaterial color={axisColors.y} />
-              </mesh>
+                <mesh
+                  rotation={[0, 0, degToRad(90)]}
+                  position={[(2023 * 2) / 10 + 45.4, 0, 0]}
+                >
+                  <boxGeometry
+                    args={[timelineYears * 10, axesScale, axesScale]}
+                  />
+                  <meshPhongMaterial color={axisColors.y} />
+                </mesh>
 
-              {hideLabels ? (
-                structureLabels.map((array) => {
-                  return array.map((label) => {
-                    return label;
-                  });
+                {hideLabels ? (
+                  structureLabels.map((array) => {
+                    return array.map((label) => {
+                      return label;
+                    });
+                  })
+                ) : (
+                  <Null />
+                )}
+              </Suspense>
+            </group>
+
+            {options.timelineLabels ? (
+              (timelineLabel(
+                yearScale,
+                timelineLabels,
+                timelineYears,
+                labelScaleFactor,
+                currentUltrastructureSize
+              ),
+              timelineLabels.map((label) => {
+                return label;
+              }))
+            ) : (
+              <Null />
+            )}
+
+            <group
+              ref={modelGroup}
+              position={[
+                -yearScale.max + currentUltrastructureSize / 2 - 100,
+                0,
+                0,
+              ]}
+            >
+              {!props.modelRefresh ? (
+                currentStructures.map((structure, i) => {
+                  //console.log(structure);
+                  return (
+                    <Suspense key={i}>
+                      <ModelLoader
+                        currentControls={currentControls[i]}
+                        setCurrentControls={setCurrentControls}
+                        i={i}
+                        structureNumber={i}
+                        state={structure.state}
+                        type={structure.type}
+                        name={structure.name}
+                        yearScale={yearScale}
+                        clipmode={
+                          structure.type === structureTypes.event ? 0 : clipmode
+                        }
+                        sphereRadius={sphereRadius}
+                        relation={
+                          structure.type === structureTypes.relation
+                            ? true
+                            : false
+                        }
+                        object={structure.object}
+                        wireframeObject={structure.wireframeObject}
+                        modelName={structure.modelName}
+                        color={structure.color}
+                        scaleTime={structure.scaleTime}
+                        scaleNorm={structure.scaleNorm}
+                        scalePlace={structure.scalePlace}
+                        years={structure.years}
+                        options={structure.options}
+                        onHover={onHover}
+                        globalWireframe={globalWireframe}
+                        optionsOpen={false}
+                        sizes={structure.sizes}
+                        distanceFactor={labelScaleFactor}
+                        setOrbitControls={setOrbitControls}
+                      ></ModelLoader>
+                    </Suspense>
+                  );
                 })
               ) : (
                 <Null />
               )}
-            </Suspense>
-          </group>
 
-          {options.timelineLabels ? (
-            (timelineLabel(
-              yearScale,
-              timelineLabels,
-              timelineYears,
-              labelScaleFactor,
-              currentUltrastructureSize
-            ),
-            timelineLabels.map((label) => {
-              return label;
-            }))
-          ) : (
-            <Null />
-          )}
-
-          <group
-            ref={modelGroup}
-            position={[
-              (-yearScale.max + currentUltrastructureSize / 2 - 100),
-              0,
-              0,
-            ]}
-          >
-            {!props.modelRefresh ? (
-              currentStructures.map((structure, i) => {
-                //console.log(structure);
-                return (
-                  <Suspense key={i}>
-                    <ModelLoader
-                      currentControls={currentControls[i]}
-                      setCurrentControls={setCurrentControls}
-                      i={i}
-                      structureNumber={i}
-                      state={structure.state}
-                      type={structure.type}
-                      name={structure.name}
-                      yearScale={yearScale}
-                      clipmode={
-                        structure.type === structureTypes.event ? 0 : clipmode
-                      }
-                      sphereRadius={sphereRadius}
-                      relation={
-                        structure.type === structureTypes.relation
-                          ? true
-                          : false
-                      }
-                      object={structure.object}
-                      wireframeObject={structure.wireframeObject}
-                      modelName={structure.modelName}
-                      color={structure.color}
-                      scaleTime={structure.scaleTime}
-                      scaleNorm={structure.scaleNorm}
-                      scalePlace={structure.scalePlace}
-                      years={structure.years}
-                      options={structure.options}
-                      onHover={onHover}
-                      globalWireframe={globalWireframe}
-                      optionsOpen={false}
-                      sizes={structure.sizes}
-                      distanceFactor={labelScaleFactor}
-                      setOrbitControls={setOrbitControls}
-                    ></ModelLoader>
-                  </Suspense>
-                );
-              })
-            ) : (
-              <Null />
-            )}
-
-            {options.outlines ? (
-              <EffectComposer multisampling={8} autoClear={false}>
-                <Outline
-                  selection={selected}
-                  selectionLayer={30}
-                  visibleEdgeColor={0xffffff}
-                  edgeStrength={3}
-                  blendFunction={BlendFunction.ALPHA}
-                ></Outline>
-              </EffectComposer>
-            ) : (
-              <Null />
-            )}
+              {options.outlines ? (
+                <EffectComposer multisampling={8} autoClear={false}>
+                  <Outline
+                    selection={selected}
+                    selectionLayer={30}
+                    visibleEdgeColor={0xffffff}
+                    edgeStrength={3}
+                    blendFunction={BlendFunction.ALPHA}
+                  ></Outline>
+                </EffectComposer>
+              ) : (
+                <Null />
+              )}
+            </group>
           </group>
         </Canvas>
       </div>

@@ -264,7 +264,7 @@ export function ModelOptions(props) {
           ) : (
             <>
               <div className="slider">
-                <label htmlFor="">Space: {currentLabels.space}</label>
+                <label htmlFor="">{currentLabels.space}</label>
                 <input
                   type="range"
                   min={labelsFormatted.space.labelValues[0]}
@@ -301,7 +301,7 @@ export function ModelOptions(props) {
               </div>
 
               <div className="slider">
-                <label htmlFor="">Structural: {currentLabels.structural}</label>
+                <label htmlFor="">{currentLabels.structural}</label>
                 <input
                   type="range"
                   min={labelsFormatted.structural.labelValues[0]}
@@ -338,7 +338,7 @@ export function ModelOptions(props) {
               </div>
 
               <div className="slider">
-                <label htmlFor="">Social: {currentLabels.social}</label>
+                <label htmlFor="">{currentLabels.social}</label>
                 <input
                   type="range"
                   min={labelsFormatted.social.labelValues[0]}
