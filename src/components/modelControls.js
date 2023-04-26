@@ -128,6 +128,12 @@ function ExampleCollapsible(props) {
   );
 }
 
+function zoomModel(camera, constant) {
+  camera.position.z = camera.position.z * constant;
+  camera.position.x = camera.position.x * constant;
+  camera.position.y = camera.position.y * constant;
+}
+
 export function ModelZoomButtons(props) {
   let prevZoomLevel = props.zoomLevel;
 
@@ -136,12 +142,7 @@ export function ModelZoomButtons(props) {
       <div className="zoomButtonsContainer">
         <button
           className="zoomButton"
-          onMouseDown={() => {
-            if (prevZoomLevel > props.zoomRange.min) {
-              props.adjustZoomLevel(prevZoomLevel - 7);
-            }
-            props.canvasCam.current.object.position.z = props.zoomLevel;
-          }}
+          onClick={() => zoomModel(props.canvasCam.current.object, 0.75)}
         >
           <span className="material-symbols-outlined">add</span>
         </button>
@@ -149,10 +150,7 @@ export function ModelZoomButtons(props) {
         <button
           className="zoomButton"
           onClick={() => {
-            if (prevZoomLevel < props.zoomRange.max) {
-              props.adjustZoomLevel(prevZoomLevel + 7);
-            }
-            props.canvasCam.current.object.position.z = props.zoomLevel;
+            zoomModel(props.canvasCam.current.object, 1.25);
           }}
         >
           <span className="material-symbols-outlined">remove</span>
@@ -284,6 +282,80 @@ export function ExampleInfo(props) {
       <h1>{currentExample.name}</h1>
       <p>{currentExample.info}</p>
       <span>- {currentExample.author}</span>
+    </div>
+  );
+}
+
+export function ControlsHelper() {
+  const [open, setOpen] = useState(true);
+
+  return (
+    <div className="controlsHelperWrapper">
+      <div className="header">
+        {open && <h2>Controls</h2>}
+        <button onClick={() => setOpen(!open)} className="closeButton">
+          <span className="material-symbols-outlined">
+            {open ? "close" : "question_mark"}
+          </span>
+        </button>
+      </div>
+
+      {open && (
+        <div className="controlsContainer">
+          <div className="item">
+            <div className="top">
+              <span className="symbol">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 41">
+                  <path
+                    id="Path_55"
+                    data-name="Path 55"
+                    d="M14,41a13.525,13.525,0,0,1-9.95-4.05A13.527,13.527,0,0,1,0,27V14A13.527,13.527,0,0,1,4.05,4.05,13.525,13.525,0,0,1,14,0a13.527,13.527,0,0,1,9.95,4.05A13.527,13.527,0,0,1,28,14V27a13.527,13.527,0,0,1-4.05,9.95A13.527,13.527,0,0,1,14,41m1.5-27H25a10.872,10.872,0,0,0-2.65-7.2A10.4,10.4,0,0,0,15.5,3.1ZM3,14h9.5V3.1A10.4,10.4,0,0,0,5.65,6.8,10.867,10.867,0,0,0,3,14M13.989,38a10.622,10.622,0,0,0,7.786-3.217A10.592,10.592,0,0,0,25,27V17H3V27a10.609,10.609,0,0,0,3.214,7.783A10.586,10.586,0,0,0,13.989,38"
+                  />
+                  <path
+                    id="Path_56"
+                    data-name="Path 56"
+                    d="M10.354,6.877h0v4.8H6.174c0-2.308,1.871-4.8,4.18-4.8"
+                  />
+                </svg>
+              </span>
+              <span>+</span>
+              <span class="symbol material-symbols-outlined">pan_tool_alt</span>
+            </div>
+            <div className="bottom">
+              <span className="text">LMB + Drag = Rotate</span>
+            </div>
+          </div>
+
+          <div className="item">
+            <div className="top">
+              <span class="material-symbols-outlined">
+                keyboard_control_key
+              </span>
+              <span>+</span>
+              <span className="symbol">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 41">
+                  <path
+                    id="Path_55"
+                    data-name="Path 55"
+                    d="M14,41a13.525,13.525,0,0,1-9.95-4.05A13.527,13.527,0,0,1,0,27V14A13.527,13.527,0,0,1,4.05,4.05,13.525,13.525,0,0,1,14,0a13.527,13.527,0,0,1,9.95,4.05A13.527,13.527,0,0,1,28,14V27a13.527,13.527,0,0,1-4.05,9.95A13.527,13.527,0,0,1,14,41m1.5-27H25a10.872,10.872,0,0,0-2.65-7.2A10.4,10.4,0,0,0,15.5,3.1ZM3,14h9.5V3.1A10.4,10.4,0,0,0,5.65,6.8,10.867,10.867,0,0,0,3,14M13.989,38a10.622,10.622,0,0,0,7.786-3.217A10.592,10.592,0,0,0,25,27V17H3V27a10.609,10.609,0,0,0,3.214,7.783A10.586,10.586,0,0,0,13.989,38"
+                  />
+                  <path
+                    id="Path_56"
+                    data-name="Path 56"
+                    d="M10.354,6.877h0v4.8H6.174c0-2.308,1.871-4.8,4.18-4.8"
+                  />
+                </svg>
+              </span>
+              <span>+</span>
+              <span class="symbol material-symbols-outlined">pan_tool_alt</span>
+            </div>
+
+            <div className="bottom">
+              <span className="text">Control + LMB + Drag = Pan</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

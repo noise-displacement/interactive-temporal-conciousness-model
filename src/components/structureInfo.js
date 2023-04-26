@@ -127,8 +127,8 @@ export const labels = {
   social: {
     name: "Norms",
     values: {
-      religious: { name: "Religious or State", value: 1 },
-      state: { name: "Religious and state", value: 2 },
+      religious: { name: "Religious", value: 1 },
+      state: { name: "State", value: 2 },
     },
   },
 

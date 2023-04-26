@@ -1,5 +1,5 @@
-import { Html, OrbitControls, Environment } from "@react-three/drei";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Html, OrbitControls } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
 import React, {
   Suspense,
   useCallback,
@@ -8,32 +8,28 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Controls } from "react-three-gui";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import ModelLoader from "../modules/ModelLoader";
 import { Null } from "../modules/ModelLoader";
 import { EffectComposer, Outline } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import {
-  GlobalControls,
-  ModelInfoContainer,
   UiTimeline,
   ModelZoomButtons,
   GlobalWireframeMode,
-  ExamplePicker,
   ClipMode,
   ExampleInfo,
   HideLabels,
+  ControlsHelper,
 } from "./modelControls";
-import * as THREE from "three";
 import { degToRad } from "three/src/math/MathUtils";
-import StructureControls, {
-  ModelOptions,
-  StructureController,
-} from "./structureController";
+import { ModelOptions } from "./structureController";
 import { colors, labels, structureTypes } from "./structureInfo";
-import ModelStructure from "../modules/ModelStructure";
-import { Link } from "react-router-dom";
+
+function preventBehavior(e) {
+  e.preventDefault();
+}
+
+document.addEventListener("touchmove", preventBehavior, { passive: false });
 
 function pushStructures(currentExample, options) {
   let currentStructures = [];
@@ -202,6 +198,7 @@ function ModelCanvas(props) {
       examplePicker: props.options.examplePicker,
       hideLabels: props.options.hideLabels,
       bottomControls: props.options.bottomControls,
+      controlsHelper: props.options.controlsHelper,
     }),
     [props.options]
   );
@@ -235,7 +232,16 @@ function ModelCanvas(props) {
 
   const selected = hovered ? [hovered] : undefined;
   const canvasCam = useRef();
+  console.log(canvasCam);
   const sphereRadius = 100;
+
+  function zoomModel(isZoomOut, scale) {
+    if (isZoomOut) {
+      canvasCam.current.dollyIn(scale);
+    } else {
+      canvasCam.current.dollyOut(scale);
+    }
+  }
 
   let axisTagDistance = 100;
   let axesHelper = useRef();
@@ -302,7 +308,7 @@ function ModelCanvas(props) {
     currentExample.structures[currentExample.structures.length - 1].startYear;
 
   useEffect(() => {
-    updateStructures();
+    //updateStructures();
     timelineLabel(
       yearScale,
       timelineLabels,
@@ -326,6 +332,12 @@ function ModelCanvas(props) {
       className={options.fullwidth ? "modelWrapper fullwidth" : "modelWrapper"}
     >
       <div className="modelContainer">
+        {options.controlsHelper ? (
+          <div className="controlsHelperContainer">
+            <ControlsHelper />
+          </div>
+        ) : <Null />}
+
         {options.modelInfo ? (
           <div className="exampleInfoContainer">
             <ExampleInfo currentExample={currentExample} />
@@ -340,24 +352,28 @@ function ModelCanvas(props) {
           <Null />
         )}
 
-        <div className="structureOptions">
-          {!props.modelRefresh ? (
-            currentStructures.map((structure, i) => {
-              //console.log(structure);
-              return (
-                <ModelOptions
-                  key={i}
-                  i={i}
-                  structure={structure}
-                  currentControls={currentControls}
-                  setCurrentControls={setCurrentControls}
-                />
-              );
-            })
-          ) : (
-            <Null />
-          )}
-        </div>
+        {options.modelControls ? (
+          <div className="structureOptions">
+            {!props.modelRefresh ? (
+              currentStructures.map((structure, i) => {
+                //console.log(structure);
+                return (
+                  <ModelOptions
+                    key={i}
+                    i={i}
+                    structure={structure}
+                    currentControls={currentControls}
+                    setCurrentControls={setCurrentControls}
+                  />
+                );
+              })
+            ) : (
+              <Null />
+            )}
+          </div>
+        ) : (
+          <Null />
+        )}
 
         {options.bottomControls ? (
           <div className="bottomControls">
@@ -408,7 +424,7 @@ function ModelCanvas(props) {
                 <ModelZoomButtons
                   zoomRange={zoomRange}
                   zoomLevel={zoomLevel}
-                  adjustZoomLevel={adjustZoomLevel}
+                  adjustZoomLevel={zoomModel}
                   canvasCam={canvasCam}
                 />
               ) : (
@@ -436,12 +452,13 @@ function ModelCanvas(props) {
             maxDistance={zoomRange.max}
             enableRotate={orbitControls}
             zoomSpeed={0.5}
+            screenSpacePanning={false}
           />
 
           <ambientLight />
           <pointLight position={[-100, 0, -100]} intensity={0.7} />
 
-          <group position={[-450, 0, 0]}>
+          <group position={[-2023 / 4, 0, 0]}>
             <group>
               <Suspense id="axis">
                 <mesh>

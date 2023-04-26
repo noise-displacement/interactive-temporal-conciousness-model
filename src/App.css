@@ -1,12 +1,24 @@
 * {
   margin: 0;
-  font-family: "Acumin Pro", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 16px;
   color: #1e3b56;
 }
 
 h1 {
   font-size: 2em;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+h1:before {
+  content: "";
+  position: absolute;
+  height: 70px;
+  margin-left: -16px;
+  width: 3px;
+  background: #c7b99c;
 }
 
 h2 {
@@ -39,6 +51,7 @@ h3 {
 .routeContainer {
   height: 100%;
   overflow: scroll;
+  box-sizing: border-box;
 }
 
 .ctaBtn {
@@ -89,9 +102,9 @@ input {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #eee;
   transition: 0.4s;
-  border-radius: 3.5px;
+  border-radius: 14px;
 }
 .toggleSwitch .slider:before {
   position: absolute;
@@ -100,12 +113,18 @@ input {
   width: 16px;
   left: 4px;
   bottom: 4px;
-  background-color: #eee;
+  background-color: #1e3b56;
   transition: 0.2s;
-  border-radius: 3.5px;
+  border-radius: 14px;
+}
+.toggleSwitch .slider:hover:before {
+  left: 8px;
+}
+.toggleSwitch input:checked + .slider:hover:before {
+  left: 0px;
 }
 .toggleSwitch input:checked + .slider {
-  background-color: #5c7790;
+  background-color: #f08e5f;
 }
 .toggleSwitch input:focus + .slider {
   box-shadow: 0 0 1px #5c7790;
@@ -118,6 +137,46 @@ input {
   height: 100%;
   width: 100%;
   display: flex;
+}
+.canvasContainer .controlsHelperContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  margin: 16px;
+}
+.canvasContainer .controlsHelperContainer .controlsHelperWrapper {
+  background: #fff;
+  padding: 16px;
+  border-radius: 7px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+}
+.canvasContainer .controlsHelperContainer .controlsHelperWrapper .header {
+  display: flex;
+  justify-content: space-between;
+}
+.canvasContainer .controlsHelperContainer .controlsHelperWrapper .header .closeButton {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #1e3b56;
+}
+.canvasContainer .controlsHelperContainer .controlsHelperWrapper .controlsContainer .item .top {
+  display: flex;
+  align-items: center;
+}
+.canvasContainer .controlsHelperContainer .controlsHelperWrapper .controlsContainer .item .top span {
+  font-size: 30px;
+}
+.canvasContainer .controlsHelperContainer .controlsHelperWrapper .controlsContainer .item .top span svg {
+  height: 30px;
+  fill: #1e3b56;
+}
+.canvasContainer .controlsHelperContainer .controlsHelperWrapper .controlsContainer .item .top span:not(:last-child) {
+  margin-right: 16px;
+}
+.canvasContainer .controlsHelperContainer .controlsHelperWrapper .controlsContainer .item:not(:last-child) {
+  margin-bottom: 16px;
 }
 .canvasContainer .exampleInfoContainer {
   position: absolute;
@@ -158,7 +217,6 @@ input {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  padding: 53px 16px 16px 16px;
 }
 .canvasContainer .modelWrapper .modelContainer {
   position: relative;
@@ -309,6 +367,7 @@ input {
 }
 .canvasContainer .modelWrapper .modelContainer .mainCanvas {
   z-index: 0;
+  cursor: pointer;
 }
 .canvasContainer .modelWrapper .modelContainer .mainCanvas .eventTag {
   background: #fff;
@@ -354,10 +413,11 @@ input {
   display: flex;
 }
 .mainNav .container .holder a {
-  color: #1e3b56;
-  background: #eee;
+  color: #fff;
+  background: #485d71;
   border-radius: 7px;
   text-decoration: none;
+  transition: all 0.1s ease-in-out;
 }
 .mainNav .container .holder a,
 .mainNav .container .holder span {
@@ -367,8 +427,12 @@ input {
 }
 .mainNav .container .holder span {
   border-radius: 7px;
-  color: #fff;
-  background: #485d71;
+  color: #1e3b56;
+  background: #eee;
+}
+.mainNav .container .holder a:hover {
+  transform: translateY(-2px);
+  background: #7790a8;
 }
 
 .modelInfoContainer {
@@ -467,7 +531,7 @@ input {
 }
 .abstractContainer .linkButton:hover {
   background: #5c7790;
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 .abstractContainer .canvasContainer {
   width: 40vw;
@@ -501,20 +565,6 @@ input {
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-.abstractContainer .textWrapper .textContainer .headerContainer .text h1 {
-  font-size: 2em;
-  margin: 0;
-  padding: 0;
-  position: relative;
-}
-.abstractContainer .textWrapper .textContainer .headerContainer .text h1:before {
-  content: "";
-  position: absolute;
-  height: 100px;
-  margin-left: -16px;
-  width: 3px;
-  background: #c7b99c;
 }
 .abstractContainer .textWrapper .textContainer .headerContainer .readMoreContainer {
   margin-top: 16px;
@@ -628,10 +678,21 @@ input {
   color: #fff;
 }
 
+#modelPageContainer {
+  padding: 53px 0 0 0;
+}
+
 .exampleText {
   background-color: #1e3b56;
+  display: flex;
+}
+.exampleText .container {
+  display: flex;
+  flex-direction: column;
   margin-top: 53px;
-  min-height: 100svh;
+  box-sizing: border-box;
+  flex-grow: 1;
+  max-width: 100svw;
 }
 .exampleText .container .examplePicker {
   display: flex;
@@ -666,7 +727,11 @@ input {
   transform: scale(1.05);
 }
 .exampleText .container .exampleContainer {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-sizing: border-box;
+  height: 70svh;
+  padding: 0 16px;
 }
 .exampleText .container .exampleContainer h1 {
   color: #fff;
@@ -681,4 +746,81 @@ input {
 }
 .exampleText .container .exampleContainer .right {
   width: 50svw;
+}
+.exampleText .container .exampleContainer .right .modelWrapper {
+  padding: 16px;
+}
+.exampleText .container .exampleModelsContainer {
+  height: 50svh;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px;
+}
+.exampleText .container .exampleModelsContainer .exampleModelsWrapper {
+  background: #fff;
+  border-radius: 7px;
+  height: 100%;
+}
+.exampleText .container .exampleModelsContainer .modelsHeader {
+  display: flex;
+  flex-direction: row;
+  margin: 16px;
+  overflow-x: scroll;
+}
+.exampleText .container .exampleModelsContainer .modelsHeader .item {
+  position: relative;
+}
+.exampleText .container .exampleModelsContainer .modelsHeader .item button {
+  border: 0;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  background: 0;
+}
+.exampleText .container .exampleModelsContainer .modelsHeader .item button img {
+  width: 40px;
+  height: 40px;
+}
+.exampleText .container .exampleModelsContainer .modelsHeader .item button img:not(:last-child) {
+  margin-right: 16px;
+}
+.exampleText .container .exampleModelsContainer .modelsHeader .item button span {
+  white-space: nowrap;
+}
+.exampleText .container .exampleModelsContainer .modelsHeader .item .active:after {
+  content: "";
+  position: absolute;
+  background: #1e3b56;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.exampleText .container .exampleModelsContainer .modelsHeader .item button:hover:after {
+  content: "";
+  position: absolute;
+  background: #1e3b56;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.exampleText .container .exampleModelsContainer .modelsHeader .item:not(:last-child) {
+  margin-right: 16px;
+}
+.exampleText .container .exampleModelsContainer .modelsInfo {
+  display: flex;
+  flex-direction: row;
+  padding: 0 16px;
+  justify-content: space-between;
+}
+.exampleText .container .exampleModelsContainer .modelsInfo .left {
+  width: 70%;
+  padding-right: 16px;
+}
+.exampleText .container .exampleModelsContainer .modelsInfo .right {
+  width: 30%;
+}
+.exampleText .container .exampleModelsContainer .modelsInfo .right span {
+  display: block;
 }/*# sourceMappingURL=App.css.map */

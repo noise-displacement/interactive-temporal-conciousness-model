@@ -14,7 +14,7 @@ function Example() {
     labels: false,
     clipmode: true,
     globalYearControl: true,
-    modelControls: false,
+    modelControls: true,
     wireframeMode: true,
     outlines: false,
     modelInfo: false,
@@ -25,7 +25,8 @@ function Example() {
     timelineLabels: true,
     examplePicker: true,
     hideLabels: true,
-    bottomControls: true
+    bottomControls: true,
+    controlsHelper: true,
   };
 
   return (

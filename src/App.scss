@@ -20,13 +20,25 @@ $boxShadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
 
 * {
   margin: 0;
-  font-family: "Acumin Pro", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 16px;
   color: $blue;
 }
 
 h1 {
   font-size: 2em;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+h1:before {
+  content: "";
+  position: absolute;
+  height: 70px;
+  margin-left: -$padding;
+  width: 3px;
+  background: $accent;
 }
 
 h2 {
@@ -60,6 +72,7 @@ h3 {
 .routeContainer {
   height: 100%;
   overflow: scroll;
+  box-sizing: border-box;
 }
 
 .ctaBtn {
@@ -113,10 +126,10 @@ input {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: $lightGrey;
     -webkit-transition: 0.2s;
     transition: 0.4s;
-    border-radius: calc($br / 2);
+    border-radius: calc($br * 2);
   }
 
   .slider:before {
@@ -126,14 +139,22 @@ input {
     width: 16px;
     left: 4px;
     bottom: 4px;
-    background-color: $lightGrey;
+    background-color: $blue;
     -webkit-transition: 0.2s;
     transition: 0.2s;
-    border-radius: calc($br / 2);
+    border-radius: calc($br * 2);
+  }
+
+  .slider:hover:before {
+    left: 8px;
+  }
+
+  input:checked + .slider:hover:before {
+    left: 0px;
   }
 
   input:checked + .slider {
-    background-color: $lightBlue;
+    background-color: $orange;
   }
 
   input:focus + .slider {
@@ -154,6 +175,61 @@ input {
   height: 100%;
   width: 100%;
   display: flex;
+
+  .controlsHelperContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    margin: $padding;
+
+    .controlsHelperWrapper {
+      background: $white;
+      padding: $padding;
+      border-radius: $br;
+      box-shadow: $boxShadow;
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+
+        .closeButton {
+          background: none;
+          border: 0;
+          cursor: pointer;
+          color: $blue;
+        }
+      }
+
+      .controlsContainer {
+
+        .item {
+
+          .top {
+            display: flex;
+            align-items: center;
+
+            span {
+              font-size: 30px;
+
+              svg {
+                height: 30px;
+                fill: $blue;
+              }
+            }
+
+            span:not(:last-child) {
+              margin-right: $padding;
+            }
+          }
+        }
+
+        .item:not(:last-child) {
+          margin-bottom: $padding;
+        }
+      }
+    }
+  }
 
   .exampleInfoContainer {
     position: absolute;
@@ -203,7 +279,6 @@ input {
     height: 100%;
     width: 100%;
     box-sizing: border-box;
-    padding: $topNavSpace $padding $padding $padding;
 
     .modelContainer {
       position: relative;
@@ -381,6 +456,7 @@ input {
 
       .mainCanvas {
         z-index: 0;
+        cursor: pointer;
 
         .eventTag {
           background: $white;
@@ -439,10 +515,11 @@ input {
       display: flex;
 
       a {
-        color: $blue;
-        background: $lightGrey;
+        color: $white;
+        background: darken($lightBlue, 10%);
         border-radius: $br;
         text-decoration: none;
+        transition: all 0.1s ease-in-out;
       }
 
       a,
@@ -454,8 +531,13 @@ input {
 
       span {
         border-radius: $br;
-        color: $white;
-        background: darken($lightBlue, 10%);
+        color: $blue;
+        background: $lightGrey;
+      }
+
+      a:hover {
+        transform: translateY(-2px);
+        background: lighten($lightBlue, 10%);
       }
     }
   }
@@ -571,7 +653,7 @@ input {
 
   .linkButton:hover {
     background: $lightBlue;
-    transform: scale(1.05);
+    transform: translateY(-2px);
   }
 
   .canvasContainer {
@@ -608,24 +690,6 @@ input {
         display: flex;
         flex-direction: column;
         justify-content: center;
-
-        .text {
-          h1 {
-            font-size: 2em;
-            margin: 0;
-            padding: 0;
-            position: relative;
-          }
-
-          h1:before {
-            content: "";
-            position: absolute;
-            height: 100px;
-            margin-left: -$padding;
-            width: 3px;
-            background: $accent;
-          }
-        }
 
         .readMoreContainer {
           margin-top: $padding;
@@ -767,12 +831,22 @@ input {
   }
 }
 
+#modelPageContainer {
+  padding: $topNavSpace 0 0 0;
+}
+
 .exampleText {
   background-color: $blue;
-  margin-top: calc($topNavSpace);
-  min-height: 100svh;
+  display: flex;
 
   .container {
+    display: flex;
+    flex-direction: column;
+    margin-top: calc($topNavSpace);
+    box-sizing: border-box;
+    flex-grow: 1;
+    max-width: 100svw;
+
     .examplePicker {
       display: flex;
       flex-direction: row;
@@ -812,7 +886,11 @@ input {
     }
 
     .exampleContainer {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      box-sizing: border-box;
+      height: 70svh;
+      padding: 0 $padding;
 
       h1 {
         color: $white;
@@ -830,6 +908,98 @@ input {
 
       .right {
         width: 50svw;
+
+        .modelWrapper {
+          padding: $padding;
+        }
+      }
+    }
+
+    .exampleModelsContainer {
+      height: 50svh;
+      box-sizing: border-box;
+      width: 100%;
+      padding: $padding;
+
+      .exampleModelsWrapper {
+        background: $white;
+        border-radius: $br;
+        height: 100%;
+      }
+
+      .modelsHeader {
+        display: flex;
+        flex-direction: row;
+        margin: $padding;
+        overflow-x: scroll;
+
+        .item {
+          position: relative;
+
+          button {
+            border: 0;
+            padding: $padding;
+            display: flex;
+            align-items: center;
+            background: 0;
+
+            img {
+              width: 40px;
+              height: 40px;
+            }
+
+            img:not(:last-child) {
+              margin-right: $padding;
+            }
+
+            span {
+              white-space: nowrap;
+            }
+          }
+
+          .active:after {
+            content: "";
+            position: absolute;
+            background: $blue;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+          }
+
+          button:hover:after {
+            content: "";
+            position: absolute;
+            background: $blue;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+          }
+        }
+
+        .item:not(:last-child) {
+          margin-right: $padding;
+        }
+      }
+
+      .modelsInfo {
+        display: flex;
+        flex-direction: row;
+        padding: 0 $padding;
+        justify-content: space-between;
+
+        .left {
+          width: 70%;
+          padding-right: $padding; 
+        }
+
+        .right {
+          width: 30%;
+          span {
+            display: block;
+          }
+        }
       }
     }
   }

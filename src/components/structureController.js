@@ -373,6 +373,17 @@ export function ModelOptions(props) {
                   }}
                 ></input>
               </div>
+
+              {/* <div className="checkbox">
+                <label htmlFor="">{currentLabels.social}</label>
+                <input
+                  type="checkbox"
+                  value={currentControls[i].sizes.social}
+                  onChange={(e) => {
+
+                  }}
+                ></input>
+              </div> */}
             </>
           )}
         </div>
