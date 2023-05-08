@@ -1,11 +1,11 @@
 import { useState } from "react";
 import ModelCanvas from "../components/ModelCanvas";
-import { examples, labels, structureTypes } from "../components/structureInfo";
+import { examples, labels } from "../components/structureInfo";
 import Footer from "../components/footer";
+import { Link } from "react-router-dom";
 
 function ExampleText() {
   const [currentExample, setCurrentExample] = useState(examples[0]);
-  //console.log("CurrentExample", currentExample);
   const [modelRefresh, setModelRefresh] = useState(false);
   const [currentModelInfo, setCurrentModelInfo] = useState(
     examples[0].structures[0]
@@ -14,8 +14,6 @@ function ExampleText() {
   const spaceValues = Object.values(labels.space.values);
   const socialValues = Object.values(labels.social.values);
   const structuralValues = Object.values(labels.structural.values);
-
-  //console.log(currentExample);
 
   const options = {
     labels: true,
@@ -41,6 +39,7 @@ function ExampleText() {
       <div className="exampleText">
         <div className="container">
           <div className="examplePicker">
+          <span className="breadcrumbTitle">Examples: </span>
             {examples.map((example, index) => {
               return (
                 <div className="item" key={index}>
@@ -55,10 +54,15 @@ function ExampleText() {
 
           <div className="exampleContainer">
             <div className="left">
-              <h1>{currentExample.name}</h1>
+              <div className="wrapper">
 
-              <div className="textContainer">
-                <p>{currentExample.info}</p>
+                <h1>{currentExample.name}</h1>
+
+                <div className="textContainer">
+                  <p
+                    dangerouslySetInnerHTML={{ __html: currentExample.info }}
+                  ></p>
+                </div>
               </div>
             </div>
 
@@ -101,10 +105,10 @@ function ExampleText() {
               </div>
 
               <div className="modelsInfo">
-                <div className="left">
-                  {/* Trenger info */}
-                  {currentModelInfo.type.object.infoText}
-                </div>
+                <div
+                  className="left"
+                  dangerouslySetInnerHTML={{ __html: currentModelInfo.info }}
+                ></div>
 
                 <div className="right">
                   <span>
@@ -123,6 +127,23 @@ function ExampleText() {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="publishInfo">
+            <span className="date">Published: {currentExample.date}</span>
+            <br />
+            <span className="author">- {currentExample.author}</span>
+          </div>
+
+          <div className="modelsFooter">
+            <Link className="linkButton" to="/">
+              <span className="material-symbols-outlined">arrow_back</span>{" "}
+              Model theory
+            </Link>
+
+            <Link className="linkButton" to="/model">
+              Model {" "} <span className="material-symbols-outlined">arrow_forward</span>
+            </Link>
           </div>
         </div>
       </div>

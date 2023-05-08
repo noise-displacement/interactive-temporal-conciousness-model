@@ -1,22 +1,16 @@
-import {
-  ArcballControls,
-  Html,
-  OrbitControls,
-  PresentationControls,
-  TrackballControls,
-} from "@react-three/drei";
+import { Html } from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import ModelCanvas from "../components/ModelCanvas";
-import { examples, models } from "../components/structureInfo";
+import { models } from "../components/structureInfo";
 import { structureTypes } from "../components/structureInfo";
 import * as THREE from "three";
-import { gsap } from "gsap";
 import Footer from "../components/footer";
 import { deg_to_rad } from "../modules/ModelLoader";
-import { Remarkable } from "remarkable";
+//import { Remarkable } from "remarkable";
 import { Link } from "react-router-dom";
+
+let offset = 130;
 
 const modelTexts = {
   events: {
@@ -43,19 +37,19 @@ const modelTexts = {
 
   axis: {
     title: "Axes",
-    text: "**Space:** Space dimensions are registered in five levels: microcosmic, local, national, regional (transnational), and universal.  The microcosmic level refers to small groups of people, as for example families or professional environments, which have a power over, or at least influence, individual decisions and actions. The local level refers to towns, cities, or local areas, as for example islands. The national level is not simply political/geographical, but also cultural, including the relevant national diasporas. The regional level might refer to geographical areas, as for example Scandinavia or Latin America, or to cultural systems, as for example the Muslim or the Western worlds. **Norms:** The axis of norms illustrates whether a timespace is related to social rules and cultural norms or included in religious rules and state laws. The difference between them is that social rules and cultural norms have only normative power (sometimes too strong), while religious rules and state laws are related to consequences. In most cases, religious rules and state laws are more powerful than social rules and cultural norms, but there are cases in which the opposite is true. This is why we “weight” all of them equally.",
+    text: "<strong>Space</strong> dimensions are registered in five levels: microcosmic, local, national, regional (transnational), and universal.  The microcosmic level refers to small groups of people, as for example families or professional environments, which have a power over, or at least influence, individual decisions and actions. The local level refers to towns, cities, or local areas, as for example islands. The national level is not simply political/geographical, but also cultural, including the relevant national diasporas. The regional level might refer to geographical areas, as for example Scandinavia or Latin America, or to cultural systems, as for example the Muslim or the Western worlds. <br /><br /><strong>Norms:</strong> The axis of norms illustrates whether a timespace is related to social rules and cultural norms or included in religious rules and state laws. The difference between them is that social rules and cultural norms have only normative power (sometimes too strong), while religious rules and state laws are related to consequences. In most cases, religious rules and state laws are more powerful than social rules and cultural norms, but there are cases in which the opposite is true. This is why we “weight” all of them equally.",
   },
 };
 
 const setPos = (model, scrollY, lastModel) => {
-  let pos = model + scrollY / 100;
-  let lastPos = lastModel + scrollY / 100;
+  let pos = model + scrollY / offset;
+  let lastPos = lastModel + scrollY / offset;
   let rotation = 0;
 
-  if (scrollY < 100) {
+  if (scrollY < offset) {
     pos = -scrollY / 15;
   } else if (pos < 0) {
-    pos = model + scrollY / 100;
+    pos = model + scrollY / offset;
   } else {
     pos = 0;
   }
@@ -77,18 +71,16 @@ function scrollToView(e, otherElement) {
   }
 }
 
-const md = new Remarkable();
+// const md = new Remarkable();
 
-function renderMarkdownToHTML(markdown) {
-  // This is ONLY safe because the output HTML
-  // is shown to the same user, and because you
-  // trust this Markdown parser to not have bugs.
-  const renderedHTML = md.render(markdown);
-  let newText = renderedHTML;
-  newText = renderedHTML.replace(/<strong>/g, "<br /><strong>");
-  //console.log(newText);
-  return { __html: newText };
-}
+// export function renderMarkdownToHTML(markdown) {
+//   // This is ONLY safe because the output HTML
+//   // is shown to the same user, and because you
+//   // trust this Markdown parser to not have bugs.
+//   const renderedHTML = md.render(markdown);
+//   let newText = renderedHTML.replace(/<[^>]+>/g, );
+//   return { __html: newText };
+// }
 
 function Abstract() {
   const sphere = useLoader(GLTFLoader, models.sphere.path);
@@ -153,6 +145,10 @@ function Abstract() {
   //   };
   // }, []);
 
+  //onScroll={e => setScrollY(e.target.scrollTop)}
+
+  document.addEventListener("scroll", () => {setScrollY(window.scrollY)});
+
   const options = {
     labels: false,
     splitMode: true,
@@ -169,13 +165,15 @@ function Abstract() {
 
   useEffect(() => {
     pos.current = {
-      axis: -modelRefs.current[5].current.offsetTop / 100,
-      sphere: -modelRefs.current[4].current.offsetTop / 100,
-      hedron: -modelRefs.current[3].current.offsetTop / 100,
-      cube: -modelRefs.current[2].current.offsetTop / 100,
-      cone: -modelRefs.current[1].current.offsetTop / 100,
-      event: -modelRefs.current[0].current.offsetTop / 100,
+      axis: -modelRefs.current[5].current.offsetTop / offset,
+      sphere: -modelRefs.current[4].current.offsetTop / offset,
+      hedron: -modelRefs.current[3].current.offsetTop / offset,
+      cube: -modelRefs.current[2].current.offsetTop / offset,
+      cone: -modelRefs.current[1].current.offsetTop / offset,
+      event: -modelRefs.current[0].current.offsetTop / offset,
     };
+
+    console.log(modelRefs.current[5].current.offsetTop);
   });
 
   return (
@@ -195,6 +193,12 @@ function Abstract() {
     // </>
 
     <>
+      <button
+        className="scrollTopButton linkButton"
+        onClick={(e) => scrollToView(e, "headerContainer")}
+      >
+        To top
+      </button>
       <div className="abstractContainer">
         <div className="canvasContainer">
           <Canvas gl={{ localClippingEnabled: true, far: 20000, near: 0 }}>
@@ -369,19 +373,8 @@ function Abstract() {
             {/* </PresentationControls> */}
           </Canvas>
         </div>
-        <div
-          className="textWrapper"
-          onScroll={(e) => {
-            setScrollY(e.target.scrollTop);
-          }}
-        >
-          <button
-            className="scrollTopButton linkButton"
-            onClick={(e) => scrollToView(e, "headerContainer")}
-          >
-            To top
-          </button>
-
+        <div className="textWrapper">
+          {/* <div className="canvasHider"></div> */}
           <div className="textContainer" id="textContainer">
             <div className="headerContainer" id="headerContainer">
               <div className="text">
@@ -421,7 +414,7 @@ function Abstract() {
             </div>
 
             {Object.keys(modelTexts).map((text, i) => {
-              const markup = renderMarkdownToHTML(modelTexts[text].text);
+              //const markup = renderMarkdownToHTML(modelTexts[text].text);
               return (
                 <div
                   ref={modelRefs.current[i]}
@@ -430,7 +423,9 @@ function Abstract() {
                   id={modelTexts[text].title}
                 >
                   <h2>{modelTexts[text].title}</h2>
-                  <p dangerouslySetInnerHTML={markup}></p>
+                  <p
+                    dangerouslySetInnerHTML={{ __html: modelTexts[text].text }}
+                  ></p>
                 </div>
               );
             })}
@@ -442,14 +437,14 @@ function Abstract() {
                 some examples on the Example page.
               </p>
               <div className="buttonContainer">
-                <Link to={"/model"} className="linkButton">
-                  Model
+                <Link to={"/example"} className="linkButton">
+                  Example
                   <span className="material-symbols-outlined">
                     arrow_forward
                   </span>
                 </Link>
-                <Link to={"/example"} className="linkButton">
-                  Example
+                <Link to={"/model"} className="linkButton">
+                  Model
                   <span className="material-symbols-outlined">
                     arrow_forward
                   </span>
@@ -459,7 +454,6 @@ function Abstract() {
           </div>
         </div>
       </div>
-
       <Footer />
     </>
   );

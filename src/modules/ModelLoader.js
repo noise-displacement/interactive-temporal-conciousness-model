@@ -1,17 +1,8 @@
-import { Html, Hud, OrthographicCamera, ScreenSpace } from "@react-three/drei";
-import { useLoader, useThree } from "@react-three/fiber";
-import React, { Suspense, useEffect, useState } from "react";
-import { useControl } from "react-three-gui";
+import { useLoader } from "@react-three/fiber";
+import React, { Suspense, useEffect } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import { useRef } from "react";
-import {
-  StructureController,
-  StructureSlider,
-  useStructureSlider,
-} from "../components/structureController";
-
-import useModelOptions from "../store/useModelOptions";
 import { structureTypes } from "../components/structureInfo";
 
 export function deg_to_rad(deg) {

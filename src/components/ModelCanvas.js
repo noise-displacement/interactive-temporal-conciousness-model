@@ -29,8 +29,6 @@ function preventBehavior(e) {
   e.preventDefault();
 }
 
-document.addEventListener("touchmove", preventBehavior, { passive: false });
-
 function pushStructures(currentExample, options) {
   let currentStructures = [];
 
@@ -203,6 +201,8 @@ function ModelCanvas(props) {
     [props.options]
   );
 
+  //console.log(options);
+
   let currentExample = props.currentExample;
   //console.log(currentExample);
   const [clipmode, setClipmode] = useState(false);
@@ -232,7 +232,6 @@ function ModelCanvas(props) {
 
   const selected = hovered ? [hovered] : undefined;
   const canvasCam = useRef();
-  console.log(canvasCam);
   const sphereRadius = 100;
 
   function zoomModel(isZoomOut, scale) {
@@ -245,6 +244,7 @@ function ModelCanvas(props) {
 
   let axisTagDistance = 100;
   let axesHelper = useRef();
+  const canvasRef = useRef();
 
   const yearScale = useMemo(
     () => ({ min: fromYear, max: toYear, modelScale: 100 }),
@@ -301,6 +301,7 @@ function ModelCanvas(props) {
     y: colors.blue,
     z: colors.blue,
   };
+  let modelCenter = 200;
 
   let modelGroup = useRef();
   let currentUltrastructureSize =
@@ -316,6 +317,9 @@ function ModelCanvas(props) {
       labelScaleFactor,
       currentUltrastructureSize
     );
+    canvasRef.current.addEventListener("click", () => {
+      document.addEventListener("touchmove", preventBehavior, { passive: false });
+    })
   }, [
     currentExample,
     options,
@@ -404,7 +408,7 @@ function ModelCanvas(props) {
             </div>
 
             <div className="controlContainer">
-              {options.timeline || props.modelRefresh !== true ? (
+              {options.timeline && props.modelRefresh !== true ? (
                 <Suspense>
                   <UiTimeline
                     globalYearControl={options.globalYearControl}
@@ -444,6 +448,7 @@ function ModelCanvas(props) {
             // background: "linear-gradient(315deg, rgba(39,75,109,1) 0%, rgba(27,52,76,1) 100%)"
           }}
           camera={{ position: [0, 100, timelineYears], far: 20000 }}
+          ref={canvasRef}
         >
           <OrbitControls
             ref={canvasCam}
@@ -452,13 +457,12 @@ function ModelCanvas(props) {
             maxDistance={zoomRange.max}
             enableRotate={orbitControls}
             zoomSpeed={0.5}
-            screenSpacePanning={false}
           />
 
           <ambientLight />
           <pointLight position={[-100, 0, -100]} intensity={0.7} />
 
-          <group position={[-2023 / 4, 0, 0]}>
+          <group position={[-modelCenter, 0, 0]}>
             <group>
               <Suspense id="axis">
                 <mesh>
@@ -471,7 +475,7 @@ function ModelCanvas(props) {
 
                 <mesh
                   rotation={[0, degToRad(90), 0]}
-                  position={[(2023 * 2) / 10 + 45.4, 0, 0]}
+                  position={[modelCenter, 0, 0]}
                 >
                   <boxGeometry
                     args={[timelineYears * 10, axesScale, axesScale]}
@@ -481,13 +485,17 @@ function ModelCanvas(props) {
 
                 <mesh
                   rotation={[0, 0, degToRad(90)]}
-                  position={[(2023 * 2) / 10 + 45.4, 0, 0]}
+                  position={[modelCenter, 0, 0]}
                 >
                   <boxGeometry
                     args={[timelineYears * 10, axesScale, axesScale]}
                   />
                   <meshPhongMaterial color={axisColors.y} />
                 </mesh>
+
+                <Html position={[modelCenter + 500, 0, 0]}><div className="axisLabel">Time</div></Html>
+                <Html position={[modelCenter, 500, 0]}><div className="axisLabel">Norms</div></Html>
+                <Html position={[modelCenter, 0, -700]}><div className="axisLabel">Space</div></Html>
 
                 {hideLabels ? (
                   structureLabels.map((array) => {

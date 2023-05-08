@@ -5,7 +5,7 @@ $blue: #1e3b56;
 $lightBlue: #5c7790;
 $lightGrey: #eee;
 $accent: #c7b99c;
-$orange: #f08e5f;
+$orange: #fc8803;
 $textOutline: -0.5px -0.5px 0 $white, 0.5px -0.5px 0 $white,
   -0.5px 0.5px 0 $white, 0.5px 0.5px 0 $white;
 
@@ -52,6 +52,7 @@ p {
 
 body {
   background-color: $blue;
+  overflow-x: hidden;
 }
 
 #root {
@@ -71,7 +72,6 @@ h3 {
 
 .routeContainer {
   height: 100%;
-  overflow: scroll;
   box-sizing: border-box;
 }
 
@@ -88,6 +88,33 @@ h3 {
   span {
     margin-right: $padding;
   }
+}
+
+.linkButton {
+  border: 0;
+  background: $blue;
+  color: $white;
+  cursor: pointer;
+  border-radius: $br;
+  transition: all 0.1s ease-in-out;
+  position: relative;
+  display: block;
+  float: left;
+  display: flex;
+  align-items: center;
+  padding: 0.7em 1.4em;
+  text-decoration: none;
+
+  .material-symbols-outlined {
+    position: relative;
+    top: 25%;
+    color: $white;
+  }
+}
+
+.linkButton:hover {
+  background: $lightBlue;
+  transform: translateY(-2px);
 }
 
 input {
@@ -192,19 +219,20 @@ input {
       .header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         .closeButton {
           background: none;
           border: 0;
           cursor: pointer;
           color: $blue;
+          padding: 0;
+          margin: 0;
         }
       }
 
       .controlsContainer {
-
         .item {
-
           .top {
             display: flex;
             align-items: center;
@@ -343,7 +371,8 @@ input {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        background-color: $blue;
+        background-color: rgba(30, 59, 86, 0.8);
+        backdrop-filter: blur(4px);
         z-index: 1001;
         padding: $padding;
         box-sizing: border-box;
@@ -361,6 +390,7 @@ input {
           display: flex;
           box-sizing: border-box;
           position: relative;
+          width: 225px;
 
           .toggleSwitch:not(:last-child) {
             margin-right: $padding;
@@ -371,12 +401,11 @@ input {
           margin-right: $padding;
         }
 
-        .controlContainer:nth-child(2) {
-          flex-grow: 1;
-        }
-
         .controlContainer:last-child {
           margin-left: $padding;
+          flex-direction: column;
+          align-items: flex-end;
+          justify-content: center;
         }
 
         .zoomButtonsContainer {
@@ -397,6 +426,10 @@ input {
             }
           }
 
+          .zoomButton:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+          }
+
           .zoomButton:active {
             background: rgba(255, 255, 255, 0.9);
           }
@@ -411,13 +444,17 @@ input {
         #timeline {
           position: relative;
           z-index: 10;
-          width: 100%;
           box-sizing: border-box;
 
           .wrapper {
             box-sizing: border-box;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
+
+            span {
+              margin: 0 $padding;
+            }
 
             .yearInput {
               display: flex;
@@ -428,25 +465,15 @@ input {
               }
             }
 
-            .lineContainer {
-              position: relative;
-              width: 100%;
-              display: flex;
-              align-items: center;
-              box-sizing: border-box;
-              padding: 0 $padding;
+            .icon {
+              height: 20px;
 
-              .line {
-                background: $blue;
-                width: 100%;
-                height: 3px;
+              svg {
+                height: 100%;
+                fill: $white;
 
-                .event {
-                  position: absolute;
-                  height: 12px;
-                  width: 12px;
-                  margin-top: -5px;
-                  background: $orange;
+                line {
+                  stroke: $white;
                 }
               }
             }
@@ -463,6 +490,11 @@ input {
           padding: 5px;
           border-radius: $br;
           box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .axisLabel {
+          text-shadow: $textOutline;
+          font-size: .7em;
         }
 
         .timelineLabel {
@@ -506,13 +538,14 @@ input {
 
   .container {
     box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     background: $blue;
 
     .holder {
       box-sizing: border-box;
       display: flex;
+      align-items: center;
 
       a {
         color: $white;
@@ -535,9 +568,45 @@ input {
         background: $lightGrey;
       }
 
+      .title {
+        color: $white;
+        background: 0;
+      }
+
       a:hover {
         transform: translateY(-2px);
         background: lighten($lightBlue, 10%);
+      }
+    }
+
+    .holder:nth-child(2) {
+      justify-content: center;
+    }
+
+    .holder:nth-child(3) {
+      justify-content: flex-end;
+    }
+
+    .logo {
+      a {
+        padding: 0;
+        background: 0;
+        margin: 0;
+        display: flex;
+      }
+
+      a:hover {
+        background: 0;
+      }
+
+      img {
+        height: 48px;
+        margin-left: 4px;
+      }
+
+      span {
+        background: 0;
+        color: $white;
       }
     }
   }
@@ -604,12 +673,21 @@ input {
   min-height: 100svh;
   .wrapper {
     padding-top: $topNavSpace;
+    padding-bottom: $bottomNavSpace;
     display: flex;
     justify-content: center;
 
     .textContainer {
       padding-top: calc($padding * 10);
       width: 50%;
+
+      .buttonContainer {
+        margin-top: $padding;
+
+        .linkButton:not(:last-child) {
+          margin-right: $padding;
+        }
+      }
     }
   }
 }
@@ -618,14 +696,20 @@ input {
   height: 100vh;
 }
 
+.scrollTopButton {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: calc($padding * 2);
+  z-index: 10000;
+}
+
 .abstractContainer {
   display: flex;
   flex-direction: row;
   background: $white;
   position: relative;
   box-sizing: border-box;
-  height: 100vh;
-  overflow: scroll;
 
   .buttonContainer {
     margin-top: $padding;
@@ -635,54 +719,24 @@ input {
     }
   }
 
-  .linkButton {
-    border: 0;
-    padding: 0.7em 1.4em;
-    background: $blue;
-    color: $white;
-    cursor: pointer;
-    border-radius: $br;
-    transition: all 0.1s ease-in-out;
-
-    .material-symbols-outlined {
-      position: relative;
-      top: 25%;
-      color: $white;
-    }
-  }
-
-  .linkButton:hover {
-    background: $lightBlue;
-    transform: translateY(-2px);
-  }
-
   .canvasContainer {
     width: 40vw;
-    height: 100%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
   }
 
   .textWrapper {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    overflow-y: scroll;
+    width: 60vw;
+    position: relative;
     left: 0;
 
-    .scrollTopButton {
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      margin: calc($padding * 2);
-      z-index: 10000;
-    }
-
     .textContainer {
-      position: absolute;
-      right: 0;
+      position: relative;
+      //right: calc((-100vw) + 60vw);
       width: 60vw;
       padding: 0 calc($padding * 6);
       box-sizing: border-box;
-      height: 100vh;
 
       .headerContainer {
         padding: calc($padding * 2) 0;
@@ -699,7 +753,7 @@ input {
       }
 
       .textBlock {
-        height: 100svh;
+        height: 70svh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -709,6 +763,26 @@ input {
         h2 {
           margin-bottom: $padding;
         }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .abstractContainer {
+    flex-direction: column;
+
+    .canvasContainer {
+      width: 100vw;
+      height: 40vh;
+      background-color: $white;
+      padding: $padding;
+    }
+
+    .textWrapper {
+      .textContainer {
+        width: 100vw;
+        height: 50vh;
       }
     }
   }
@@ -752,6 +826,10 @@ input {
       span {
         color: $black;
       }
+
+      .dark {
+        color: $white;
+      }
     }
 
     .openOptions {
@@ -793,10 +871,29 @@ input {
   margin-bottom: calc($padding * 6);
   background: $blue;
 
+  .aboutContainer {
+    position: relative;
+    bottom: 0;
+    margin: $padding * 4;
+    z-index: 10000000;
+
+    .wrapper {
+      box-shadow: $boxShadow;
+      border-radius: $br;
+      background-color: $white;
+      padding: calc($padding * 3);
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+
   .wrapper {
     padding: calc($padding * 2);
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     box-sizing: border-box;
 
     .item {
@@ -850,9 +947,13 @@ input {
     .examplePicker {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
       align-items: center;
       padding: $padding;
+
+      .breadcrumbTitle {
+        color: $white;
+        margin-right: 0.5em;
+      }
 
       .item:not(:last-child) {
         margin-left: $padding;
@@ -864,7 +965,9 @@ input {
         display: flex;
         align-items: center;
         cursor: pointer;
-        transition: transform 0.1s ease-in-out;
+        transition: all 0.1s ease-in-out;
+        padding: 0.35em 0.7em;
+        border-radius: $br;
 
         span {
           color: $white;
@@ -881,7 +984,7 @@ input {
       }
 
       button:hover {
-        transform: scale(1.05);
+        background: $lightBlue;
       }
     }
 
@@ -891,6 +994,7 @@ input {
       box-sizing: border-box;
       height: 70svh;
       padding: 0 $padding;
+      overflow: hidden;
 
       h1 {
         color: $white;
@@ -902,21 +1006,49 @@ input {
 
       .left {
         box-sizing: border-box;
+        background-color: $white;
         padding: $padding;
-        max-width: 50svw;
+        border-radius: $br;
+        overflow-y: auto;
+        border-radius: $br;
+        margin-right: calc($padding / 2);
+        position: relative;
+
+        .wrapper {
+          padding: $padding;
+        }
+
+        h1,
+        p {
+          color: $blue;
+        }
       }
 
       .right {
-        width: 50svw;
+        margin-left: calc($padding / 2);
+      }
+    }
 
-        .modelWrapper {
-          padding: $padding;
+    @media screen and (max-width: 900px) {
+      .exampleContainer {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+
+        .left {
+          margin-right: 0;
+          margin-bottom: $padding;
+          overflow-y: visible;
+        }
+
+        .right {
+          margin-left: 0;
+          height: 70vh;
         }
       }
     }
 
     .exampleModelsContainer {
-      height: 50svh;
       box-sizing: border-box;
       width: 100%;
       padding: $padding;
@@ -924,14 +1056,16 @@ input {
       .exampleModelsWrapper {
         background: $white;
         border-radius: $br;
-        height: 100%;
+        position: relative;
+        padding: $padding 0 0 0;
       }
 
       .modelsHeader {
         display: flex;
         flex-direction: row;
-        margin: $padding;
-        overflow-x: scroll;
+        overflow-x: auto;
+        padding-left: $padding;
+        margin-bottom: $padding;
 
         .item {
           position: relative;
@@ -957,6 +1091,18 @@ input {
             }
           }
 
+          button:after {
+            content: "";
+            position: absolute;
+            background: $blue;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0%;
+            transition: all 0.1s ease-in-out;
+          }
+
           .active:after {
             content: "";
             position: absolute;
@@ -965,6 +1111,8 @@ input {
             bottom: 0;
             left: 0;
             width: 100%;
+            opacity: 100%;
+            transition: all 0.1s ease-in-out;
           }
 
           button:hover:after {
@@ -975,6 +1123,7 @@ input {
             bottom: 0;
             left: 0;
             width: 100%;
+            opacity: 100%;
           }
         }
 
@@ -984,22 +1133,58 @@ input {
       }
 
       .modelsInfo {
-        display: flex;
-        flex-direction: row;
-        padding: 0 $padding;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        padding: 0 calc($padding * 2) calc($padding * 2) calc($padding * 2);
+        position: relative;
 
         .left {
-          width: 70%;
-          padding-right: $padding; 
+          padding-right: $padding;
+          overflow-y: auto;
         }
 
         .right {
-          width: 30%;
           span {
             display: block;
           }
         }
+      }
+
+      @media screen and (max-width: 724px) {
+        .modelsInfo {
+          grid-template-columns: 1fr;
+          grid-template-rows: 1fr 1fr;
+
+          .left {
+            margin-bottom: $padding;
+          }
+        }
+      }
+    }
+
+    .publishInfo {
+      font-style: italic;
+      padding: $padding calc($padding * 3);
+
+      span {
+        color: $white;
+      }
+    }
+
+    .modelsFooter {
+      padding: $padding;
+
+      .linkButton {
+        color: $blue;
+        background-color: $white;
+
+        span {
+          color: $blue;
+        }
+      }
+
+      .linkButton:not(:last-child) {
+        margin-right: $padding;
       }
     }
   }

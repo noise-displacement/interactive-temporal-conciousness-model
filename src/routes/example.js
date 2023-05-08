@@ -1,8 +1,6 @@
 import { useState } from "react";
 import ModelCanvas from "../components/ModelCanvas";
-import { ExampleInfo, ExamplePicker } from "../components/modelControls";
 import { examples } from "../components/structureInfo";
-import { Link } from "react-router-dom";
 
 function Example() {
   //console.log("Example", examples[0])

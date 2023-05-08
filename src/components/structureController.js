@@ -24,15 +24,15 @@ function StructureControls(props) {
 
 export function StructureController(props) {
   const [open, setOpen] = useState(false);
-  //console.log(props.structure);
   let options = props.structure.type.options;
   let example = props.structure;
+
 
   return (
     <>
       <button className="header collapsible" onClick={(e) => setOpen(!open)}>
-        <h3>{example.name}</h3>
-        <span className="material-symbols-outlined">add</span>
+        <h3 className="dark">{example.name}</h3>
+        <span className="dark material-symbols-outlined">add</span>
       </button>
       {open && (
         <div className="controls">
@@ -124,8 +124,8 @@ export function ModelOptions(props) {
   let structure = props.structure;
   let currentControls = props.currentControls;
   //console.log(currentControls[i].sizes);
-  //console.log(structure);
   let color = structure.type.colorHex;
+  let darkBg = color === "#274b6d" || color === "#607b94" ? "dark" : "";
   let setCurrentControls = props.setCurrentControls;
   let currentYears = currentControls[i].years;
   const [open, setOpen] = useState(false);
@@ -150,8 +150,8 @@ export function ModelOptions(props) {
         style={{ backgroundColor: color }}
         onClick={() => setOpen(!open)}
       >
-        <h2>{structure.name}</h2>
-        <span className="material-symbols-outlined">
+        <h2 className={darkBg}>{structure.name}</h2>
+        <span className={`${darkBg} material-symbols-outlined`}>
           {open ? "remove" : "add"}
         </span>
       </button>

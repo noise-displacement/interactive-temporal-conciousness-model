@@ -1,5 +1,4 @@
-import { useFrame } from "@react-three/fiber";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Null } from "../modules/ModelLoader";
 import { models } from "./structureInfo";
 
@@ -20,12 +19,7 @@ export function UiTimeline(props) {
         ) : (
           <Null />
         )}
-
-        {/* <div className="lineContainer">
-          <div className="line">
-            <div className="event"></div>
-          </div>
-        </div> */}
+        <span> - </span>
 
         {props.globalYearControl ? (
           <div className="yearInput">
@@ -68,6 +62,7 @@ export function ClipMode(props) {
       <span>Split</span>
       <label className="switch" htmlFor="clipMode">
         <input
+          aria-label="clipMode"
           type="checkbox"
           name="clipMode"
           id="clipMode"
@@ -85,6 +80,7 @@ export function HideLabels(props) {
       <span>Labels</span>
       <label className="switch" htmlFor="hideLabels">
         <input
+          aria-label="hideLabels"
           type="checkbox"
           name="hideLabels"
           id="hideLabels"
@@ -286,6 +282,124 @@ export function ExampleInfo(props) {
   );
 }
 
+const agent = navigator.userAgent;
+let platforms = {
+  windows: "windows",
+  mac: "mac",
+  linux: "linux",
+}
+let platform;
+let isMobile = false;
+
+if(agent.indexOf("Macintosh")) {
+  platform = platforms.mac;
+} else if(agent.indexOf("Windows")) {
+  platform = platforms.windows;
+} else if(agent.indexOf("Linux")) {
+  platform = platforms.linux;
+} else {
+  isMobile = true;
+}
+
+function Helpers() {
+  return (
+    <>
+      {isMobile ? (
+        <>
+          <div className="item">
+            <div className="top">
+              <span className="symbol material-symbols-outlined">
+                swipe
+              </span>
+            </div>
+            <div className="bottom">
+              <span className="text">Drag = Rotate</span>
+            </div>
+          </div>
+
+          <div className="item">
+            <div className="top">
+              <span className="symbol material-symbols-outlined">
+                pinch
+              </span>
+            </div>
+
+            <div className="bottom">
+              <span className="text">Two-finger drag = Pan and zoom</span>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="item">
+            <div className="top">
+              <span className="symbol">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 41">
+                  <path
+                    id="Path_55"
+                    data-name="Path 55"
+                    d="M14,41a13.525,13.525,0,0,1-9.95-4.05A13.527,13.527,0,0,1,0,27V14A13.527,13.527,0,0,1,4.05,4.05,13.525,13.525,0,0,1,14,0a13.527,13.527,0,0,1,9.95,4.05A13.527,13.527,0,0,1,28,14V27a13.527,13.527,0,0,1-4.05,9.95A13.527,13.527,0,0,1,14,41m1.5-27H25a10.872,10.872,0,0,0-2.65-7.2A10.4,10.4,0,0,0,15.5,3.1ZM3,14h9.5V3.1A10.4,10.4,0,0,0,5.65,6.8,10.867,10.867,0,0,0,3,14M13.989,38a10.622,10.622,0,0,0,7.786-3.217A10.592,10.592,0,0,0,25,27V17H3V27a10.609,10.609,0,0,0,3.214,7.783A10.586,10.586,0,0,0,13.989,38"
+                  />
+                  <path
+                    id="Path_56"
+                    data-name="Path 56"
+                    d="M10.354,6.877h0v4.8H6.174c0-2.308,1.871-4.8,4.18-4.8"
+                  />
+                </svg>
+              </span>
+              <span>+</span>
+              <span className="symbol material-symbols-outlined">
+                pan_tool_alt
+              </span>
+            </div>
+            <div className="bottom">
+              <span className="text">LMB + Drag = Rotate</span>
+            </div>
+          </div>
+
+          <div className="item">
+            <div className="top">
+              {platform === platforms.mac ? (
+                <span className="material-symbols-outlined">
+                  keyboard_control_key
+                </span>
+              ) : platform === platforms.windows ? (
+                <span>Ctrl</span>
+              ) : (
+                "?"
+              )}
+
+              <span>+</span>
+              <span className="symbol">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 41">
+                  <path
+                    id="Path_55"
+                    data-name="Path 55"
+                    d="M14,41a13.525,13.525,0,0,1-9.95-4.05A13.527,13.527,0,0,1,0,27V14A13.527,13.527,0,0,1,4.05,4.05,13.525,13.525,0,0,1,14,0a13.527,13.527,0,0,1,9.95,4.05A13.527,13.527,0,0,1,28,14V27a13.527,13.527,0,0,1-4.05,9.95A13.527,13.527,0,0,1,14,41m1.5-27H25a10.872,10.872,0,0,0-2.65-7.2A10.4,10.4,0,0,0,15.5,3.1ZM3,14h9.5V3.1A10.4,10.4,0,0,0,5.65,6.8,10.867,10.867,0,0,0,3,14M13.989,38a10.622,10.622,0,0,0,7.786-3.217A10.592,10.592,0,0,0,25,27V17H3V27a10.609,10.609,0,0,0,3.214,7.783A10.586,10.586,0,0,0,13.989,38"
+                  />
+                  <path
+                    id="Path_56"
+                    data-name="Path 56"
+                    d="M10.354,6.877h0v4.8H6.174c0-2.308,1.871-4.8,4.18-4.8"
+                  />
+                </svg>
+              </span>
+              <span>+</span>
+              <span className="symbol material-symbols-outlined">
+                pan_tool_alt
+              </span>
+            </div>
+
+            <div className="bottom">
+              <span className="text">Control + LMB + Drag = Pan</span>
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  );
+}
+
 export function ControlsHelper() {
   const [open, setOpen] = useState(true);
 
@@ -302,58 +416,7 @@ export function ControlsHelper() {
 
       {open && (
         <div className="controlsContainer">
-          <div className="item">
-            <div className="top">
-              <span className="symbol">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 41">
-                  <path
-                    id="Path_55"
-                    data-name="Path 55"
-                    d="M14,41a13.525,13.525,0,0,1-9.95-4.05A13.527,13.527,0,0,1,0,27V14A13.527,13.527,0,0,1,4.05,4.05,13.525,13.525,0,0,1,14,0a13.527,13.527,0,0,1,9.95,4.05A13.527,13.527,0,0,1,28,14V27a13.527,13.527,0,0,1-4.05,9.95A13.527,13.527,0,0,1,14,41m1.5-27H25a10.872,10.872,0,0,0-2.65-7.2A10.4,10.4,0,0,0,15.5,3.1ZM3,14h9.5V3.1A10.4,10.4,0,0,0,5.65,6.8,10.867,10.867,0,0,0,3,14M13.989,38a10.622,10.622,0,0,0,7.786-3.217A10.592,10.592,0,0,0,25,27V17H3V27a10.609,10.609,0,0,0,3.214,7.783A10.586,10.586,0,0,0,13.989,38"
-                  />
-                  <path
-                    id="Path_56"
-                    data-name="Path 56"
-                    d="M10.354,6.877h0v4.8H6.174c0-2.308,1.871-4.8,4.18-4.8"
-                  />
-                </svg>
-              </span>
-              <span>+</span>
-              <span class="symbol material-symbols-outlined">pan_tool_alt</span>
-            </div>
-            <div className="bottom">
-              <span className="text">LMB + Drag = Rotate</span>
-            </div>
-          </div>
-
-          <div className="item">
-            <div className="top">
-              <span class="material-symbols-outlined">
-                keyboard_control_key
-              </span>
-              <span>+</span>
-              <span className="symbol">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 41">
-                  <path
-                    id="Path_55"
-                    data-name="Path 55"
-                    d="M14,41a13.525,13.525,0,0,1-9.95-4.05A13.527,13.527,0,0,1,0,27V14A13.527,13.527,0,0,1,4.05,4.05,13.525,13.525,0,0,1,14,0a13.527,13.527,0,0,1,9.95,4.05A13.527,13.527,0,0,1,28,14V27a13.527,13.527,0,0,1-4.05,9.95A13.527,13.527,0,0,1,14,41m1.5-27H25a10.872,10.872,0,0,0-2.65-7.2A10.4,10.4,0,0,0,15.5,3.1ZM3,14h9.5V3.1A10.4,10.4,0,0,0,5.65,6.8,10.867,10.867,0,0,0,3,14M13.989,38a10.622,10.622,0,0,0,7.786-3.217A10.592,10.592,0,0,0,25,27V17H3V27a10.609,10.609,0,0,0,3.214,7.783A10.586,10.586,0,0,0,13.989,38"
-                  />
-                  <path
-                    id="Path_56"
-                    data-name="Path 56"
-                    d="M10.354,6.877h0v4.8H6.174c0-2.308,1.871-4.8,4.18-4.8"
-                  />
-                </svg>
-              </span>
-              <span>+</span>
-              <span class="symbol material-symbols-outlined">pan_tool_alt</span>
-            </div>
-
-            <div className="bottom">
-              <span className="text">Control + LMB + Drag = Pan</span>
-            </div>
-          </div>
+          <Helpers />
         </div>
       )}
     </div>
