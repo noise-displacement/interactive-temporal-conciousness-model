@@ -18,7 +18,7 @@ function Example() {
     modelInfo: false,
     modelZoom: true,
     zoomButtons: true,
-    timeline: true,
+    timeline: false,
     fullwidth: true,
     timelineLabels: true,
     examplePicker: true,

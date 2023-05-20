@@ -39,7 +39,7 @@ function ExampleText() {
       <div className="exampleText">
         <div className="container">
           <div className="examplePicker">
-          <span className="breadcrumbTitle">Examples: </span>
+            <span className="breadcrumbTitle">Examples: </span>
             {examples.map((example, index) => {
               return (
                 <div className="item" key={index}>
@@ -52,7 +52,7 @@ function ExampleText() {
             })}
           </div>
 
-          <div className="exampleContainer">
+          {/* <div className="exampleContainer">
             <div className="left">
               <div className="wrapper">
 
@@ -75,6 +75,20 @@ function ExampleText() {
                 ></ModelCanvas>
               </div>
             </div>
+          </div> */}
+
+          <div className="exampleContainer2">
+            <h1>{currentExample.name}</h1>
+            <span className="canvasWrapper">
+              <div className="canvasContainer">
+                <ModelCanvas
+                  modelRefresh={modelRefresh}
+                  currentExample={currentExample}
+                  options={options}
+                ></ModelCanvas>
+              </div>
+            </span>
+            <p dangerouslySetInnerHTML={{ __html: currentExample.info }}></p>
           </div>
 
           <div className="exampleModelsContainer">
@@ -136,13 +150,14 @@ function ExampleText() {
           </div>
 
           <div className="modelsFooter">
-            <Link className="linkButton" to="/">
+            <Link className="linkButton" to="/abstract">
               <span className="material-symbols-outlined">arrow_back</span>{" "}
               Model theory
             </Link>
 
             <Link className="linkButton" to="/model">
-              Model {" "} <span className="material-symbols-outlined">arrow_forward</span>
+              Model{" "}
+              <span className="material-symbols-outlined">arrow_forward</span>
             </Link>
           </div>
         </div>

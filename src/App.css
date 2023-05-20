@@ -31,7 +31,7 @@ p {
 }
 
 body {
-  background-color: #1e3b56;
+  background-color: #fff;
   overflow-x: hidden;
 }
 
@@ -150,7 +150,7 @@ input {
   left: 0px;
 }
 .toggleSwitch input:checked + .slider {
-  background-color: #fc8803;
+  background-color: #ff822e;
 }
 .toggleSwitch input:focus + .slider {
   box-shadow: 0 0 1px #5c7790;
@@ -402,18 +402,33 @@ input {
   padding: 5px;
   border-radius: 7px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .canvasContainer .modelWrapper .modelContainer .mainCanvas .axisLabel {
-  text-shadow: -0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff, 0.5px 0.5px 0 #fff;
+  text-shadow: -0.4px -0.4px 0 #fff, 0.4px -0.4px 0 #fff, -0.4px 0.4px 0 #fff, 0.4px 0.4px 0 #fff;
   font-size: 0.7em;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  font-weight: bold;
 }
 .canvasContainer .modelWrapper .modelContainer .mainCanvas .timelineLabel {
-  text-shadow: -0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff, 0.5px 0.5px 0 #fff;
+  text-shadow: -0.4px -0.4px 0 #fff, 0.4px -0.4px 0 #fff, -0.4px 0.4px 0 #fff, 0.4px 0.4px 0 #fff;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  font-size: 0.7em;
 }
 .canvasContainer .modelWrapper .modelContainer .mainCanvas .normLabel span {
   display: block;
   width: 200px;
-  text-shadow: -0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff, 0.5px 0.5px 0 #fff;
+  text-shadow: -0.4px -0.4px 0 #fff, 0.4px -0.4px 0 #fff, -0.4px 0.4px 0 #fff, 0.4px 0.4px 0 #fff;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  font-size: 0.7em;
 }
 .canvasContainer .modelWrapper.fullwidth {
   padding: 53px 0 0 0;
@@ -632,14 +647,23 @@ input {
     flex-direction: column;
   }
   .abstractContainer .canvasContainer {
+    box-sizing: border-box;
     width: 100vw;
     height: 40vh;
-    background-color: #fff;
+    z-index: 10000;
     padding: 16px;
   }
-  .abstractContainer .textWrapper .textContainer {
+  .abstractContainer .canvasContainer div:first-child {
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 7px;
+    background: #fff;
+  }
+  .abstractContainer .textWrapper {
     width: 100vw;
-    height: 50vh;
+  }
+  .abstractContainer .textWrapper .textContainer {
+    width: 100%;
+    top: -20vh;
   }
 }
 .structureOptions {
@@ -707,25 +731,47 @@ input {
   width: 100%;
 }
 
-.footerContainer {
-  margin-bottom: 96px;
-  background: #1e3b56;
+.aboutBox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #1e3b56;
 }
-.footerContainer .aboutContainer {
+
+.aboutContainer {
   position: relative;
   bottom: 0;
-  margin: 64px;
+  margin-top: 53px;
+  padding: 16px 0 0 0;
   z-index: 10000000;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
 }
-.footerContainer .aboutContainer .wrapper {
+.aboutContainer .wrapper {
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
   border-radius: 7px;
   background-color: #fff;
   padding: 48px;
+  margin-bottom: 48px;
 }
-.footerContainer .aboutContainer .wrapper .header {
+.aboutContainer .wrapper .header {
   display: flex;
   justify-content: space-between;
+}
+.aboutContainer .buttonContainer {
+  margin: 32px 0 0 0;
+  display: flex;
+  align-items: center;
+}
+.aboutContainer .buttonContainer a:not(:last-child) {
+  margin-right: 16px;
+}
+
+.footerContainer {
+  margin-bottom: 96px;
+  background: #112130;
 }
 .footerContainer .wrapper {
   padding: 32px;
@@ -763,7 +809,7 @@ input {
 }
 
 .exampleText {
-  background-color: #1e3b56;
+  background-color: #fff;
   display: flex;
 }
 .exampleText .container {
@@ -781,7 +827,7 @@ input {
   padding: 16px;
 }
 .exampleText .container .examplePicker .breadcrumbTitle {
-  color: #fff;
+  color: #1e3b56;
   margin-right: 0.5em;
 }
 .exampleText .container .examplePicker .item:not(:last-child) {
@@ -798,18 +844,24 @@ input {
   border-radius: 7px;
 }
 .exampleText .container .examplePicker button span {
-  color: #fff;
+  color: #1e3b56;
 }
 .exampleText .container .examplePicker button .dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid #1e3b56;
   margin-right: 16px;
   display: block;
 }
 .exampleText .container .examplePicker button:hover {
   background: #5c7790;
+}
+.exampleText .container .examplePicker button:hover span {
+  color: #fff;
+}
+.exampleText .container .examplePicker button:hover .dot {
+  border: 2px solid #fff;
 }
 .exampleText .container .exampleContainer {
   display: grid;
@@ -845,6 +897,23 @@ input {
 .exampleText .container .exampleContainer .right {
   margin-left: 8px;
 }
+.exampleText .container .exampleContainer2 {
+  padding: 32px 64px 64px 64px;
+}
+.exampleText .container .exampleContainer2 h1, .exampleText .container .exampleContainer2 p {
+  color: #1e3b56;
+}
+.exampleText .container .exampleContainer2 .canvasWrapper {
+  display: block;
+  float: right;
+  max-width: 50vw;
+  width: 100%;
+  height: 70vh;
+  padding: 0 0 64px 64px;
+}
+.exampleText .container .exampleContainer2 .canvasWrapper .canvasContainer {
+  width: 100%;
+}
 @media screen and (max-width: 900px) {
   .exampleText .container .exampleContainer {
     height: auto;
@@ -867,7 +936,7 @@ input {
   padding: 16px;
 }
 .exampleText .container .exampleModelsContainer .exampleModelsWrapper {
-  background: #fff;
+  background: #1e3b56;
   border-radius: 7px;
   position: relative;
   padding: 16px 0 0 0;
@@ -888,6 +957,7 @@ input {
   display: flex;
   align-items: center;
   background: 0;
+  cursor: pointer;
 }
 .exampleText .container .exampleModelsContainer .modelsHeader .item button img {
   width: 40px;
@@ -898,6 +968,7 @@ input {
 }
 .exampleText .container .exampleModelsContainer .modelsHeader .item button span {
   white-space: nowrap;
+  color: #fff;
 }
 .exampleText .container .exampleModelsContainer .modelsHeader .item button:after {
   content: "";
@@ -913,7 +984,7 @@ input {
 .exampleText .container .exampleModelsContainer .modelsHeader .item .active:after {
   content: "";
   position: absolute;
-  background: #1e3b56;
+  background: #fff;
   height: 3px;
   bottom: 0;
   left: 0;
@@ -924,7 +995,7 @@ input {
 .exampleText .container .exampleModelsContainer .modelsHeader .item button:hover:after {
   content: "";
   position: absolute;
-  background: #1e3b56;
+  background: #fff;
   height: 3px;
   bottom: 0;
   left: 0;
@@ -941,11 +1012,13 @@ input {
   position: relative;
 }
 .exampleText .container .exampleModelsContainer .modelsInfo .left {
-  padding-right: 16px;
+  padding-right: 64px;
   overflow-y: auto;
+  color: #fff;
 }
 .exampleText .container .exampleModelsContainer .modelsInfo .right span {
   display: block;
+  color: #fff;
 }
 @media screen and (max-width: 724px) {
   .exampleText .container .exampleModelsContainer .modelsInfo {
@@ -961,17 +1034,17 @@ input {
   padding: 16px 48px;
 }
 .exampleText .container .publishInfo span {
-  color: #fff;
+  color: #1e3b56;
 }
 .exampleText .container .modelsFooter {
-  padding: 16px;
+  padding: 16px 16px 32px 32px;
 }
 .exampleText .container .modelsFooter .linkButton {
-  color: #1e3b56;
-  background-color: #fff;
+  color: #fff;
+  background-color: #1e3b56;
 }
 .exampleText .container .modelsFooter .linkButton span {
-  color: #1e3b56;
+  color: #fff;
 }
 .exampleText .container .modelsFooter .linkButton:not(:last-child) {
   margin-right: 16px;

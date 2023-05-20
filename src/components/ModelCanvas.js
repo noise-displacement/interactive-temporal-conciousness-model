@@ -29,6 +29,8 @@ function preventBehavior(e) {
   e.preventDefault();
 }
 
+let modelCenter = 200;
+
 function pushStructures(currentExample, options) {
   let currentStructures = [];
 
@@ -130,7 +132,7 @@ function createLabels(labelScaleFactor) {
       <Html
         className="normLabel"
         // Midlertidig fix for å få riktig posisjon på labels.
-        position={[(2023 * 2) / 10 + 47.4, 0, -(label.value * 100)]}
+        position={[modelCenter, 0, -(label.value * 100)]}
         distanceFactor={labelScaleFactor}
       >
         <span>
@@ -147,7 +149,7 @@ function createLabels(labelScaleFactor) {
       <Html
         className="normLabel"
         // Midlertidig fix for å få riktig posisjon på labels.
-        position={[(2023 * 2) / 10 + 47.4, label.value * 100, 0]}
+        position={[modelCenter, label.value * 100, 0]}
         distanceFactor={labelScaleFactor}
       >
         <span>{"- " + label.name}</span>
@@ -162,7 +164,7 @@ function createLabels(labelScaleFactor) {
       <Html
         className="normLabel"
         // Midlertidig fix for å få riktig posisjon på labels.
-        position={[(2023 * 2) / 10 + 47.4, -(label.value * 100), 0]}
+        position={[modelCenter, -(label.value * 100), 0]}
         distanceFactor={labelScaleFactor}
       >
         <span>{"- " + label.name}</span>
@@ -301,7 +303,6 @@ function ModelCanvas(props) {
     y: colors.blue,
     z: colors.blue,
   };
-  let modelCenter = 200;
 
   let modelGroup = useRef();
   let currentUltrastructureSize =

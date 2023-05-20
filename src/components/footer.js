@@ -1,5 +1,7 @@
 import { useState } from "react";
 import About from "../routes/home";
+import { Link } from "react-router-dom";
+import { routes } from "../App";
 
 function Footer() {
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -30,13 +32,9 @@ function Footer() {
               </li>
 
               <li>
-                <button onClick={() => setAboutOpen(!aboutOpen)}>About</button>
+                <Link to={routes.about.path}>About</Link>
               </li>
             </ul>
-          </div>
-
-          <div className="item">
-            <h4>Something</h4>
           </div>
         </div>
       </footer>

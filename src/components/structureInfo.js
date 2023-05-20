@@ -104,8 +104,8 @@ export const structureTypes = {
   event: {
     name: "Event",
     object: models.sphere,
-    color: 0xfc8803,
-    colorHex: "#fc8803",
+    color: 0xff822e,
+    colorHex: "#ff822e",
     options: {
       rotation: false,
       timeScale: true,
@@ -293,7 +293,7 @@ export const examples = [
 
   {
     id: 2,
-    name: "Example 3",
+    name: "Concious citizen",
     author: "Prof. Apostolos Spanos",
     info: "XYZ has been a conscious citizen from her teens, following politics and voting in every national or local election, with a single criterion of what appeared to be best for her municipality or country. During her studies, she was active in student politics, something that sparked off her decision to become a politician. This decision was made in 2015. <br /><br />When fixed to the idea of serving her country as a parliament member, XYZ realized that this cannot be done without her being a member of a political party. In 2015, she registered in party ABC, as it was best fitting with her own political ideas and visions, and built a relation to both the political theses and the modus operandi of the party. Soon, she became one of the party’s most prominent figures. Her relation with the party (and the political system in general) resulted in XYZ being elected as a PM in 2023. <br /><br />XYZ lives in a democratic country, in which women have had the right to vote since 1913. The political system of her country is structured as a representative parliamentary democracy. To become a PM, XYZ had to get through a specific model of deciding who will represent the citizens of the country in the parliament and according to which criteria, rules and norms. <br /><br />Our 3D-model example illustrates the interrelation between the event of her election, the relation between her and the party, the model of elections, the structure of democracy, and the ultrastructure of the state as the only acceptable institution through which a country is led. <br/><br />If you want to get a better picture of how this interrelation functions and its meaning, imagine XYZ living in various other places, operating according to different (and different between them) social, cultural and political structures, as for example North Korea, Saudi Arabia, or the North Sentinel Island —and then use our model to illustrate her life in all these alterative cases, in political and non-political terms. ",
     timeline: {
@@ -369,5 +369,5 @@ export const colors = {
   blue: "#1E3B56",
   lightBlue: "#5C7790",
   lightGrey: "#EEEEEE",
-  orange: "#fc8803",
+  orange: "#F08E5F",
 }

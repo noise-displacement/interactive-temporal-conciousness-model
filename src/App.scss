@@ -5,9 +5,9 @@ $blue: #1e3b56;
 $lightBlue: #5c7790;
 $lightGrey: #eee;
 $accent: #c7b99c;
-$orange: #fc8803;
-$textOutline: -0.5px -0.5px 0 $white, 0.5px -0.5px 0 $white,
-  -0.5px 0.5px 0 $white, 0.5px 0.5px 0 $white;
+$orange: #ff822e;
+$textOutline: -0.4px -0.4px 0 $white, 0.4px -0.4px 0 $white,
+  -0.4px 0.4px 0 $white, 0.4px 0.4px 0 $white;
 
 $padding: 16px;
 $br: 7px;
@@ -51,7 +51,7 @@ p {
 }
 
 body {
-  background-color: $blue;
+  background-color: $white;
   overflow-x: hidden;
 }
 
@@ -490,16 +490,21 @@ input {
           padding: 5px;
           border-radius: $br;
           box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+          user-select: none;
         }
 
         .axisLabel {
           text-shadow: $textOutline;
           font-size: .7em;
+          user-select: none;
+          font-weight: bold;
         }
 
         .timelineLabel {
           //text-shadow: $textShadow;
           text-shadow: $textOutline;
+          user-select: none;
+          font-size: .7em;
         }
 
         .normLabel {
@@ -507,6 +512,8 @@ input {
             display: block;
             width: 200px;
             text-shadow: $textOutline;
+            user-select: none;
+            font-size: .7em;
           }
         }
       }
@@ -773,16 +780,25 @@ input {
     flex-direction: column;
 
     .canvasContainer {
+      box-sizing: border-box;
       width: 100vw;
       height: 40vh;
-      background-color: $white;
+      z-index: 10000;
       padding: $padding;
+
+      div:first-child {
+        box-shadow: $boxShadow;
+        border-radius: $br;
+        background: $white;
+      }
     }
 
     .textWrapper {
+      width: 100vw;
+
       .textContainer {
-        width: 100vw;
-        height: 50vh;
+        width: 100%;
+        top: -20vh;
       }
     }
   }
@@ -867,28 +883,50 @@ input {
   }
 }
 
-.footerContainer {
-  margin-bottom: calc($padding * 6);
-  background: $blue;
+.aboutBox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $blue;
+}
+.aboutContainer {
+  position: relative;
+  bottom: 0;
+  margin-top: $topNavSpace;
+  padding: calc($padding) 0 0 0;
+  z-index: 10000000;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
 
-  .aboutContainer {
-    position: relative;
-    bottom: 0;
-    margin: $padding * 4;
-    z-index: 10000000;
+  .wrapper {
+    box-shadow: $boxShadow;
+    border-radius: $br;
+    background-color: $white;
+    padding: calc($padding * 3);
+    margin-bottom: calc($padding * 3);
 
-    .wrapper {
-      box-shadow: $boxShadow;
-      border-radius: $br;
-      background-color: $white;
-      padding: calc($padding * 3);
-
-      .header {
-        display: flex;
-        justify-content: space-between;
-      }
+    .header {
+      display: flex;
+      justify-content: space-between;
     }
   }
+
+  .buttonContainer {
+    margin: calc($padding * 2) 0 0 0;
+    display: flex;
+    align-items: center;
+
+    a:not(:last-child) {
+      margin-right: $padding;
+    }
+  }
+}
+
+.footerContainer {
+  margin-bottom: calc($padding * 6);
+  background: darken($blue, 10%);
 
   .wrapper {
     padding: calc($padding * 2);
@@ -933,7 +971,7 @@ input {
 }
 
 .exampleText {
-  background-color: $blue;
+  background-color: $white;
   display: flex;
 
   .container {
@@ -951,7 +989,7 @@ input {
       padding: $padding;
 
       .breadcrumbTitle {
-        color: $white;
+        color: $blue;
         margin-right: 0.5em;
       }
 
@@ -970,14 +1008,14 @@ input {
         border-radius: $br;
 
         span {
-          color: $white;
+          color: $blue;
         }
 
         .dot {
           width: 7px;
           height: 7px;
           border-radius: 50%;
-          border: 2px solid $white;
+          border: 2px solid $blue;
           margin-right: $padding;
           display: block;
         }
@@ -985,6 +1023,14 @@ input {
 
       button:hover {
         background: $lightBlue;
+
+        span {
+          color: $white;
+        }
+
+        .dot {
+          border: 2px solid $white;
+        }
       }
     }
 
@@ -1029,6 +1075,28 @@ input {
       }
     }
 
+
+    .exampleContainer2 {
+      padding: calc($padding * 2) calc($padding * 4) calc($padding * 4) calc($padding * 4);
+
+      h1, p {
+        color: $blue;
+      }
+
+      .canvasWrapper {
+        display: block;
+        float: right;
+        max-width: 50vw;
+        width: 100%;
+        height: 70vh;
+        padding: 0 0 calc($padding * 4) calc($padding * 4);
+
+        .canvasContainer {
+          width: 100%;
+        }
+      }
+    }
+
     @media screen and (max-width: 900px) {
       .exampleContainer {
         height: auto;
@@ -1054,7 +1122,7 @@ input {
       padding: $padding;
 
       .exampleModelsWrapper {
-        background: $white;
+        background: $blue;
         border-radius: $br;
         position: relative;
         padding: $padding 0 0 0;
@@ -1076,6 +1144,7 @@ input {
             display: flex;
             align-items: center;
             background: 0;
+            cursor: pointer;
 
             img {
               width: 40px;
@@ -1088,6 +1157,7 @@ input {
 
             span {
               white-space: nowrap;
+              color: $white;
             }
           }
 
@@ -1106,7 +1176,7 @@ input {
           .active:after {
             content: "";
             position: absolute;
-            background: $blue;
+            background: $white;
             height: 3px;
             bottom: 0;
             left: 0;
@@ -1118,7 +1188,7 @@ input {
           button:hover:after {
             content: "";
             position: absolute;
-            background: $blue;
+            background: $white;
             height: 3px;
             bottom: 0;
             left: 0;
@@ -1139,13 +1209,15 @@ input {
         position: relative;
 
         .left {
-          padding-right: $padding;
+          padding-right: calc($padding * 4);
           overflow-y: auto;
+          color: $white;
         }
 
         .right {
           span {
             display: block;
+            color: $white;
           }
         }
       }
@@ -1167,19 +1239,19 @@ input {
       padding: $padding calc($padding * 3);
 
       span {
-        color: $white;
+        color: $blue;
       }
     }
 
     .modelsFooter {
-      padding: $padding;
+      padding: $padding $padding calc($padding * 2) calc($padding * 2);
 
       .linkButton {
-        color: $blue;
-        background-color: $white;
+        color: $white;
+        background-color: $blue;
 
         span {
-          color: $blue;
+          color: $white;
         }
       }
 

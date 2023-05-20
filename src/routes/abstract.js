@@ -173,7 +173,7 @@ function Abstract() {
       event: -modelRefs.current[0].current.offsetTop / offset,
     };
 
-    console.log(modelRefs.current[5].current.offsetTop);
+    //console.log(modelRefs.current[5].current.offsetTop);
   });
 
   return (

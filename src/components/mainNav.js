@@ -24,7 +24,7 @@ function MainNav(props) {
         <div className="container">
 
             <div className="holder logo">
-                <Link to={routes.model.path}>
+                <Link to={routes.about.path}>
                     <img src="/images/logo.svg" alt="Logo" />
                 </Link>
             </div>
@@ -48,11 +48,11 @@ function MainNav(props) {
           </div>
 
           <div className="holder">
-            <NavComponent
+            {/* <NavComponent
               location={location}
               pathName={routes.editor.path}
               name={routes.editor.name}
-            />
+            /> */}
           </div>
         </div>
       </nav>

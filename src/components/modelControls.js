@@ -42,7 +42,7 @@ export function UiTimeline(props) {
 export function GlobalWireframeMode(props) {
   return (
     <div className="globalWireframe toggleSwitch">
-      <span>Wireframe</span>
+      <span>Transparency</span>
       <label className="switch" htmlFor="globalWireframeMode">
         <input
           type="checkbox"
@@ -287,15 +287,15 @@ let platforms = {
   windows: "windows",
   mac: "mac",
   linux: "linux",
-}
+};
 let platform;
 let isMobile = false;
 
-if(agent.indexOf("Macintosh")) {
+if (agent.indexOf("Macintosh")) {
   platform = platforms.mac;
-} else if(agent.indexOf("Windows")) {
+} else if (agent.indexOf("Windows")) {
   platform = platforms.windows;
-} else if(agent.indexOf("Linux")) {
+} else if (agent.indexOf("Linux")) {
   platform = platforms.linux;
 } else {
   isMobile = true;
@@ -308,9 +308,7 @@ function Helpers() {
         <>
           <div className="item">
             <div className="top">
-              <span className="symbol material-symbols-outlined">
-                swipe
-              </span>
+              <span className="symbol material-symbols-outlined">swipe</span>
             </div>
             <div className="bottom">
               <span className="text">Drag = Rotate</span>
@@ -319,9 +317,7 @@ function Helpers() {
 
           <div className="item">
             <div className="top">
-              <span className="symbol material-symbols-outlined">
-                pinch
-              </span>
+              <span className="symbol material-symbols-outlined">pinch</span>
             </div>
 
             <div className="bottom">
@@ -392,6 +388,18 @@ function Helpers() {
 
             <div className="bottom">
               <span className="text">Control + LMB + Drag = Pan</span>
+            </div>
+          </div>
+
+          <div className="item">
+            <div className="top">
+              <span className="symbol">
+                <span class="material-symbols-outlined">pan_zoom</span>
+              </span>
+            </div>
+
+            <div className="bottom">
+              <span className="text">Scroll = zoom</span>
             </div>
           </div>
         </>
