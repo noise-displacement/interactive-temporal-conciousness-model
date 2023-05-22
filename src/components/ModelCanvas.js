@@ -33,6 +33,7 @@ let modelCenter = 200;
 
 function pushStructures(currentExample, options) {
   let currentStructures = [];
+  console.log("CurrentExample: ", currentExample.structures);
 
   for (let i = 0; i < currentExample.structures.length; i++) {
     let structure = currentExample.structures[i];
@@ -48,6 +49,12 @@ function pushStructures(currentExample, options) {
         social: structure.normSocial,
         structural: structure.normStructural,
         space: structure.space,
+      },
+      norms: {
+        state: structure.state,
+        religious: structure.religious,
+        cultural: structure.cultural,
+        societal: structure.societal,
       },
       years: {
         start: structure.startYear,
@@ -286,10 +293,12 @@ function ModelCanvas(props) {
   // }
 
   const controlsArray = currentStructures.map((structure) => {
+    //console.log("Structure", structure);
     return {
       name: structure.name,
       sizes: structure.sizes,
       years: structure.years,
+      norms: structure.norms,
     };
   });
 
@@ -494,7 +503,7 @@ function ModelCanvas(props) {
                   <meshPhongMaterial color={axisColors.y} />
                 </mesh>
 
-                <Html position={[modelCenter + 500, 0, 0]}><div className="axisLabel">Time</div></Html>
+                <Html position={[modelCenter + 500, 0, 0]}><div className="axisLabel">Time/years</div></Html>
                 <Html position={[modelCenter, 500, 0]}><div className="axisLabel">Norms</div></Html>
                 <Html position={[modelCenter, 0, -700]}><div className="axisLabel">Space</div></Html>
 

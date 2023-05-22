@@ -23,10 +23,49 @@ const ModelLoader = function (props) {
   );
 
   let spaceSize = props.currentControls.sizes.space;
-  let structuralSize = props.currentControls.sizes.structural;
-  let socialSize = props.currentControls.sizes.social;
+  // let structuralSize = props.currentControls.sizes.structural;
+  let structuralSize = 0;
+  // let socialSize = props.currentControls.sizes.social;
+  let socialSize = 0;
   let structureType = props.type;
   let years = props.currentControls.years;
+  let norms = props.currentControls.norms;
+
+  console.log(norms);
+
+    if(norms.societal && socialSize < 2) {
+      socialSize++;
+    } else if(!norms.societal && socialSize > 0) {
+      socialSize--;
+    }
+
+    if(norms.cultural && socialSize < 2) {
+      socialSize++;
+    } else if(!norms.cultural && socialSize > 0) {
+      socialSize--;
+    }
+
+    if(norms.religious && structuralSize < 2) {
+      structuralSize++;
+    } else if(!norms.religious && structuralSize > 0) {
+      structuralSize--;
+    }
+
+    if(norms.state && structuralSize < 2) {
+      structuralSize++;
+    } else if(!norms.state && structuralSize > 0) {
+      structuralSize--;
+    }
+
+  //norms.societal ? socialSize++ : socialSize > 0 ? socialSize-- : socialSize;
+  //norms.cultural ? socialSize++ : socialSize--;
+
+  // norms.religious ? structuralSize++ : structuralSize--;
+  // norms.state ? structuralSize++ : structuralSize--;
+
+    console.log(props.name, structuralSize, socialSize);
+
+  //console.log(norms);
   //console.log(props);
   //console.log(props.i);
 

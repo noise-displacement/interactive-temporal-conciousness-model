@@ -419,7 +419,7 @@ input {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-  font-size: 0.7em;
+  font-size: 0.6em;
 }
 .canvasContainer .modelWrapper .modelContainer .mainCanvas .normLabel span {
   display: block;
@@ -428,7 +428,7 @@ input {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-  font-size: 0.7em;
+  font-size: 0.6em;
 }
 .canvasContainer .modelWrapper.fullwidth {
   padding: 53px 0 0 0;

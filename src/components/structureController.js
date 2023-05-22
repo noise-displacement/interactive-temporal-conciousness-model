@@ -286,6 +286,13 @@ export function ModelOptions(props) {
                           space: Number(e.target.value),
                         },
 
+                        norms: {
+                          societal: currentControls[i].norms.societal,
+                          cultural: currentControls[i].norms.cultural,
+                          religious: currentControls[i].norms.religious,
+                          state: currentControls[i].norms.state,
+                        },
+
                         years: {
                           start: currentControls[i].years.start,
                           end: currentControls[i].years.end,
@@ -300,7 +307,7 @@ export function ModelOptions(props) {
                 ></input>
               </div>
 
-              <div className="slider">
+              {/* <div className="slider">
                 <label htmlFor="">{currentLabels.structural}</label>
                 <input
                   type="range"
@@ -335,9 +342,9 @@ export function ModelOptions(props) {
                     setCurrentControls(nextControls);
                   }}
                 ></input>
-              </div>
+              </div> */}
 
-              <div className="slider">
+              {/* <div className="slider">
                 <label htmlFor="">{currentLabels.social}</label>
                 <input
                   type="range"
@@ -372,18 +379,164 @@ export function ModelOptions(props) {
                     setCurrentControls(nextControls);
                   }}
                 ></input>
-              </div>
+              </div> */}
 
-              {/* <div className="checkbox">
-                <label htmlFor="">{currentLabels.social}</label>
+               <div className="checkbox">
+                <label htmlFor="">{"Social"}</label>
                 <input
                   type="checkbox"
-                  value={currentControls[i].sizes.social}
+                  // value={currentControls[i].sizes.social}
+                  checked={currentControls[i].norms.societal ? true : false}
                   onChange={(e) => {
+                    console.log("Current controls", currentControls[i]);
+                    const insertAt = i;
+                    const nextControls = [
+                      ...currentControls.slice(0, insertAt),
+                      {
+                        name: structure.name,
+                        sizes: {
+                          social: currentControls[i].sizes.social,
+                          structural: currentControls[i].sizes.structural,
+                          space: currentControls[i].sizes.space,
+                        },
 
+                        norms: {
+                          societal: e.target.checked ? true : false,
+                          cultural: currentControls[i].norms.cultural,
+                          religious: currentControls[i].norms.religious,
+                          state: currentControls[i].norms.state,
+                        },
+
+                        years: {
+                          start: currentControls[i].years.start,
+                          end: currentControls[i].years.end,
+                        },
+                      },
+                      ...currentControls.slice(insertAt + 1),
+                    ];
+
+                    setCurrentControls(nextControls);
                   }}
                 ></input>
-              </div> */}
+              </div>
+
+              <div className="checkbox">
+                <label htmlFor="">{"Religous"}</label>
+                <input
+                  type="checkbox"
+                  // value={currentControls[i].sizes.social}
+                  checked={currentControls[i].norms.religious ? true : false}
+                  onChange={(e) => {
+                    console.log("Current controls", currentControls[i]);
+                    const insertAt = i;
+                    const nextControls = [
+                      ...currentControls.slice(0, insertAt),
+                      {
+                        name: structure.name,
+                        sizes: {
+                          social: currentControls[i].sizes.social,
+                          structural: currentControls[i].sizes.structural,
+                          space: currentControls[i].sizes.space,
+                        },
+
+                        norms: {
+                          societal: currentControls[i].norms.societal,
+                          cultural: currentControls[i].norms.cultural,
+                          religious: e.target.checked ? true : false,
+                          state: currentControls[i].norms.state,
+                        },
+
+                        years: {
+                          start: currentControls[i].years.start,
+                          end: currentControls[i].years.end,
+                        },
+                      },
+                      ...currentControls.slice(insertAt + 1),
+                    ];
+
+                    setCurrentControls(nextControls);
+                  }}
+                ></input>
+              </div>
+
+              <div className="checkbox">
+                <label htmlFor="">{"State"}</label>
+                <input
+                  type="checkbox"
+                  // value={currentControls[i].sizes.social}
+                  checked={currentControls[i].norms.state ? true : false}
+                  onChange={(e) => {
+                    console.log("Current controls", currentControls[i]);
+                    const insertAt = i;
+                    const nextControls = [
+                      ...currentControls.slice(0, insertAt),
+                      {
+                        name: structure.name,
+                        sizes: {
+                          social: currentControls[i].sizes.social,
+                          structural: currentControls[i].sizes.structural,
+                          space: currentControls[i].sizes.space,
+                        },
+
+                        norms: {
+                          societal: currentControls[i].norms.societal,
+                          cultural: currentControls[i].norms.cultural,
+                          religious: currentControls[i].norms.religious,
+                          state: e.target.checked ? true : false,
+                        },
+
+                        years: {
+                          start: currentControls[i].years.start,
+                          end: currentControls[i].years.end,
+                        },
+                      },
+                      ...currentControls.slice(insertAt + 1),
+                    ];
+
+                    setCurrentControls(nextControls);
+                  }}
+                ></input>
+              </div>
+
+              <div className="checkbox">
+                <label htmlFor="">{"Cultural"}</label>
+                <input
+                  type="checkbox"
+                  // value={currentControls[i].sizes.social}
+                  checked={currentControls[i].norms.cultural ? true : false}
+                  onChange={(e) => {
+                    console.log("Current controls", currentControls[i]);
+                    const insertAt = i;
+                    const nextControls = [
+                      ...currentControls.slice(0, insertAt),
+                      {
+                        name: structure.name,
+                        sizes: {
+                          social: currentControls[i].sizes.social,
+                          structural: currentControls[i].sizes.structural,
+                          space: currentControls[i].sizes.space,
+                        },
+
+                        norms: {
+                          societal: currentControls[i].norms.societal,
+                          cultural: e.target.checked ? true : false,
+                          religious: currentControls[i].norms.religious,
+                          state: currentControls[i].norms.state,
+                        },
+
+                        years: {
+                          start: currentControls[i].years.start,
+                          end: currentControls[i].years.end,
+                        },
+                      },
+                      ...currentControls.slice(insertAt + 1),
+                    ];
+
+                    setCurrentControls(nextControls);
+                  }}
+                ></input>
+              </div>
+
             </>
           )}
         </div>
