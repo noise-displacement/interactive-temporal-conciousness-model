@@ -22,7 +22,7 @@ import {
   ControlsHelper,
 } from "./modelControls";
 import { degToRad } from "three/src/math/MathUtils";
-import { ModelOptions } from "./structureController";
+import { ModelOptions, ResetButton } from "./structureController";
 import { colors, labels, structureTypes } from "./structureInfo";
 
 function preventBehavior(e) {
@@ -199,6 +199,7 @@ function ModelCanvas(props) {
       hideLabels: props.options.hideLabels,
       bottomControls: props.options.bottomControls,
       controlsHelper: props.options.controlsHelper,
+      resetButton: props.options.resetButton,
     }),
     [props.options]
   );
@@ -319,8 +320,10 @@ function ModelCanvas(props) {
       currentUltrastructureSize
     );
     canvasRef.current.addEventListener("click", () => {
-      document.addEventListener("touchmove", preventBehavior, { passive: false });
-    })
+      document.addEventListener("touchmove", preventBehavior, {
+        passive: false,
+      });
+    });
   }, [
     currentExample,
     options,
@@ -341,7 +344,9 @@ function ModelCanvas(props) {
           <div className="controlsHelperContainer">
             <ControlsHelper />
           </div>
-        ) : <Null />}
+        ) : (
+          <Null />
+        )}
 
         {options.modelInfo ? (
           <div className="exampleInfoContainer">
@@ -425,6 +430,7 @@ function ModelCanvas(props) {
             </div>
 
             <div className="controlContainer">
+            {options.resetButton ? <ResetButton /> : <Null />}
               {options.zoomButtons ? (
                 <ModelZoomButtons
                   zoomRange={zoomRange}
@@ -494,9 +500,15 @@ function ModelCanvas(props) {
                   <meshPhongMaterial color={axisColors.y} />
                 </mesh>
 
-                <Html position={[modelCenter + 500, 0, 0]}><div className="axisLabel">Time</div></Html>
-                <Html position={[modelCenter, 500, 0]}><div className="axisLabel">Norms</div></Html>
-                <Html position={[modelCenter, 0, -700]}><div className="axisLabel">Space</div></Html>
+                <Html position={[modelCenter + 500, 0, 0]}>
+                  <div className="axisLabel">Time/years</div>
+                </Html>
+                <Html position={[modelCenter, 300, 0]}>
+                  <div className="axisLabel">Norms</div>
+                </Html>
+                <Html position={[modelCenter, 0, -700]}>
+                  <div className="axisLabel">Space</div>
+                </Html>
 
                 {hideLabels ? (
                   structureLabels.map((array) => {

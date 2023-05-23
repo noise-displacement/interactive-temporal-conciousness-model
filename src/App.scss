@@ -11,7 +11,7 @@ $textOutline: -0.4px -0.4px 0 $white, 0.4px -0.4px 0 $white,
 
 $padding: 16px;
 $br: 7px;
-$topNavSpace: calc(53px);
+$topNavSpace: calc(56px);
 $bottomNavSpace: calc(80.5px);
 $ctaPadding: 0.7em 1.4em;
 
@@ -403,35 +403,56 @@ input {
 
         .controlContainer:last-child {
           margin-left: $padding;
-          flex-direction: column;
-          align-items: flex-end;
-          justify-content: center;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-end;
+        }
+
+        .resetButton button {
+          background: $lightGrey;
+          border: 0;
+          color: $blue;
+          cursor: pointer;
+          margin-right: $padding;
+          padding: 0.7em 1.2em;
+          border-radius: $br;
+        }
+
+        .resetButton button:hover {
+          background: $white;
         }
 
         .zoomButtonsContainer {
           position: relative;
           z-index: 10;
           display: flex;
-          border-radius: $br;
-          overflow: hidden;
 
           .zoomButton {
             display: flex;
             align-items: center;
             border: 0;
             padding: 10px;
+            cursor: pointer;
 
             span {
               color: $blue;
             }
           }
 
+          .zoomButton:first-child {
+            border-radius: $br 0 0 $br;
+          }
+
+          .zoomButton:last-child {
+            border-radius: 0 $br $br 0;
+          }
+
           .zoomButton:hover {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: #fff;
           }
 
           .zoomButton:active {
-            background: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.9);
           }
         }
 
@@ -548,6 +569,7 @@ input {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     background: $blue;
+    box-shadow: 0px 0px 3px $blue;
 
     .holder {
       box-sizing: border-box;
@@ -604,6 +626,21 @@ input {
 
       a:hover {
         background: 0;
+      }
+
+      .mainLogo {
+        background-image: url('/public/images/logo.svg');
+        background-size: cover;
+        padding: 0;
+        height: 40px;
+        aspect-ratio: 992 / 242;
+      }
+
+      @media screen and (max-width: 900px) {
+        .mainLogo {
+          background-image: url('/public/images/logoicon.png');
+          aspect-ratio: 1 / 1;
+        }
       }
 
       img {
@@ -753,14 +790,14 @@ input {
         justify-content: center;
 
         .readMoreContainer {
-          margin-top: $padding;
+          margin-top: calc($padding * 4);
           display: flex;
           flex-direction: column;
         }
       }
 
       .textBlock {
-        height: 70svh;
+        min-height: 70svh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -797,6 +834,7 @@ input {
       width: 100vw;
 
       .textContainer {
+        padding: 0 $padding;
         width: 100%;
         top: -20vh;
       }
@@ -883,6 +921,56 @@ input {
   }
 }
 
+@media screen and (max-width: 400px) {
+  .structureOptions {
+    display: none;
+  }
+
+  .controlContainer:first-child {
+    flex-wrap: wrap;
+  }
+
+  .controlContainer:not(:first-child):not(:last-child) {
+    width: 0 !important;
+  }
+
+  .controlContainer:last-child {
+    align-items: baseline !important;
+    margin-left: 0 !important;
+
+    .zoomButtonsContainer {
+      flex-direction: column;
+
+      .zoomButton:first-child {
+        border-radius: $br $br 0 0 !important;
+      }
+
+      .zoomButton:last-child {
+        border-radius: 0 0 $br $br !important;
+      }
+    }
+
+    .resetButton {
+      margin-bottom: $padding;
+    }
+  }
+
+  .exampleContainer .canvasWrapper {
+    margin-left: calc($padding * -2);
+    max-width: 100vw !important;
+    width: 100vw !important;
+  }
+
+  .abstractContainer {
+    .canvasContainer {
+      padding: 0 !important;
+    }
+    .readMoreContainer {
+      display: none !important;
+    }
+  }
+}
+
 .aboutBox {
   width: 100%;
   display: flex;
@@ -907,21 +995,71 @@ input {
     padding: calc($padding * 3);
     margin-bottom: calc($padding * 3);
 
+    .logoIcon {
+      width: 100px;
+      height: 100px;
+      margin-bottom: calc($padding * 2);
+    }
+
     .header {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    .buttonContainer {
+      margin-top: calc($padding * 2);
+    }
+
+    .personContainer {
+      display: flex;
+      margin-top: calc($padding * 2);
+
+      .personWrapper {
+        padding: $padding;
+        background: $lightGrey;
+        border-radius: $br;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        .image {
+          width: 100px;
+          height: 100px;
+          margin-bottom: calc($padding / 2);
+          overflow: hidden;
+          border-radius: $br;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .name {
+          font-weight: bold;
+        }
+
+        .title {
+          font-style: italic;
+        }
+      }
+
+      .personWrapper:not(:last-child) {
+        margin-right: calc($padding * 2);
+      }
     }
   }
 
-  .buttonContainer {
-    margin: calc($padding * 2) 0 0 0;
-    display: flex;
-    align-items: center;
+  // .buttonContainer {
+  //   margin: calc($padding * 2) 0 0 0;
+  //   display: flex;
+  //   align-items: center;
 
-    a:not(:last-child) {
-      margin-right: $padding;
-    }
-  }
+  //   a:not(:last-child) {
+  //     margin-right: $padding;
+  //   }
+  // }
 }
 
 .footerContainer {
@@ -987,6 +1125,7 @@ input {
       flex-direction: row;
       align-items: center;
       padding: $padding;
+      background-color: $lightGrey;
 
       .breadcrumbTitle {
         color: $blue;
@@ -1035,48 +1174,6 @@ input {
     }
 
     .exampleContainer {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      box-sizing: border-box;
-      height: 70svh;
-      padding: 0 $padding;
-      overflow: hidden;
-
-      h1 {
-        color: $white;
-      }
-
-      p {
-        color: $white;
-      }
-
-      .left {
-        box-sizing: border-box;
-        background-color: $white;
-        padding: $padding;
-        border-radius: $br;
-        overflow-y: auto;
-        border-radius: $br;
-        margin-right: calc($padding / 2);
-        position: relative;
-
-        .wrapper {
-          padding: $padding;
-        }
-
-        h1,
-        p {
-          color: $blue;
-        }
-      }
-
-      .right {
-        margin-left: calc($padding / 2);
-      }
-    }
-
-
-    .exampleContainer2 {
       padding: calc($padding * 2) calc($padding * 4) calc($padding * 4) calc($padding * 4);
 
       h1, p {
@@ -1102,6 +1199,12 @@ input {
         height: auto;
         display: flex;
         flex-direction: column;
+        padding: calc($padding * 2);
+
+        .canvasWrapper {
+          max-width: 100%;
+          padding: calc($padding * 2) 0;
+        }
 
         .left {
           margin-right: 0;
@@ -1226,9 +1329,11 @@ input {
         .modelsInfo {
           grid-template-columns: 1fr;
           grid-template-rows: 1fr 1fr;
+          padding: 0 $padding $padding $padding;
 
           .left {
             margin-bottom: $padding;
+            padding-right: 0;
           }
         }
       }
@@ -1236,7 +1341,8 @@ input {
 
     .publishInfo {
       font-style: italic;
-      padding: $padding calc($padding * 3);
+      //padding: $padding calc($padding * 3);
+      padding: $padding 0; 
 
       span {
         color: $blue;
@@ -1244,7 +1350,8 @@ input {
     }
 
     .modelsFooter {
-      padding: $padding $padding calc($padding * 2) calc($padding * 2);
+      //padding: $padding $padding calc($padding * 2) calc($padding * 2);
+      padding: 0 $padding $padding $padding;
 
       .linkButton {
         color: $white;

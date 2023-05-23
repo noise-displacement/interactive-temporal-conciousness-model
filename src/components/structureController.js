@@ -392,4 +392,18 @@ export function ModelOptions(props) {
   );
 }
 
+export function ResetButton() {
+  return (
+    <div className="resetButton">
+      <button
+        onClick={() => {
+          window.location.reload();
+        }}
+      >
+        Reset
+      </button>
+    </div>
+  )
+}
+
 export default StructureControls;

@@ -52,33 +52,13 @@ function ExampleText() {
             })}
           </div>
 
-          {/* <div className="exampleContainer">
-            <div className="left">
-              <div className="wrapper">
-
-                <h1>{currentExample.name}</h1>
-
-                <div className="textContainer">
-                  <p
-                    dangerouslySetInnerHTML={{ __html: currentExample.info }}
-                  ></p>
-                </div>
-              </div>
-            </div>
-
-            <div className="right">
-              <div className="canvasContainer">
-                <ModelCanvas
-                  modelRefresh={modelRefresh}
-                  currentExample={currentExample}
-                  options={options}
-                ></ModelCanvas>
-              </div>
-            </div>
-          </div> */}
-
-          <div className="exampleContainer2">
+          <div className="exampleContainer">
             <h1>{currentExample.name}</h1>
+            <div className="publishInfo">
+              <span className="date">Published: {currentExample.date}</span>
+              <br />
+              <span className="author">Author: {currentExample.author}</span>
+            </div>
             <span className="canvasWrapper">
               <div className="canvasContainer">
                 <ModelCanvas
@@ -141,12 +121,6 @@ function ExampleText() {
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="publishInfo">
-            <span className="date">Published: {currentExample.date}</span>
-            <br />
-            <span className="author">- {currentExample.author}</span>
           </div>
 
           <div className="modelsFooter">

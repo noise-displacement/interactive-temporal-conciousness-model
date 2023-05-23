@@ -25,7 +25,7 @@ function MainNav(props) {
 
             <div className="holder logo">
                 <Link to={routes.about.path}>
-                    <img src="/images/logo.svg" alt="Logo" />
+                    <span className="mainLogo"></span>
                 </Link>
             </div>
 

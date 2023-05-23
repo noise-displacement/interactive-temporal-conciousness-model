@@ -25,6 +25,7 @@ function Example() {
     hideLabels: true,
     bottomControls: true,
     controlsHelper: true,
+    resetButton: true,
   };
 
   return (
