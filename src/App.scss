@@ -516,7 +516,7 @@ input {
 
         .axisLabel {
           text-shadow: $textOutline;
-          font-size: .7em;
+          font-size: 0.7em;
           user-select: none;
           font-weight: bold;
         }
@@ -525,7 +525,7 @@ input {
           //text-shadow: $textShadow;
           text-shadow: $textOutline;
           user-select: none;
-          font-size: .7em;
+          font-size: 0.7em;
         }
 
         .normLabel {
@@ -534,7 +534,7 @@ input {
             width: 200px;
             text-shadow: $textOutline;
             user-select: none;
-            font-size: .7em;
+            font-size: 0.7em;
           }
         }
       }
@@ -629,7 +629,7 @@ input {
       }
 
       .mainLogo {
-        background-image: url('/public/images/logo.svg');
+        background-image: url("/public/images/logo.svg");
         background-size: cover;
         padding: 0;
         height: 40px;
@@ -638,7 +638,7 @@ input {
 
       @media screen and (max-width: 900px) {
         .mainLogo {
-          background-image: url('/public/images/logoicon.png');
+          background-image: url("/public/images/logoicon.png");
           aspect-ratio: 1 / 1;
         }
       }
@@ -979,14 +979,12 @@ input {
   background-color: $blue;
 }
 .aboutContainer {
-  position: relative;
   bottom: 0;
-  margin-top: $topNavSpace;
-  padding: calc($padding) 0 0 0;
-  z-index: 10000000;
+  margin: calc($topNavSpace + $padding) $padding $padding $padding;
   max-width: 1000px;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
 
   .wrapper {
     box-shadow: $boxShadow;
@@ -994,6 +992,11 @@ input {
     background-color: $white;
     padding: calc($padding * 3);
     margin-bottom: calc($padding * 3);
+    width: auto;
+
+    .textContainer {
+      width: 100%;
+    }
 
     .logoIcon {
       width: 100px;
@@ -1001,17 +1004,14 @@ input {
       margin-bottom: calc($padding * 2);
     }
 
-    .header {
-      display: flex;
-      flex-direction: column;
-    }
-
     .buttonContainer {
       margin-top: calc($padding * 2);
     }
 
     .personContainer {
-      display: flex;
+      display: grid;
+      grid-auto-flow: column;
+      gap: $padding;
       margin-top: calc($padding * 2);
 
       .personWrapper {
@@ -1044,9 +1044,23 @@ input {
           font-style: italic;
         }
       }
+    }
 
-      .personWrapper:not(:last-child) {
-        margin-right: calc($padding * 2);
+    @media screen and (max-width: 900px) {
+      .personContainer {
+        grid-auto-flow: row;
+        
+        .personWrapper {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    .aboutContainer {
+      .wrapper {
+        padding: calc($padding) !important;
       }
     }
   }
@@ -1069,7 +1083,7 @@ input {
   .wrapper {
     padding: calc($padding * 2);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     box-sizing: border-box;
 
     .item {
@@ -1174,9 +1188,11 @@ input {
     }
 
     .exampleContainer {
-      padding: calc($padding * 2) calc($padding * 4) calc($padding * 4) calc($padding * 4);
+      padding: calc($padding * 2) calc($padding * 4) calc($padding * 4)
+        calc($padding * 4);
 
-      h1, p {
+      h1,
+      p {
         color: $blue;
       }
 
@@ -1341,8 +1357,7 @@ input {
 
     .publishInfo {
       font-style: italic;
-      //padding: $padding calc($padding * 3);
-      padding: $padding 0; 
+      padding: $padding calc($padding * 3) calc($padding * 2) calc($padding * 3);
 
       span {
         color: $blue;
@@ -1352,15 +1367,6 @@ input {
     .modelsFooter {
       //padding: $padding $padding calc($padding * 2) calc($padding * 2);
       padding: 0 $padding $padding $padding;
-
-      .linkButton {
-        color: $white;
-        background-color: $blue;
-
-        span {
-          color: $white;
-        }
-      }
 
       .linkButton:not(:last-child) {
         margin-right: $padding;

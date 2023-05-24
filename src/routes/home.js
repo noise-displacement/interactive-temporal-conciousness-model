@@ -99,7 +99,7 @@ function About(props) {
                   </div>
                   <h3 className="name">Prof. Apostolos Spanos</h3>
                   <span className="title">Author</span>
-                  <a href="https://www.uia.no/en/kk/profil/apostolos">
+                  <a href="https://www.uia.no/en/kk/profil/apostols">
                     uia.no/kk/profil/apostolos
                   </a>
                 </div>
@@ -128,6 +128,8 @@ function About(props) {
                   <a href="https://6th.no/">6th.no</a>
                 </div>
               </div>
+
+              {/* <p>The content of this page is copyrighted by the University of Agder</p> */}
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ function Footer() {
             <span>&copy; {"2023"} University of Agder</span>
           </div>
 
-          <div className="item">
+          {/* <div className="item">
             <h4>Links</h4>
             <ul>
               <li>
@@ -35,7 +35,7 @@ function Footer() {
                 <Link to={routes.about.path}>About</Link>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </footer>
     </>

@@ -54,11 +54,6 @@ function ExampleText() {
 
           <div className="exampleContainer">
             <h1>{currentExample.name}</h1>
-            <div className="publishInfo">
-              <span className="date">Published: {currentExample.date}</span>
-              <br />
-              <span className="author">Author: {currentExample.author}</span>
-            </div>
             <span className="canvasWrapper">
               <div className="canvasContainer">
                 <ModelCanvas
@@ -122,6 +117,12 @@ function ExampleText() {
               </div>
             </div>
           </div>
+
+          <div className="publishInfo">
+              <span className="date">Published: {currentExample.date}</span>
+              <br />
+              <span className="author">Author: {currentExample.author}</span>
+            </div>
 
           <div className="modelsFooter">
             <Link className="linkButton" to="/abstract">
