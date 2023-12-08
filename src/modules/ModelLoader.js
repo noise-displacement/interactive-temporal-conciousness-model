@@ -15,12 +15,14 @@ const ModelLoader = function (props) {
   let ref = useRef();
   //console.log(props);
 
-  let object = useLoader(
-    GLTFLoader,
-    props.globalWireframe && props.wireframeObject
-      ? props.wireframeObject
-      : props.object
-  );
+  // let object = useLoader(
+  //   GLTFLoader,
+  //   props.globalWireframe && props.wireframeObject
+  //     ? props.wireframeObject
+  //     : props.object
+  // );
+
+  let object = useLoader(GLTFLoader, props.object);
 
   let spaceSize = props.currentControls.sizes.space;
   let structuralSize = props.currentControls.sizes.structural;
@@ -117,6 +119,13 @@ const ModelLoader = function (props) {
     shadowSide: THREE.DoubleSide,
     wireframe: false,
     clipShadows: true,
+    transparent: true,
+    opacity:
+      structureType === structureTypes.ultraStructure
+        ? 0.5
+        : props.globalWireframe
+        ? 0.35
+        : 1,
     clippingPlanes:
       structureType === structureTypes.event
         ? null

@@ -32,7 +32,7 @@ function About(props) {
               <div className="buttonContainer">
                 <Link className="linkButton" to={routes.model.path}>
                   Theory
-                  <span class="material-symbols-outlined">arrow_forward</span>
+                  <span className="material-symbols-outlined">arrow_forward</span>
                 </Link>
               </div>
             </div>
@@ -43,7 +43,7 @@ function About(props) {
               <div className="header">
                 <h2>About the project</h2>
                 {/* <button className="linkButton" onClick={() => props.setAboutOpen(false)}>
-                <span class="material-symbols-outlined">close</span>
+                <span className="material-symbols-outlined">close</span>
               </button> */}
               </div>
               <p>

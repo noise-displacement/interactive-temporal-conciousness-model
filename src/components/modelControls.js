@@ -394,7 +394,7 @@ function Helpers() {
           <div className="item">
             <div className="top">
               <span className="symbol">
-                <span class="material-symbols-outlined">pan_zoom</span>
+                <span className="material-symbols-outlined">pan_zoom</span>
               </span>
             </div>
 

@@ -50,12 +50,19 @@ export const models = {
     color: "grey",
     info: false,
   },
+
+  roundedCube: {
+    object: "Cube",
+    path: "/models/roundedCube.glb",
+    color: "grey",
+    info: false,
+  }
 };
 
 export const structureTypes = {
   ultraStructure: {
     name: "Ultrastructure",
-    object: models.sphere,
+    object: models.roundedCube,
     color: 0x607b94,
     colorHex: "#607b94",
     options: {
